@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyTitle>$(ProjectName)</AssemblyTitle>
+    <Product>JP PKI Library</Product>
+    <Authors>Johannes Passing</Authors>
+    <Company>Johannes Passing</Company>
+
+    <TargetFrameworks>net6.0-windows;net47</TargetFrameworks>
+    <Platforms>AnyCPU</Platforms>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+
+    <!-- 
+      Use C# 8 so that we can use nullable 
+      
+      For details on C# 8 support in .NET Framework, see
+      https://stackoverflow.com/a/57020770/4372
+    -->
+    <LangVersion>8</LangVersion>
+    <WarningLevel>5</WarningLevel>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup Condition="!$(ProjectName.EndsWith('.Test'))">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.6.40">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

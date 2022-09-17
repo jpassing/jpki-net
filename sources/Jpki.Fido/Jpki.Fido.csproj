@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Jpki.props" />
+  <PropertyGroup>
+    <UseWindowsForms>True</UseWindowsForms>
+    <RootNamespace>Jpki</RootNamespace>
+    
+    <PackageId>JPassing.Pki.Fido</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Jpki.Extensions\Jpki.Extensions.csproj" />
+  </ItemGroup>
+</Project>

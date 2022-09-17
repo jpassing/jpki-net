@@ -1,0 +1,158 @@
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/cbor-js@0.1.0/cbor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script language="javascript">
+        var credential;
+        
+        async function register() {
+            const publicKeyCredentialCreationOptions = {
+                challenge: Uint8Array.from(
+                    $("#reg-challenge").text(), c => c.charCodeAt(0)),
+                rp: {
+                    name: "WebAuthN Test",
+                    id: "localhost",
+                },
+                user: {
+                    id: Uint8Array.from($("#reg-user").text(), c => c.charCodeAt(0)),
+                    name: $("#reg-user").text(),
+                    displayName: $("#reg-user").text(),
+                },
+                pubKeyCredParams: [{alg: -7, type: "public-key"}],
+                authenticatorSelection: {
+                    authenticatorAttachment: "cross-platform",
+                    userVerification: "discouraged"
+                },
+                timeout: 60000,
+                attestation: $("#reg-attestationconveyance").val()
+            };
+
+
+            credential = await navigator.credentials.create({
+                publicKey: publicKeyCredentialCreationOptions
+            });
+        
+            $("#reg-credential").text(btoa(String.fromCharCode.apply(null, new Uint8Array(credential.rawId))));
+            $("#reg-clientdata").text(btoa(String.fromCharCode.apply(null, new Uint8Array(credential.response.clientDataJSON))));
+            $("#reg-attestationobject").text(btoa(String.fromCharCode.apply(null, new Uint8Array(credential.response.attestationObject))));
+            
+            $("#reg-result").toggle();
+        }
+        
+        async function authenticate() {
+            const publicKeyCredentialRequestOptions = {
+                challenge: Uint8Array.from(
+                    $("#reg-challenge").text(), c => c.charCodeAt(0)),
+                allowCredentials: [{
+                    id: credential.rawId,
+                    type: 'public-key',
+                    transports: ['usb', 'ble', 'nfc'],
+                }],
+                timeout: 60000,
+            }
+
+            const assertion = await navigator.credentials.get({
+                publicKey: publicKeyCredentialRequestOptions
+            });
+            
+            $("#auth-credential").text(btoa(String.fromCharCode.apply(null, new Uint8Array(assertion.rawId))));
+            $("#auth-clientdata").text(btoa(String.fromCharCode.apply(null, new Uint8Array(assertion.response.clientDataJSON))));
+            $("#auth-signature").text(btoa(String.fromCharCode.apply(null, new Uint8Array(assertion.response.signature))));
+            $("#auth-data").text(btoa(String.fromCharCode.apply(null, new Uint8Array(assertion.response.authenticatorData))));
+            
+            $("#auth-result").toggle();
+        }
+    </script>
+    <style>
+        body table {
+            font-size: 12px;
+        }
+        h1 {
+            font-size: 14px;
+        }
+        textarea,input{
+            width: 400px;
+        }
+        
+        table {
+            width: 650px;
+            table-layout:fixed;
+            margin-bottom: 10px;
+        }
+        
+        div {
+            background-color: #eee;
+            margin: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id='reg'>
+        <h1>Register authenticator</h1>
+        <table>
+            <tr>
+                <td>Challenge</td>
+                <td><input type='text' id='reg-challenge' value='Random text'/></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td><input type='text' id='reg-user' value='bob@example.com'/></td>
+            </tr>
+            <tr>
+                <td>Attestation conveyance</td>
+                <td>
+                    <select id='reg-attestationconveyance'>
+                        <option value='none'>none</option>
+                        <option value='direct'>direct</option>
+                        <option value='indirect'>indirect</option>
+                        <option value='enterprise'>enterprise</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <button onclick='javascript:register()'>Register</button>
+    </div>
+    <div id='reg-result' style='display:none'>
+        <h1>Attestation</h1>
+        <table>
+            <tr>
+                <td>ClientData</td>
+                <td><textarea readonly id='reg-clientdata'></textarea></td>
+            </tr>
+            <tr>
+                <td>Attestation Object</td>
+                <td><textarea readonly id='reg-attestationobject'></textarea></td>
+            </tr>
+            <tr>
+                <td>Credential</td>
+                <td><textarea readonly id='reg-credential'></textarea></td>
+            </tr>
+        </table>
+        <button onclick='javascript:authenticate()'>Authenticate</button>
+    </div>
+    
+    <div id='auth-result' style='display:none'>
+        <h1>Assertion</h1>
+        <table>
+            <tr>
+                <td>ClientData</td>
+                <td><textarea readonly id='auth-clientdata'></textarea></td>
+            </tr>
+            <tr>
+                <td>Auth data</td>
+                <td><textarea readonly id='auth-data'></textarea></td>
+            </tr>
+            <tr>
+                <td>Signature</td>
+                <td><textarea readonly id='auth-signature'></textarea></td>
+            </tr>
+            <tr>
+                <td>Credential</td>
+                <td><textarea readonly id='auth-credential'></textarea></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
