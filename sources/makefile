@@ -79,6 +79,7 @@ test-net: $(MAIN_ASSEMBLY)
 
 	dotnet test \
 		--no-build \
+		--configuration $(CONFIGURATION) \
 		--filter "TestCategory!=RequiresHumanInteraction""
 
 # NB. The OpenCover version must match the version of the CLR installed
@@ -105,7 +106,11 @@ test-netfx: $(MAIN_ASSEMBLY)
 test: test-net test-netfx
 
 clean:
-    rd /S /Q $(ASSEMBLY_DIR)
+	@echo "========================================================"
+	@echo "=== Building solution                                ==="
+	@echo "========================================================"
+
+	msbuild /t:Clean "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM)"
 	
 serve-site:
 	"$(IISEXPRESS)" /path:$(MAKEDIR)\site
