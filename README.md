@@ -10,9 +10,11 @@ PKI-related methods introduced in .NET 5, 6, or 7 to older runtime versions, inc
 * [`ECDsa.VerifyData`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.ecdsa.signdata?view=net-7.0)
 	overloads that accept a `DSASignatureFormat` parameter.
 * [`{ECDSA, RSA}.ExportSubjectPublicKeyInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.asymmetricalgorithm.exportsubjectpublickeyinfo?view=net-7.0)
+* [`{ECDSA, RSA}.ExportSubjectPublicKeyInfoPem `](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.asymmetricalgorithm.exportsubjectpublickeyinfopem?view=net-7.0)
 * [`{ECDSA, RSA}.ImportSubjectPublicKeyInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.asymmetricalgorithm.importsubjectpublickeyinfo?view=net-7.0)
 * [`{ECDSA, RSA}.ImportFromPem`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.asymmetricalgorithm.importfrompem?view=net-7.0)
 * [`RSA.ExportRSAPublicKey`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsa.exportrsapublickey?view=net-7.0)
+* [`RSA.ExportRSAPublicKeyPem`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsa.exportrsapublickeypem?view=net-7.0)
 * [`RSA.ImportRSAPublicKey`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsa.importrsapublickey?view=net-7.0)
 * [`X509Certificate2.ExportCertificatePem`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2.exportcertificatepem?view=net-7.0)
 

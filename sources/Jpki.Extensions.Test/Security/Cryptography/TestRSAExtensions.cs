@@ -142,7 +142,7 @@ namespace Jpki.Test.Security.Cryptography
         }
 
         //---------------------------------------------------------------------
-        // ExportToPem.
+        // ImportFromPem.
         //---------------------------------------------------------------------
 
         [Test]
@@ -153,17 +153,13 @@ namespace Jpki.Test.Security.Cryptography
                 importedKey.ImportFromPem(RsaPublicKeyPem, out var format);
 
                 Assert.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
-                var exported = importedKey.ExportToPem(format);
+                var exported = importedKey.ExportPem(format);
 
                 Assert.AreEqual(
                     PemEnvelope.Parse(RsaPublicKeyPem),
                     PemEnvelope.Parse(exported));
             }
         }
-
-        //---------------------------------------------------------------------
-        // ImportFromPem.
-        //---------------------------------------------------------------------
 
         [Test]
         public void WhenPemContainsSubjectPublicKeyInfo_ThenImportFromPemSucceeds()
@@ -173,7 +169,7 @@ namespace Jpki.Test.Security.Cryptography
                 importedKey.ImportFromPem(SubjectPublicKeyInfoPem, out var format);
 
                 Assert.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
-                var exported = importedKey.ExportToPem(format);
+                var exported = importedKey.ExportPem(format);
 
                 Assert.AreEqual(
                     PemEnvelope.Parse(SubjectPublicKeyInfoPem),
@@ -184,10 +180,48 @@ namespace Jpki.Test.Security.Cryptography
         [Test]
         public void WhenPemContainsEccPublicKey_ThenImportFromPemThrowsException()
         {
-            using (var importedKey = CreateKey())
+            using (var key = CreateKey())
             {
                 Assert.Throws<CryptographicException>(
-                    () => importedKey.ImportFromPem(EccSubjectPublicKeyInfoPem, out var format));
+                    () => key.ImportFromPem(EccSubjectPublicKeyInfoPem, out var format));
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // ExportSubjectPublicKeyInfoPem.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void ExportSubjectPublicKeyInfoPem()
+        {
+            using (var originalKey = CreateKey())
+            {
+                var pem = originalKey.ExportSubjectPublicKeyInfoPem();
+
+                using (var importedKey = CreateKey())
+                {
+                    importedKey.ImportFromPem(pem, out var format);
+                    Assert.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // ExportRSAPublicKeyPem.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void ExportRSAPublicKeyPem()
+        {
+            using (var originalKey = CreateKey())
+            {
+                var pem = originalKey.ExportRSAPublicKeyPem();
+
+                using (var importedKey = CreateKey())
+                {
+                    importedKey.ImportFromPem(pem, out var format);
+                    Assert.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
+                }
             }
         }
     }

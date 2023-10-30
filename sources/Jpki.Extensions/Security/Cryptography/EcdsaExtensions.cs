@@ -262,7 +262,7 @@ namespace Jpki.Security.Cryptography
 #endif
 
         //---------------------------------------------------------------------
-        // Convenience methods for reading/writing PEM-encoded keys.
+        // Importing PEM-encoded keys.
         //---------------------------------------------------------------------
 
 #if !(NET5_0_OR_GREATER)
@@ -280,11 +280,17 @@ namespace Jpki.Security.Cryptography
         }
 #endif
 
-        public static string ExportToPem(this ECDsa key)
+        //---------------------------------------------------------------------
+        // Exporting PEM-encoded keys.
+        //---------------------------------------------------------------------
+
+#if !NET7_0_OR_GREATER
+        public static string ExportSubjectPublicKeyInfoPem(this ECDsa key)
         {
             return new PemEnvelope(
                 PemEnvelope.DataFormat.SubjectPublicKeyInfo,
                 key.ExportSubjectPublicKeyInfo()).ToString();
         }
+#endif
     }
 }
