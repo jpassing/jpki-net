@@ -177,7 +177,7 @@ namespace Jpki.Test.Security.Cryptography
             {
                 importedKey.ImportFromPem(SubjectPublicKeyInfoPem);
 
-                var exported = importedKey.ExportToPem();
+                var exported = importedKey.ExportSubjectPublicKeyInfoPem();
 
                 Assert.AreEqual(
                     PemEnvelope.Parse(SubjectPublicKeyInfoPem),
@@ -192,6 +192,24 @@ namespace Jpki.Test.Security.Cryptography
             {
                 Assert.Throws<CryptographicException>(
                     () => importedKey.ImportFromPem(RsaSubjectPublicKeyInfoPem));
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // ExportSubjectPublicKeyInfoPem.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void ExportSubjectPublicKeyInfoPem()
+        {
+            using (var originalKey = new ECDsaCng())
+            {
+                var pem = originalKey.ExportSubjectPublicKeyInfoPem();
+
+                using (var importedKey = new ECDsaCng())
+                {
+                    importedKey.ImportFromPem(pem);
+                }
             }
         }
     }

@@ -20,6 +20,7 @@
 //
 
 using Jpki.Interop;
+using Microsoft.SqlServer.Server;
 using System;
 using System.ComponentModel;
 using System.Security.Cryptography;
@@ -231,7 +232,7 @@ namespace Jpki.Security.Cryptography
 #endif
 
         //---------------------------------------------------------------------
-        // Convenience methods for reading/writing PEM-encoded keys.
+        // Importing PEM-encoded keys.
         //---------------------------------------------------------------------
 
 #if !NET5_0_OR_GREATER
@@ -261,7 +262,26 @@ namespace Jpki.Security.Cryptography
             }
         }
 
-        public static string ExportToPem(
+        //---------------------------------------------------------------------
+        // Exporting PEM-encoded keys.
+        //---------------------------------------------------------------------
+
+#if !NET7_0_OR_GREATER
+        public static string ExportSubjectPublicKeyInfoPem(this RSA key)
+        {
+            return new PemEnvelope(
+                PemEnvelope.DataFormat.SubjectPublicKeyInfo,
+                key.ExportSubjectPublicKeyInfo()).ToString();
+        }
+
+        public static string ExportRSAPublicKeyPem(this RSA key)
+        {
+            return new PemEnvelope(
+                PemEnvelope.DataFormat.RsaPublicKey,
+                key.ExportRSAPublicKey()).ToString();
+        }
+#endif
+        public static string ExportPem(
             this RSA key,
             PemEnvelope.DataFormat format)
         {
