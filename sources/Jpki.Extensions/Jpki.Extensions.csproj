@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Jpki</RootNamespace>
 
-    <PackageId>JPassing.Pki.Extensions</PackageId>
+    <PackageId>JPKI.Extensions</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <Import Project="..\Jpki.props" />

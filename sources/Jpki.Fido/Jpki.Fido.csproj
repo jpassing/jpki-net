@@ -4,7 +4,7 @@
     <UseWindowsForms>True</UseWindowsForms>
     <RootNamespace>Jpki</RootNamespace>
     
-    <PackageId>JPassing.Pki.Fido</PackageId>
+    <PackageId>JPKI.Fido</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
