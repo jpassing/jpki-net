@@ -54,7 +54,7 @@ IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
 # Output targets
 #------------------------------------------------------------------------------
 
-default: test $(PACKED_ASSEMBLY)
+default: test
 
 $(MAIN_ASSEMBLY):
 	@echo "========================================================"
@@ -72,20 +72,33 @@ restore:
 
 build: $(MAIN_ASSEMBLY)
 
-test-net: $(MAIN_ASSEMBLY)
+test-net60: $(MAIN_ASSEMBLY)
 	@echo "========================================================"
-	@echo "=== Testing solution (.NET)                          ==="
+	@echo "=== Testing solution (.NET 6.0)                      ==="
 	@echo "========================================================"
 
 	dotnet test \
 		--no-build \
+		--framework net6.0-windows \
 		--configuration $(CONFIGURATION) \
-		--filter "TestCategory!=RequiresHumanInteraction""
+		--filter "TestCategory!=RequiresHumanInteraction"
+
+
+test-net70: $(MAIN_ASSEMBLY)
+	@echo "========================================================"
+	@echo "=== Testing solution (.NET 7.0)                      ==="
+	@echo "========================================================"
+
+	dotnet test \
+		--no-build \
+		--framework net7.0-windows \
+		--configuration $(CONFIGURATION) \
+		--filter "TestCategory!=RequiresHumanInteraction"
 
 # NB. The OpenCover version must match the version of the CLR installed
-test-netfx: $(MAIN_ASSEMBLY)
+test-net47: $(MAIN_ASSEMBLY)
 	@echo "========================================================"
-	@echo "=== Testing solution (.NET Framework, with coverage) ==="
+	@echo "=== Testing solution (.NET FX 4.7, with coverage)    ==="
 	@echo "========================================================"
 
 	OpenCover.Console.exe \
@@ -103,7 +116,7 @@ test-netfx: $(MAIN_ASSEMBLY)
 		-reporttypes:HTML
 	del $(MAKEDIR)\*.log
 
-test: test-net test-netfx
+test: test-net60 test-net70 test-net47
 
 clean:
 	@echo "========================================================"
