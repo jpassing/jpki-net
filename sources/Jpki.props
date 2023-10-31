@@ -5,7 +5,7 @@
     <Authors>Johannes Passing</Authors>
     <Company>Johannes Passing</Company>
 
-    <TargetFrameworks>net6.0-windows;net47</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net47</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
 
