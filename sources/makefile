@@ -79,6 +79,7 @@ test-net: $(MAIN_ASSEMBLY)
 
 	dotnet test \
 		--no-build \
+		--framework net6.0-windows \
 		--configuration $(CONFIGURATION) \
 		--filter "TestCategory!=RequiresHumanInteraction""
 
