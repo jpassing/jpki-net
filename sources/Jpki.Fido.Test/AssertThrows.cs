@@ -25,9 +25,9 @@ using System.Reflection;
 
 namespace Jpki.Test
 {
-    internal static class ExceptionAssert
+    internal static class AssertThrows
     {
-        public static TActual? ThrowsAggregateException<TActual>(TestDelegate code) where TActual : Exception
+        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception
         {
             return AssertThat.Throws<TActual>(() =>
             {

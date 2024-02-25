@@ -61,7 +61,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public void WhenSignatureAlgorithmsEmpty_ThenCreateCredentialThrowsException()
         {
-            ExceptionAssert.ThrowsAggregateException<ArgumentException>(
+            AssertThrows.AggregateException<ArgumentException>(
                 () => WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
@@ -79,7 +79,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public void WhenSignatureAlgorithmsInvalid_ThenCreateCredentialThrowsException()
         {
-            ExceptionAssert.ThrowsAggregateException<ArgumentException>(
+            AssertThrows.AggregateException<ArgumentException>(
                 () => WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
@@ -104,7 +104,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                 return;
             }
 
-            ExceptionAssert.ThrowsAggregateException<WebAuthnException>(
+            AssertThrows.AggregateException<WebAuthnException>(
                 () => WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
@@ -137,7 +137,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                 await Task.Delay(250);
                 cts.Cancel();
 
-                ExceptionAssert.ThrowsAggregateException<OperationCanceledException>(
+                AssertThrows.AggregateException<OperationCanceledException>(
                     () => attestationTask.Wait());
             }
         }
@@ -163,7 +163,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                 await Task.Delay(250);
                 cts.Cancel();
 
-                ExceptionAssert.ThrowsAggregateException<OperationCanceledException>(
+                AssertThrows.AggregateException<OperationCanceledException>(
                     () => attestationTask.Wait());
             }
         }
