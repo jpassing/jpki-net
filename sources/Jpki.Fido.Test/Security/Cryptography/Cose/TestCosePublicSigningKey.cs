@@ -47,11 +47,11 @@ namespace Jpki.Test.Security.Cryptography.Cose
         {
             using (var key = CosePublicKey.Decode(new CborData(EcdsaKey)))
             {
-                Assert.AreEqual(CoseKeyType.EC2, key.KeyType);
-                Assert.AreEqual(CoseSignatureAlgorithm.ES256, key.Algorithm);
+                AssertThat.AreEqual(CoseKeyType.EC2, key.KeyType);
+                AssertThat.AreEqual(CoseSignatureAlgorithm.ES256, key.Algorithm);
 
-                Assert.IsInstanceOf<CoseEcdsaPublicKey>(key);
-                Assert.IsNotNull(((CoseEcdsaPublicKey)key).Key);
+                AssertThat.IsInstanceOf<CoseEcdsaPublicKey>(key);
+                AssertThat.IsNotNull(((CoseEcdsaPublicKey)key).Key);
             }
         }
 
@@ -60,11 +60,11 @@ namespace Jpki.Test.Security.Cryptography.Cose
         {
             using (var key = CosePublicKey.Decode(new CborData(RsaKey)))
             {
-                Assert.AreEqual(CoseKeyType.RSA, key.KeyType);
-                Assert.AreEqual(CoseSignatureAlgorithm.RS256, key.Algorithm);
+                AssertThat.AreEqual(CoseKeyType.RSA, key.KeyType);
+                AssertThat.AreEqual(CoseSignatureAlgorithm.RS256, key.Algorithm);
 
-                Assert.IsInstanceOf<CoseRsaPublicKey>(key);
-                Assert.IsNotNull(((CoseRsaPublicKey)key).Key);
+                AssertThat.IsInstanceOf<CoseRsaPublicKey>(key);
+                AssertThat.IsNotNull(((CoseRsaPublicKey)key).Key);
             }
         }
     }

@@ -47,7 +47,7 @@ NUNIT_COVERAGE_FILTER = \
 	+[Jpki.Extensions]* \
 	+[Jpki.Fido]* \
 
-NUGET_PACKAGEDIR=$(HOMEPATH)\.nuget\packages
+NUGET_PACKAGES=$(USERPROFILE)\.nuget\packages
 IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
     
 #------------------------------------------------------------------------------
@@ -83,7 +83,6 @@ test-net60: $(MAIN_ASSEMBLY)
 		--configuration $(CONFIGURATION) \
 		--filter "TestCategory!=RequiresHumanInteraction"
 
-
 test-net70: $(MAIN_ASSEMBLY)
 	@echo "========================================================"
 	@echo "=== Testing solution (.NET 7.0)                      ==="
@@ -109,8 +108,8 @@ test-net47: $(MAIN_ASSEMBLY)
 		-filter:"$(NUNIT_COVERAGE_FILTER)" \
 		"-excludebyattribute:*CompilerGenerated*" \
 		-output:opencovertests.xml
-
-	ReportGenerator.exe \
+		
+	"$(NUGET_PACKAGES)\ReportGenerator\$(REPORTGENERATOR)\tools\net47\ReportGenerator.exe" \
 		-reports:opencovertests.xml \
 		-targetdir:coveragereport \
 		-reporttypes:HTML

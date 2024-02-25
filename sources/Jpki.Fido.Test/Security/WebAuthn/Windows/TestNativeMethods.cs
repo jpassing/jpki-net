@@ -31,7 +31,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WebAuthNGetApiVersionNumber()
         {
             var version = NativeMethods.WebAuthNGetApiVersionNumber();
-            Assert.GreaterOrEqual(version, NativeMethods.WEBAUTHN_API_VERSION.VERSION_2);
+            AssertThat.GreaterOrEqual(version, NativeMethods.WEBAUTHN_API_VERSION.VERSION_2);
         }
 
     }

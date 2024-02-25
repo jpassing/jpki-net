@@ -53,21 +53,21 @@ namespace Jpki.Test.Security.WebAuthn
                 new CredentialId(Convert.FromBase64String(credentialId)),
                 Transport.Test);
 
-            Assert.IsFalse(credential.IsFidoU2F);
+            AssertThat.IsFalse(credential.IsFidoU2F);
 
-            Assert.IsNull(credential.AttestationStatement);
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
+            AssertThat.IsNull(credential.AttestationStatement);
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
 
-            Assert.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
+            AssertThat.AreEqual(
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 Guid.Empty,
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid);
 
-            Assert.Throws<WebAuthnException>(() => credential.Verify());
+            AssertThat.Throws<WebAuthnException>(() => credential.Verify());
         }
 
         [Test]
@@ -105,26 +105,26 @@ namespace Jpki.Test.Security.WebAuthn
                 new CredentialId(Convert.FromBase64String(credentialId)),
                 Transport.Test);
 
-            Assert.IsFalse(credential.IsFidoU2F);
+            AssertThat.IsFalse(credential.IsFidoU2F);
 
-            Assert.IsNotNull(credential.AttestationStatement);
-            Assert.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
-            Assert.IsFalse(credential.AttestationStatement.IsSelfAttested);
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
+            AssertThat.IsFalse(credential.AttestationStatement.IsSelfAttested);
 
-            Assert.IsNotNull(credential.AttestationStatement.Certificate);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AttestationStatement.Certificate);
+            AssertThat.AreEqual(
                 "CN=Batch Certificate, OU=Authenticator Attestation, O=Chromium, C=US",
                 credential.AttestationStatement.Certificate!.Subject);
 
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
 
-            Assert.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
+            AssertThat.AreEqual(
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 "04030201-0605-0807-0102-030405060708",
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid.ToString());
 
@@ -164,27 +164,27 @@ namespace Jpki.Test.Security.WebAuthn
                 new CredentialId(Convert.FromBase64String(credentialId)),
                 Transport.Test);
 
-            Assert.IsFalse(credential.IsFidoU2F);
+            AssertThat.IsFalse(credential.IsFidoU2F);
 
-            Assert.IsNotNull(credential.AttestationStatement);
-            Assert.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
-            Assert.IsFalse(credential.AttestationStatement.IsSelfAttested);
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
+            AssertThat.IsFalse(credential.AttestationStatement.IsSelfAttested);
 
 
-            Assert.IsNotNull(credential.AttestationStatement.Certificate);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AttestationStatement.Certificate);
+            AssertThat.AreEqual(
                 "CN=Batch Certificate, OU=Authenticator Attestation, O=Chromium, C=US",
                 credential.AttestationStatement.Certificate!.Subject);
 
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsFalse(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsFalse(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
 
-            Assert.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
+            AssertThat.AreEqual(
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 "04030201-0605-0807-0102-030405060708",
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid.ToString());
 
@@ -223,26 +223,26 @@ namespace Jpki.Test.Security.WebAuthn
                 new CredentialId(Convert.FromBase64String(credentialId)),
                 Transport.Test);
 
-            Assert.IsTrue(credential.IsFidoU2F);
+            AssertThat.IsTrue(credential.IsFidoU2F);
 
-            Assert.IsNotNull(credential.AttestationStatement);
-            Assert.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
-            Assert.IsFalse(credential.AttestationStatement.IsSelfAttested);
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.AreEqual(CoseSignatureAlgorithm.ES256, credential.AttestationStatement!.Algorithm);
+            AssertThat.IsFalse(credential.AttestationStatement.IsSelfAttested);
 
-            Assert.IsNotNull(credential.AttestationStatement.Certificate);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AttestationStatement.Certificate);
+            AssertThat.AreEqual(
                 "CN=Batch Certificate, OU=Authenticator Attestation, O=Chromium, C=US",
                 credential.AttestationStatement.Certificate!.Subject);
 
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsFalse(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsFalse(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.AttestedCredentialDataIncluded));
 
-            Assert.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
-            Assert.AreEqual(
+            AssertThat.IsNotNull(credential.AuthenticatorData.AttestedCredentialData);
+            AssertThat.AreEqual(
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 Guid.Empty,
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid);
 

@@ -39,11 +39,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(value, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(value, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -54,11 +54,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(value, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(value, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -68,11 +68,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(1000, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1000, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(1000000, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1000000, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -96,11 +96,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(1000000000000, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1000000000000, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -110,11 +110,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             var nextItem = item.ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(ulong.MaxValue, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(ulong.MaxValue, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Jpki.Test.Format.Cbor
                 .Skip()
                 .ReadUnsignedInteger(out var decoded);
 
-            Assert.AreEqual(1000, decoded);
+            AssertThat.AreEqual(1000, decoded);
         }
 
         //---------------------------------------------------------------------
@@ -140,11 +140,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
             var nextItem = item.ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-1, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(-1, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -154,11 +154,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
             var nextItem = item.ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-100, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(-100, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -168,11 +168,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
             var nextItem = item.ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-1000, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(-1000, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -182,11 +182,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.NegativeInteger, item.MajorType);
             var nextItem = item.ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-1000000, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(-1000000, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace Jpki.Test.Format.Cbor
                 .Skip()
                 .ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-100, decoded);
+            AssertThat.AreEqual(-100, decoded);
         }
 
         //---------------------------------------------------------------------
@@ -212,11 +212,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(SimpleValue.False, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(SimpleValue.False, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -226,11 +226,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(SimpleValue.True, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(SimpleValue.True, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -240,11 +240,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(SimpleValue.Null, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(SimpleValue.Null, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -254,11 +254,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(SimpleValue.Undefined, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(SimpleValue.Undefined, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -268,11 +268,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(16, (int)decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(16, (int)decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -282,11 +282,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(255, (int)decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(255, (int)decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -296,11 +296,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
             var nextItem = item.ReadSimpleValue(out var decoded);
 
-            Assert.AreEqual(SimpleValue.Stop, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(SimpleValue.Stop, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -312,7 +312,7 @@ namespace Jpki.Test.Format.Cbor
                 .Skip()
                 .ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-100, decoded);
+            AssertThat.AreEqual(-100, decoded);
         }
 
         //---------------------------------------------------------------------
@@ -326,11 +326,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.ByteString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.ByteString, item.MajorType);
             var nextItem = item.ReadByteString(out var decoded);
 
-            Assert.AreEqual(0, decoded.Length);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(0, decoded.Length);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -340,8 +340,8 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.ByteString, item.MajorType);
-            Assert.Throws<UnsupportedCborDataItemException>(
+            AssertThat.AreEqual(CborMajorType.ByteString, item.MajorType);
+            AssertThat.Throws<UnsupportedCborDataItemException>(
                 () => item.ReadByteString(out var decoded));
         }
 
@@ -352,15 +352,15 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.ByteString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.ByteString, item.MajorType);
             var nextItem = item.ReadByteString(out var decoded);
 
-            Assert.AreEqual(4, decoded.Length);
-            Assert.AreEqual(0x01, decoded[0]);
-            Assert.AreEqual(0x02, decoded[1]);
-            Assert.AreEqual(0x03, decoded[2]);
-            Assert.AreEqual(0x04, decoded[3]);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(4, decoded.Length);
+            AssertThat.AreEqual(0x01, decoded[0]);
+            AssertThat.AreEqual(0x02, decoded[1]);
+            AssertThat.AreEqual(0x03, decoded[2]);
+            AssertThat.AreEqual(0x04, decoded[3]);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -372,7 +372,7 @@ namespace Jpki.Test.Format.Cbor
                 .Skip()
                 .ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-100, decoded);
+            AssertThat.AreEqual(-100, decoded);
         }
 
         //---------------------------------------------------------------------
@@ -386,11 +386,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TextString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.TextString, item.MajorType);
             var nextItem = item.ReadTextString(out var decoded);
 
-            Assert.AreEqual(string.Empty, decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(string.Empty, decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -400,8 +400,8 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TextString, item.MajorType);
-            Assert.Throws<UnsupportedCborDataItemException>(
+            AssertThat.AreEqual(CborMajorType.TextString, item.MajorType);
+            AssertThat.Throws<UnsupportedCborDataItemException>(
                 () => item.ReadTextString(out var decoded));
         }
 
@@ -412,11 +412,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TextString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.TextString, item.MajorType);
             var nextItem = item.ReadTextString(out var decoded);
 
-            Assert.AreEqual("a", decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual("a", decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -426,11 +426,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TextString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.TextString, item.MajorType);
             var nextItem = item.ReadTextString(out var decoded);
 
-            Assert.AreEqual("IETF", decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual("IETF", decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -440,11 +440,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TextString, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.TextString, item.MajorType);
             var nextItem = item.ReadTextString(out var decoded);
 
-            Assert.AreEqual("\u00fc", decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual("\u00fc", decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -456,7 +456,7 @@ namespace Jpki.Test.Format.Cbor
                 .Skip()
                 .ReadNegativeInteger(out var decoded);
 
-            Assert.AreEqual(-100, decoded);
+            AssertThat.AreEqual(-100, decoded);
         }
 
         //---------------------------------------------------------------------
@@ -470,11 +470,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Array, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Array, item.MajorType);
             var nextItem = item.ReadArrayStart(out var itemCount);
 
-            Assert.AreEqual(0, itemCount);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(0, itemCount);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -484,17 +484,17 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Array, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Array, item.MajorType);
             item = item.ReadArrayStart(out var itemCount);
 
-            Assert.AreEqual(3, itemCount);
+            AssertThat.AreEqual(3, itemCount);
 
             for (int i = 1; i <= 3; i++)
             {
-                Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+                AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
                 item = item.ReadUnsignedInteger(out var decodedItem);
 
-                Assert.AreEqual(i, decodedItem);
+                AssertThat.AreEqual(i, decodedItem);
             }
         }
 
@@ -505,21 +505,21 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Array, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Array, item.MajorType);
             item = item.ReadArrayStart(out var itemCount);
 
-            Assert.IsNull(itemCount);
+            AssertThat.IsNull(itemCount);
 
             for (int i = 1; i <= 2; i++)
             {
-                Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+                AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
                 item = item.ReadUnsignedInteger(out var decodedItem);
 
-                Assert.AreEqual(i, decodedItem);
+                AssertThat.AreEqual(i, decodedItem);
             }
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
-            Assert.IsTrue(item.IsBreak);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.IsTrue(item.IsBreak);
         }
 
         [Test]
@@ -527,7 +527,7 @@ namespace Jpki.Test.Format.Cbor
         {
             var data = new byte[] { 0x9f, 0x01, 0x02, 0xff };
 
-            Assert.Throws<UnsupportedCborDataItemException>(
+            AssertThat.Throws<UnsupportedCborDataItemException>(
                 () => new CborDataItem(data).Skip());
         }
 
@@ -542,11 +542,11 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Map, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Map, item.MajorType);
             var nextItem = item.ReadMapStart(out var itemCount);
 
-            Assert.AreEqual(0, itemCount);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(0, itemCount);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -556,17 +556,17 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Map, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Map, item.MajorType);
             item = item.ReadMapStart(out var itemCount);
 
-            Assert.AreEqual(2, itemCount);
+            AssertThat.AreEqual(2, itemCount);
 
             for (int i = 1; i <= 4; i++)
             {
-                Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+                AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
                 item = item.ReadUnsignedInteger(out var decodedItem);
 
-                Assert.AreEqual(i, decodedItem);
+                AssertThat.AreEqual(i, decodedItem);
             }
         }
 
@@ -577,21 +577,21 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.Map, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.Map, item.MajorType);
             item = item.ReadMapStart(out var itemCount);
 
-            Assert.IsNull(itemCount);
+            AssertThat.IsNull(itemCount);
 
             for (int i = 1; i <= 2; i++)
             {
-                Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+                AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
                 item = item.ReadUnsignedInteger(out var decodedItem);
 
-                Assert.AreEqual(i, decodedItem);
+                AssertThat.AreEqual(i, decodedItem);
             }
 
-            Assert.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
-            Assert.IsTrue(item.IsBreak);
+            AssertThat.AreEqual(CborMajorType.FloatingPointOrSimpleValue, item.MajorType);
+            AssertThat.IsTrue(item.IsBreak);
         }
 
         [Test]
@@ -599,7 +599,7 @@ namespace Jpki.Test.Format.Cbor
         {
             var data = new byte[] { 0xbf, 0x01, 0x02, 0xff };
 
-            Assert.Throws<UnsupportedCborDataItemException>(
+            AssertThat.Throws<UnsupportedCborDataItemException>(
                 () => new CborDataItem(data).Skip());
         }
 
@@ -614,16 +614,16 @@ namespace Jpki.Test.Format.Cbor
 
             var item = new CborDataItem(data);
 
-            Assert.AreEqual(CborMajorType.TaggedItem, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.TaggedItem, item.MajorType);
             item = item.ReadTaggedItemStart(out var tag);
 
-            Assert.AreEqual(Tag.EpochBasedDateTime, tag);
+            AssertThat.AreEqual(Tag.EpochBasedDateTime, tag);
 
-            Assert.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
+            AssertThat.AreEqual(CborMajorType.UnsignedInteger, item.MajorType);
             item = item.ReadUnsignedInteger(out var unsignedInt);
-            Assert.AreEqual(1363896240, unsignedInt);
+            AssertThat.AreEqual(1363896240, unsignedInt);
 
-            Assert.IsFalse(item.CanRead);
+            AssertThat.IsFalse(item.CanRead);
         }
 
         [Test]
@@ -631,7 +631,7 @@ namespace Jpki.Test.Format.Cbor
         {
             var data = new byte[] { 0xc1, 0x1a, 0x51, 0x4b, 0x67, 0xb0 };
 
-            Assert.Throws<UnsupportedCborDataItemException>(
+            AssertThat.Throws<UnsupportedCborDataItemException>(
                 () => new CborDataItem(data).Skip());
         }
     }

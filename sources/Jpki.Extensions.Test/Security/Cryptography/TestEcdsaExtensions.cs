@@ -60,13 +60,13 @@ namespace Jpki.Test.Security.Cryptography
             var expectedParameters = expected.ExportParameters(false);
             var actualParameters = actual.ExportParameters(false);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 expectedParameters.Curve.CurveType,
                 actualParameters.Curve.CurveType);
-            Assert.IsTrue(Enumerable.SequenceEqual(
+            AssertThat.IsTrue(Enumerable.SequenceEqual(
                 expectedParameters.Q.X!,
                 actualParameters.Q.X!));
-            Assert.IsTrue(Enumerable.SequenceEqual(
+            AssertThat.IsTrue(Enumerable.SequenceEqual(
                 expectedParameters.Q.Y!,
                 actualParameters.Q.Y!));
         }
@@ -87,7 +87,7 @@ namespace Jpki.Test.Security.Cryptography
                     Data,
                     HashAlgorithmName.SHA256,
                     format);
-                Assert.IsTrue(key.VerifyData(
+                AssertThat.IsTrue(key.VerifyData(
                     Data,
                     signature,
                     HashAlgorithmName.SHA256,
@@ -109,7 +109,7 @@ namespace Jpki.Test.Security.Cryptography
                     Data.Length,
                     HashAlgorithmName.SHA256,
                     format);
-                Assert.IsTrue(key.VerifyData(
+                AssertThat.IsTrue(key.VerifyData(
                     Data,
                     0,
                     Data.Length,
@@ -137,7 +137,7 @@ namespace Jpki.Test.Security.Cryptography
                     format);
 
                 stream.Seek(0, SeekOrigin.Begin);
-                Assert.IsTrue(key.VerifyData(
+                AssertThat.IsTrue(key.VerifyData(
                     stream,
                     signature,
                     HashAlgorithmName.SHA256,
@@ -179,7 +179,7 @@ namespace Jpki.Test.Security.Cryptography
 
                 var exported = importedKey.ExportSubjectPublicKeyInfoPem();
 
-                Assert.AreEqual(
+                AssertThat.AreEqual(
                     PemEnvelope.Parse(SubjectPublicKeyInfoPem),
                     PemEnvelope.Parse(exported));
             }
@@ -190,7 +190,7 @@ namespace Jpki.Test.Security.Cryptography
         {
             using (var importedKey = new ECDsaCng())
             {
-                Assert.Throws<CryptographicException>(
+                AssertThat.Throws<CryptographicException>(
                     () => importedKey.ImportFromPem(RsaSubjectPublicKeyInfoPem));
             }
         }

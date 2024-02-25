@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2023 Johannes Passing
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,36 +19,26 @@
 // under the License.
 //
 
-using Jpki.Security.WebAuthn.Windows;
-using NUnit.Framework;
-using System;
-using System.Threading;
+using NUnit.Framework.Legacy;
 
-namespace Jpki.Test.Security.WebAuthn.Windows
+namespace NUnit.Framework
 {
-    [TestFixture]
-    public class TestCancellationGuid
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class AssertThat : ClassicAssert
     {
-        [Test]
-        public void ToStringReturnsGuid()
-        {
-            using (var cancellationId = new CancellationGuid())
-            {
-                AssertThat.IsTrue(Guid.TryParse(cancellationId.ToString(), out var _));
-            }
-        }
-
-        [Test]
-        public void Cancel()
-        {
-            using (var cancellationId = new CancellationGuid())
-            using (var cts = new CancellationTokenSource())
-            {
-                var token = cts.Token;
-                cancellationId.Bind(token);
-
-                cts.Cancel();
-            }
-        }
     }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class CollectionAssertThat : CollectionAssert
+    { }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class StringAssertThat : StringAssert
+    { }
 }

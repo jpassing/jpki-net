@@ -38,8 +38,8 @@ namespace Jpki.Test.Interop
         {
             using (var disposable = Unmanaged.ByteArrayToPtr(null, out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreEqual(IntPtr.Zero, ptr);
             }
         }
 
@@ -48,8 +48,8 @@ namespace Jpki.Test.Interop
         {
             using (var disposable = Unmanaged.ByteArrayToPtr(Array.Empty<byte>(), out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreNotEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreNotEqual(IntPtr.Zero, ptr);
             }
         }
 
@@ -59,11 +59,11 @@ namespace Jpki.Test.Interop
             var array = new byte[] { 1, 2, 3 };
             using (var disposable = Unmanaged.ByteArrayToPtr(array, out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreNotEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreNotEqual(IntPtr.Zero, ptr);
 
                 var arrayCopy = Unmanaged.PtrToByteArray(ptr, (uint)array.Length);
-                CollectionAssert.AreEquivalent(array, arrayCopy);
+                CollectionAssertThat.AreEquivalent(array, arrayCopy!);
             }
         }
 
@@ -85,8 +85,8 @@ namespace Jpki.Test.Interop
         {
             using (var disposable = Unmanaged.StructArrayToPtr<SampleStruct>(null, out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreEqual(IntPtr.Zero, ptr);
             }
         }
 
@@ -95,8 +95,8 @@ namespace Jpki.Test.Interop
         {
             using (var disposable = Unmanaged.StructArrayToPtr(Array.Empty<SampleStruct>(), out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreNotEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreNotEqual(IntPtr.Zero, ptr);
             }
         }
 
@@ -105,8 +105,8 @@ namespace Jpki.Test.Interop
         {
             using (var disposable = Unmanaged.StructArrayToPtr(new SampleStruct[1], out var ptr))
             {
-                Assert.IsNotNull(disposable);
-                Assert.AreNotEqual(IntPtr.Zero, ptr);
+                AssertThat.IsNotNull(disposable);
+                AssertThat.AreNotEqual(IntPtr.Zero, ptr);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Jpki.Test.Interop
                 Member = 42
             }, out var structPtr))
             {
-                Assert.AreEqual(42, Marshal.PtrToStructure<SampleStruct>(structPtr).Member);
+                AssertThat.AreEqual(42, Marshal.PtrToStructure<SampleStruct>(structPtr).Member);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Jpki.Test.Interop
             {
                 var ptr = Unmanaged.DoublePtrToPtr(pptr);
 
-                Assert.AreEqual(42, ptr.ToInt32());
+                AssertThat.AreEqual(42, ptr.ToInt32());
             }
         }
     }

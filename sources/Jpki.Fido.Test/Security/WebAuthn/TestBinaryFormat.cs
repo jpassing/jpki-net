@@ -34,9 +34,9 @@ namespace Jpki.Test.Security.WebAuthn
             var input = new byte[] { 0, 0, 0, 0, 0xAA, 0xBB, 0xCC, 0xDD };
             var bytesRead = BigEndian.ReadByteArray(input, 4, 4, out var output);
 
-            Assert.AreEqual(4, bytesRead);
-            Assert.AreEqual(4, output.Length);
-            Assert.AreEqual(
+            AssertThat.AreEqual(4, bytesRead);
+            AssertThat.AreEqual(4, output.Length);
+            AssertThat.AreEqual(
                 new byte[] { 0xAA, 0xBB, 0xCC, 0xDD },
                 output);
         }
@@ -47,8 +47,8 @@ namespace Jpki.Test.Security.WebAuthn
             var input = new byte[] { 0, 0, 0, 0, 0xAA, 0xBB, 0xCC, 0xDD };
             var bytesRead = BigEndian.ReadUInt32(input, 4, out var output);
 
-            Assert.AreEqual(4, bytesRead);
-            Assert.AreEqual(
+            AssertThat.AreEqual(4, bytesRead);
+            AssertThat.AreEqual(
                 0xAABBCCDD,
                 output);
         }
@@ -59,8 +59,8 @@ namespace Jpki.Test.Security.WebAuthn
             var input = new byte[] { 0, 0, 0, 0, 0xAA, 0xBB, 0xCC, 0xDD };
             var bytesRead = BigEndian.ReadUInt16(input, 4, out var output);
 
-            Assert.AreEqual(2, bytesRead);
-            Assert.AreEqual(
+            AssertThat.AreEqual(2, bytesRead);
+            AssertThat.AreEqual(
                 0xAABB,
                 output);
         }
@@ -71,8 +71,8 @@ namespace Jpki.Test.Security.WebAuthn
             var guid = Guid.NewGuid().ToByteArray();
             var bytesRead = BigEndian.ReadGuid(guid, 0, out var output);
 
-            Assert.AreEqual(16, bytesRead);
-            Assert.AreEqual(
+            AssertThat.AreEqual(16, bytesRead);
+            AssertThat.AreEqual(
                 guid,
                 output.ToByteArray());
         }

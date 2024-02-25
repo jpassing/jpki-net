@@ -43,13 +43,13 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseHashAlgorithm.SHA_384,
                 CoseHashAlgorithm.SHA_512)] CoseHashAlgorithm alg)
         {
-            Assert.IsNotNull(alg.GetName());
+            AssertThat.IsNotNull(alg.GetName());
         }
 
         [Test]
         public void WhenAlgorithInalid_ThenGetNameThrowsException()
         {
-            Assert.Throws<ArgumentException>(
+            AssertThat.Throws<ArgumentException>(
                 () => ((CoseHashAlgorithm)0).GetName());
         }
 
@@ -64,7 +64,7 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseSignatureAlgorithm.PS256,
                 CoseSignatureAlgorithm.ES256)] CoseSignatureAlgorithm alg)
         {
-            Assert.AreEqual(CoseHashAlgorithm.SHA_256, alg.GetHashAlgorithm());
+            AssertThat.AreEqual(CoseHashAlgorithm.SHA_256, alg.GetHashAlgorithm());
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseSignatureAlgorithm.PS384,
                 CoseSignatureAlgorithm.ES384)] CoseSignatureAlgorithm alg)
         {
-            Assert.AreEqual(CoseHashAlgorithm.SHA_384, alg.GetHashAlgorithm());
+            AssertThat.AreEqual(CoseHashAlgorithm.SHA_384, alg.GetHashAlgorithm());
         }
 
         [Test]
@@ -84,13 +84,13 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseSignatureAlgorithm.PS512,
                 CoseSignatureAlgorithm.ES512)] CoseSignatureAlgorithm alg)
         {
-            Assert.AreEqual(CoseHashAlgorithm.SHA_512, alg.GetHashAlgorithm());
+            AssertThat.AreEqual(CoseHashAlgorithm.SHA_512, alg.GetHashAlgorithm());
         }
 
         [Test]
         public void WhenSignatureAlgorithmInvalid_ThenGetHashAlgorithmReturnsSha512()
         {
-            Assert.Throws<ArgumentException>(
+            AssertThat.Throws<ArgumentException>(
                 () => ((CoseSignatureAlgorithm)0).GetHashAlgorithm());
         }
 
@@ -105,7 +105,7 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseSignatureAlgorithm.RS384,
                 CoseSignatureAlgorithm.RS512)] CoseSignatureAlgorithm alg)
         {
-            Assert.AreEqual(RSASignaturePadding.Pkcs1, alg.GetRSASignaturePadding());
+            AssertThat.AreEqual(RSASignaturePadding.Pkcs1, alg.GetRSASignaturePadding());
         }
 
         [Test]
@@ -115,13 +115,13 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 CoseSignatureAlgorithm.PS384,
                 CoseSignatureAlgorithm.PS512)] CoseSignatureAlgorithm alg)
         {
-            Assert.AreEqual(RSASignaturePadding.Pss, alg.GetRSASignaturePadding());
+            AssertThat.AreEqual(RSASignaturePadding.Pss, alg.GetRSASignaturePadding());
         }
 
         [Test]
         public void WhenSignatureAlgorithmNotRsa_ThenGetHashAlgorithmThrowsException()
         {
-            Assert.Throws<ArgumentException>(
+            AssertThat.Throws<ArgumentException>(
                 () => CoseSignatureAlgorithm.ES256.GetRSASignaturePadding());
         }
 
@@ -154,7 +154,7 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 var data = Encoding.ASCII.GetBytes("some data");
                 var signature = key.SignData(data, hashAlg, alg.GetRSASignaturePadding());
 
-                Assert.IsTrue(alg.VerifySignature(
+                AssertThat.IsTrue(alg.VerifySignature(
                     data,
                     signature,
                     certificate));
@@ -182,7 +182,7 @@ namespace Jpki.Test.Security.Cryptography.Cose
                 var data = Encoding.ASCII.GetBytes("some data");
                 var signature = key.SignData(data, hashAlg, DSASignatureFormat.Rfc3279DerSequence);
 
-                Assert.IsTrue(alg.VerifySignature(
+                AssertThat.IsTrue(alg.VerifySignature(
                     data,
                     signature,
                     certificate));

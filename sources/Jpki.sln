@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Fido", "Jpki.Fido\Jpki
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Fido.Test", "Jpki.Fido.Test\Jpki.Fido.Test.csproj", "{7B2124FB-0D53-4C57-90BC-824942AE4941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jpki", "Jpki\Jpki.csproj", "{83F04876-1B36-4153-9C7E-16AD531744C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Build", "Jpki\Jpki.Build.csproj", "{83F04876-1B36-4153-9C7E-16AD531744C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -30,7 +30,6 @@ ${env:__BUILD_ENV_INITIALIZED} = "1"
 # NB. Search ProgramFiles only since we need VS2022+ for .NET 6.
 #------------------------------------------------------------------------------
 
-
 $MsBuildCandidates = `
     "${Env:ProgramFiles}\Microsoft Visual Studio\*\*\MSBuild\*\bin\msbuild.exe",
     "c:\VS\MSBuild\Current\Bin\"
@@ -97,29 +96,23 @@ if ((Test-Path "*.sln") -and !$args.Contains("clean"))
 		exit $LastExitCode
 	}
 
+	$PackageReferences = ` 
+        Get-ChildItem -Recurse -Include "*.csproj" `
+            | % { [xml](Get-Content $_) | Select-Xml "//PackageReference" | Select-Object -ExpandProperty Node } `
+            | sort -Property Include -Unique
+        
+	#
+	# Add all tools to PATH.
+	#
+    $ToolsDirectories = $PackageReferences | % { "$($env:USERPROFILE)\.nuget\packages\$($_.Include)\$($_.Version)\tools" }
+	$env:Path += ";" + ($ToolsDirectories -join ";")
+
 	#
 	# Add environment variables indicating package versions, for example
 	# $env:Google_Apis_Auth = 1.2.3
 	#
-	Select-Xml .\Jpki\Jpki.csproj -XPath '//PackageReference' `
-		| Select-Object -ExpandProperty Node `
-		| ForEach-Object { New-Item -Name $_.Include.Replace(".", "_") -Value $_.Version -ItemType Variable -Path Env: -Force }
-
-	#
-	# Add all tools to PATH.
-	#
-	
-	$ToolsDirectories = ('.\Jpki\Jpki.csproj' | ForEach-Object { 
-		Select-Xml $_ -XPath '//PackageReference' `
-			| Select-Object -ExpandProperty Node `
-			| ForEach-Object { 
-				Get-ChildItem -Directory -Recurse "$($Env:HOMEDRIVE)$($Env:HOMEPATH)\.nuget\packages\$($_.Include)" `
-					| Where-Object {$_.Name.EndsWith("tools") -or $_.FullName.Contains("tools\net4") } `
-					| Select-Object -ExpandProperty FullName
-			}
-		})
-
-	$env:Path += ";" + ($ToolsDirectories -join ";")
+    $PackageReferences `
+        | ForEach-Object { New-Item -Name $_.Include.Replace(".", "_") -value $_.Version -ItemType Variable -Path Env: -Force }
 }
 
 Write-Host "PATH: ${Env:PATH}" -ForegroundColor Yellow

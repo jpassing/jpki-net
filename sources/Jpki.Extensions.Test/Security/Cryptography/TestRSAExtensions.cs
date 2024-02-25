@@ -65,10 +65,10 @@ namespace Jpki.Test.Security.Cryptography
 
         private static void AssertPublicKeysEqual(RSA expected, RSA actual)
         {
-            Assert.IsTrue(Enumerable.SequenceEqual(
+            AssertThat.IsTrue(Enumerable.SequenceEqual(
                 expected.ExportParameters(false).Modulus!,
                 actual.ExportParameters(false).Modulus!));
-            Assert.IsTrue(Enumerable.SequenceEqual(
+            AssertThat.IsTrue(Enumerable.SequenceEqual(
                 expected.ExportParameters(false).Exponent!,
                 actual.ExportParameters(false).Exponent!));
         }
@@ -101,7 +101,7 @@ namespace Jpki.Test.Security.Cryptography
 
                 using (var reimportedKey = CreateKey())
                 {
-                    Assert.Throws<CryptographicException>(
+                    AssertThat.Throws<CryptographicException>(
                         () => reimportedKey.ImportRSAPublicKey(subjectPublicKeyInfoDer, out var _));
                 }
             }
@@ -135,7 +135,7 @@ namespace Jpki.Test.Security.Cryptography
 
                 using (var reimportedKey = CreateKey())
                 {
-                    Assert.Throws<CryptographicException>(
+                    AssertThat.Throws<CryptographicException>(
                         () => reimportedKey.ImportSubjectPublicKeyInfo(rsaPublicKeyDer, out var _));
                 }
             }
@@ -152,10 +152,10 @@ namespace Jpki.Test.Security.Cryptography
             {
                 importedKey.ImportFromPem(RsaPublicKeyPem, out var format);
 
-                Assert.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
+                AssertThat.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
                 var exported = importedKey.ExportPem(format);
 
-                Assert.AreEqual(
+                AssertThat.AreEqual(
                     PemEnvelope.Parse(RsaPublicKeyPem),
                     PemEnvelope.Parse(exported));
             }
@@ -168,10 +168,10 @@ namespace Jpki.Test.Security.Cryptography
             {
                 importedKey.ImportFromPem(SubjectPublicKeyInfoPem, out var format);
 
-                Assert.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
+                AssertThat.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
                 var exported = importedKey.ExportPem(format);
 
-                Assert.AreEqual(
+                AssertThat.AreEqual(
                     PemEnvelope.Parse(SubjectPublicKeyInfoPem),
                     PemEnvelope.Parse(exported));
             }
@@ -182,7 +182,7 @@ namespace Jpki.Test.Security.Cryptography
         {
             using (var key = CreateKey())
             {
-                Assert.Throws<CryptographicException>(
+                AssertThat.Throws<CryptographicException>(
                     () => key.ImportFromPem(EccSubjectPublicKeyInfoPem, out var format));
             }
         }
@@ -201,7 +201,7 @@ namespace Jpki.Test.Security.Cryptography
                 using (var importedKey = CreateKey())
                 {
                     importedKey.ImportFromPem(pem, out var format);
-                    Assert.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
+                    AssertThat.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, format);
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace Jpki.Test.Security.Cryptography
                 using (var importedKey = CreateKey())
                 {
                     importedKey.ImportFromPem(pem, out var format);
-                    Assert.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
+                    AssertThat.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, format);
                 }
             }
         }

@@ -40,10 +40,10 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Null, item.Tag);
+            AssertThat.AreEqual(DerTag.Null, item.Tag);
             var nextItem = item.ReadNull();
 
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -54,10 +54,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteNull();
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x05, 0x00 },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         //---------------------------------------------------------------------
@@ -71,11 +71,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsFalse(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsFalse(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -86,11 +86,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsTrue(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsTrue(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -100,11 +100,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsTrue(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsTrue(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -114,11 +114,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsTrue(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsTrue(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -128,11 +128,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsTrue(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsTrue(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -142,11 +142,11 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
             var nextItem = item.ReadBoolean(out var decoded);
 
-            Assert.IsTrue(decoded);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsTrue(decoded);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -156,9 +156,9 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Boolean, item.Tag);
+            AssertThat.AreEqual(DerTag.Boolean, item.Tag);
 
-            Assert.Throws<NotImplementedException>(
+            AssertThat.Throws<NotImplementedException>(
                 () => item.ReadBoolean(out var decoded));
         }
 
@@ -170,10 +170,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteBoolean(true);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x01, 0x01, 0xFF },
                 buffer);
-            Assert.AreEqual(3, item.Offset);
+            AssertThat.AreEqual(3, item.Offset);
         }
 
         [Test]
@@ -184,10 +184,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteBoolean(false);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x01, 0x01, 0x00 },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         //---------------------------------------------------------------------
@@ -202,13 +202,13 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Integer, item.Tag);
+            AssertThat.AreEqual(DerTag.Integer, item.Tag);
             var nextItem = item.ReadInteger(out var decoded, out var positive);
 
-            Assert.AreEqual(1, decoded.Length);
-            Assert.AreEqual(value, decoded[0]);
-            Assert.IsTrue(positive);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1, decoded.Length);
+            AssertThat.AreEqual(value, decoded[0]);
+            AssertThat.IsTrue(positive);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -218,13 +218,13 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Integer, item.Tag);
+            AssertThat.AreEqual(DerTag.Integer, item.Tag);
             var nextItem = item.ReadInteger(out var decoded, out var positive);
 
-            Assert.AreEqual(1, decoded.Length);
-            Assert.AreEqual(0x80, decoded[0]);
-            Assert.IsFalse(positive);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1, decoded.Length);
+            AssertThat.AreEqual(0x80, decoded[0]);
+            AssertThat.IsFalse(positive);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -234,13 +234,13 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Integer, item.Tag);
+            AssertThat.AreEqual(DerTag.Integer, item.Tag);
             var nextItem = item.ReadInteger(out var decoded, out var positive);
 
-            Assert.AreEqual(1, decoded.Length);
-            Assert.AreEqual(128, decoded[0]);
-            Assert.IsTrue(positive);
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.AreEqual(1, decoded.Length);
+            AssertThat.AreEqual(128, decoded[0]);
+            AssertThat.IsTrue(positive);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -253,10 +253,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteInteger(integer, false);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x02, 0x01, 0x80 },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         [Test]
@@ -269,10 +269,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteInteger(integer, true);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x02, 0x01, 0x7f },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         [Test]
@@ -285,10 +285,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteInteger(integer, true);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x02, 0x01, 0x7f },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         [Test]
@@ -301,10 +301,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteInteger(integer, true);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x02, 0x02, 0x00, 0x80 },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         //---------------------------------------------------------------------
@@ -318,15 +318,15 @@ namespace Jpki.Test.Format.Ber
 
             var item = new BerDataItem(data);
 
-            Assert.AreEqual(DerTag.Sequence, item.Tag);
+            AssertThat.AreEqual(DerTag.Sequence, item.Tag);
             var nextItem = item.ReadSequenceStart(out var length);
 
-            Assert.AreEqual(4, length);
+            AssertThat.AreEqual(4, length);
 
             nextItem = nextItem.ReadNull();
             nextItem = nextItem.ReadNull();
 
-            Assert.IsFalse(nextItem.CanRead);
+            AssertThat.IsFalse(nextItem.CanRead);
         }
 
         [Test]
@@ -340,10 +340,10 @@ namespace Jpki.Test.Format.Ber
                 .WriteNull()
                 .WriteNull();
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x30, 0x04, 0x05, 0x00, 0x05, 0x00 },
                 buffer);
-            Assert.AreEqual(buffer.Length, item.Offset);
+            AssertThat.AreEqual(buffer.Length, item.Offset);
         }
 
         [Test]
@@ -355,10 +355,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteSequenceStart(128);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x30, 0x82, 0x00, 0x80 },
                 buffer.Take(4).ToArray());
-            Assert.AreEqual(4, item.Offset);
+            AssertThat.AreEqual(4, item.Offset);
         }
 
         [Test]
@@ -370,10 +370,10 @@ namespace Jpki.Test.Format.Ber
             var item = new BerDataItem(buffer)
                 .WriteSequenceStart(65536);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 new byte[] { 0x30, 0x84, 0x00, 0x01, 0x00, 0x00 },
                 buffer.Take(6).ToArray());
-            Assert.AreEqual(6, item.Offset);
+            AssertThat.AreEqual(6, item.Offset);
         }
     }
 }

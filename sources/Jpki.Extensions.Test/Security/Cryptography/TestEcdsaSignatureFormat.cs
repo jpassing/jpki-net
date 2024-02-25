@@ -38,14 +38,14 @@ namespace Jpki.Test.Security.Cryptography
         {
             var signature = new byte[] { 0xAA, 0xBB };
 
-            Assert.AreSame(
+            AssertThat.AreSame(
                 signature,
                 EcdsaSignatureFormat.Convert(
                     signature,
                     DSASignatureFormat.IeeeP1363FixedFieldConcatenation,
                     DSASignatureFormat.IeeeP1363FixedFieldConcatenation,
                     8));
-            Assert.AreSame(
+            AssertThat.AreSame(
                 signature,
                 EcdsaSignatureFormat.Convert(
                     signature,
@@ -68,11 +68,11 @@ namespace Jpki.Test.Security.Cryptography
                 DSASignatureFormat.Rfc3279DerSequence,
                 521);
 
-            Assert.IsNotNull(derSignature);
-            Assert.AreEqual(0x30, derSignature[0]);
-            Assert.AreNotEqual(derSignature, ieeeSignature);
+            AssertThat.IsNotNull(derSignature);
+            AssertThat.AreEqual(0x30, derSignature[0]);
+            AssertThat.AreNotEqual(derSignature, ieeeSignature);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 ieeeSignature,
                 EcdsaSignatureFormat.Convert(
                     derSignature,

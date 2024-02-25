@@ -59,13 +59,13 @@ namespace Jpki.Test.Security.Cryptography
         public void WhenPemContainsCertificate_ThenCreateFromPemSucceeds()
         {
             var certificate = X509Certificate2Extensions.CreateFromPem(CertificatePem);
-            Assert.AreEqual("CN=test", certificate.Subject);
+            AssertThat.AreEqual("CN=test", certificate.Subject);
         }
 
         [Test]
         public void WhenPemDoesNotContainsCertificate_ThenCreateFromPemThrowsException()
         {
-            Assert.Throws<CryptographicException>(
+            AssertThat.Throws<CryptographicException>(
                 () => X509Certificate2Extensions.CreateFromPem(EcdsaSubjectPublicKeyInfoPem));
         }
 
@@ -81,8 +81,8 @@ namespace Jpki.Test.Security.Cryptography
             var reimported = X509Certificate2Extensions.CreateFromPem(
                 original.ExportCertificatePem());
 
-            Assert.AreEqual(original.SerialNumber, reimported.SerialNumber);
-            Assert.AreEqual(original.Thumbprint, reimported.Thumbprint);
+            AssertThat.AreEqual(original.SerialNumber, reimported.SerialNumber);
+            AssertThat.AreEqual(original.Thumbprint, reimported.Thumbprint);
         }
 
         //---------------------------------------------------------------------
@@ -111,10 +111,10 @@ namespace Jpki.Test.Security.Cryptography
             {
                 var certificate = CreateCertificate(key);
 
-                Assert.IsTrue(certificate.TryGetExtension(
+                AssertThat.IsTrue(certificate.TryGetExtension(
                     Oids.BasicConstraints, 
                     out var extension));
-                Assert.IsNotNull(extension);
+                AssertThat.IsNotNull(extension);
             }
         }
 
@@ -125,10 +125,10 @@ namespace Jpki.Test.Security.Cryptography
             {
                 var certificate = CreateCertificate(key);
 
-                Assert.IsFalse(certificate.TryGetExtension(
+                AssertThat.IsFalse(certificate.TryGetExtension(
                     Oids.ECC,
                     out var extension));
-                Assert.IsNull(extension);
+                AssertThat.IsNull(extension);
             }
         }
 #endif
