@@ -23,6 +23,10 @@ using NUnit.Framework;
 
 namespace Jpki.Test
 {
+    /// <summary>
+    /// Indicates that a test might create dialogs that require
+    /// human interaction.
+    /// </summary>
     public class RequiresHumanInteractionAttribute : CategoryAttribute
     {
         public RequiresHumanInteractionAttribute()

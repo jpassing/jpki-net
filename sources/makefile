@@ -47,7 +47,7 @@ NUNIT_COVERAGE_FILTER = \
 	+[Jpki.Extensions]* \
 	+[Jpki.Fido]* \
 
-NUGET_PACKAGEDIR=$(HOMEPATH)\.nuget\packages
+NUGET_PACKAGES=$(HOMEPATH)\.nuget\packages
 IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
     
 #------------------------------------------------------------------------------
@@ -109,8 +109,8 @@ test-net47: $(MAIN_ASSEMBLY)
 		-filter:"$(NUNIT_COVERAGE_FILTER)" \
 		"-excludebyattribute:*CompilerGenerated*" \
 		-output:opencovertests.xml
-
-	ReportGenerator.exe \
+		
+	"$(NUGET_PACKAGES)\ReportGenerator\$(REPORTGENERATOR)\tools\net47\ReportGenerator.exe" \
 		-reports:opencovertests.xml \
 		-targetdir:coveragereport \
 		-reporttypes:HTML
