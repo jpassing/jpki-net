@@ -95,6 +95,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         }
 
         [Test]
+        [RequiresHumanInteraction]
         public void WhenNoPlatformAuthenticatorPresent_ThenCreateCredentialThrowsException()
         {
             if (WindowsHello.IsPlatformAuthenticatorAvailable)
@@ -119,6 +120,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         }
 
         [Test]
+        [RequiresHumanInteraction]
         public async Task WhenCancelled_ThenCreateCredentialThrowsException()
         {
             using (var cts = new CancellationTokenSource())
