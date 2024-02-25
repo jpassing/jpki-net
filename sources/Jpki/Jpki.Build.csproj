@@ -1,4 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The sole purpose of this project is to pull in build tools -->
+  
   <PropertyGroup>
     <RootNamespace>Jpki</RootNamespace>
   </PropertyGroup>
