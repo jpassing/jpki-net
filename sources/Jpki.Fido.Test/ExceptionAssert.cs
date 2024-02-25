@@ -29,7 +29,7 @@ namespace Jpki.Test
     {
         public static TActual? ThrowsAggregateException<TActual>(TestDelegate code) where TActual : Exception
         {
-            return Assert.Throws<TActual>(() =>
+            return AssertThat.Throws<TActual>(() =>
             {
                 try
                 {

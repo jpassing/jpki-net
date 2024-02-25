@@ -82,30 +82,30 @@ namespace Jpki.Test.Format
         [Test]
         public void WhenHeaderMalformed_ThenParseThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => PemEnvelope.Parse(""));
-            Assert.Throws<FormatException>(() => PemEnvelope.Parse("--"));
-            Assert.Throws<FormatException>(() => PemEnvelope.Parse("-----BEGIN PRIVATE KEY-----"));
+            AssertThat.Throws<ArgumentException>(() => PemEnvelope.Parse(""));
+            AssertThat.Throws<FormatException>(() => PemEnvelope.Parse("--"));
+            AssertThat.Throws<FormatException>(() => PemEnvelope.Parse("-----BEGIN PRIVATE KEY-----"));
         }
 
         [Test]
         public void WhenHeaderIndicatesRsaPublicKey_ThenParseSucceeds()
         {
             var pem = PemEnvelope.Parse(RsaPublicKeyPem);
-            Assert.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, pem.Format);
+            AssertThat.AreEqual(PemEnvelope.DataFormat.RsaPublicKey, pem.Format);
         }
 
         [Test]
         public void WhenHeaderIndicatesSubjectPublicKeyInfo_ThenParseSucceeds()
         {
             var pem = PemEnvelope.Parse(EcdsaSubjectPublicKeyInfoPem);
-            Assert.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, pem.Format);
+            AssertThat.AreEqual(PemEnvelope.DataFormat.SubjectPublicKeyInfo, pem.Format);
         }
 
         [Test]
         public void WhenHeaderIndicatesCertificate_ThenParseSucceeds()
         {
             var pem = PemEnvelope.Parse(CertificatePem);
-            Assert.AreEqual(PemEnvelope.DataFormat.Certificate, pem.Format);
+            AssertThat.AreEqual(PemEnvelope.DataFormat.Certificate, pem.Format);
         }
 
         //---------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace Jpki.Test.Format
         {
             var pem = PemEnvelope.Parse(EcdsaSubjectPublicKeyInfoPem);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 "-----BEGIN PUBLIC KEY-----\r\n" +
                 "MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEWgzIKidlfb9gXYdE8ds6nOB+BS3O" +
                 "iRJ1qtmuL5VNyfL6mewC6emEAIwJ0/RmhrPMudwFk2ikpqFSyD3GTJ9aFg==" +
@@ -134,8 +134,8 @@ namespace Jpki.Test.Format
         {
             var pem = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
 
-            Assert.IsFalse(pem.Equals(null));
-            Assert.IsFalse(pem.Equals(string.Empty));
+            AssertThat.IsFalse(pem.Equals(null));
+            AssertThat.IsFalse(pem.Equals(string.Empty));
         }
 
         [Test]
@@ -144,9 +144,9 @@ namespace Jpki.Test.Format
             var rsa = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
             var ecdsa = PemEnvelope.Parse(EcdsaSubjectPublicKeyInfoPem);
 
-            Assert.IsFalse(rsa.Equals(ecdsa));
-            Assert.IsFalse(rsa == ecdsa);
-            Assert.IsTrue(rsa != ecdsa);
+            AssertThat.IsFalse(rsa.Equals(ecdsa));
+            AssertThat.IsFalse(rsa == ecdsa);
+            AssertThat.IsTrue(rsa != ecdsa);
         }
 
         [Test]
@@ -155,9 +155,9 @@ namespace Jpki.Test.Format
             var rsa1 = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
             var rsa2 = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
 
-            Assert.IsTrue(rsa1.Equals(rsa2));
-            Assert.IsTrue(rsa1 == rsa2);
-            Assert.IsFalse(rsa1 != rsa2);
+            AssertThat.IsTrue(rsa1.Equals(rsa2));
+            AssertThat.IsTrue(rsa1 == rsa2);
+            AssertThat.IsFalse(rsa1 != rsa2);
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace Jpki.Test.Format
             var rsa1 = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
             var rsa2 = PemEnvelope.Parse(RsaSubjectPublicKeyInfoPem);
 
-            Assert.AreEqual(rsa1.GetHashCode(), rsa2.GetHashCode());
+            AssertThat.AreEqual(rsa1.GetHashCode(), rsa2.GetHashCode());
         }
     }
 }

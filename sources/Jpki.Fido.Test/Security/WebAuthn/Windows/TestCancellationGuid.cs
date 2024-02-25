@@ -34,7 +34,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cancellationId = new CancellationGuid())
             {
-                Assert.IsTrue(Guid.TryParse(cancellationId.ToString(), out var _));
+                AssertThat.IsTrue(Guid.TryParse(cancellationId.ToString(), out var _));
             }
         }
 

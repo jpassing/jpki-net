@@ -46,10 +46,10 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             using (clientData.ToNative(out var native))
             {
-                Assert.AreEqual(NativeMethods.WEBAUTHN_CLIENT_DATA.BaselineVersion, native.dwVersion);
-                Assert.AreEqual(clientData.Data.Length, native.cbClientDataJSON);
-                Assert.AreNotEqual(IntPtr.Zero, native.pbClientDataJSON);
-                StringAssert.StartsWith("SHA-", native.pwszHashAlgId);
+                AssertThat.AreEqual(NativeMethods.WEBAUTHN_CLIENT_DATA.BaselineVersion, native.dwVersion);
+                AssertThat.AreEqual(clientData.Data.Length, native.cbClientDataJSON);
+                AssertThat.AreNotEqual(IntPtr.Zero, native.pbClientDataJSON);
+                StringAssertThat.StartsWith("SHA-", native.pwszHashAlgId);
             }
         }
 
@@ -68,12 +68,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             using (user.ToNative(out var native))
             {
-                Assert.AreEqual(NativeMethods.WEBAUTHN_USER_ENTITY_INFORMATION.BaselineVersion, native.dwVersion);
-                Assert.AreEqual(3, native.cbId);
-                Assert.AreNotEqual(IntPtr.Zero, native.pbId);
-                Assert.IsNotNull(native.pwszName);
-                Assert.IsNotNull(native.pwszIcon);
-                Assert.IsNotNull(native.pwszDisplayName);
+                AssertThat.AreEqual(NativeMethods.WEBAUTHN_USER_ENTITY_INFORMATION.BaselineVersion, native.dwVersion);
+                AssertThat.AreEqual(3, native.cbId);
+                AssertThat.AreNotEqual(IntPtr.Zero, native.pbId);
+                AssertThat.IsNotNull(native.pwszName);
+                AssertThat.IsNotNull(native.pwszIcon);
+                AssertThat.IsNotNull(native.pwszDisplayName);
             }
         }
 
@@ -84,12 +84,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             using (user.ToNative(out var native))
             {
-                Assert.AreEqual(NativeMethods.WEBAUTHN_USER_ENTITY_INFORMATION.BaselineVersion, native.dwVersion);
-                Assert.AreEqual(3, native.cbId);
-                Assert.AreNotEqual(IntPtr.Zero, native.pbId);
-                Assert.IsNull(native.pwszName);
-                Assert.IsNull(native.pwszIcon);
-                Assert.IsNull(native.pwszDisplayName);
+                AssertThat.AreEqual(NativeMethods.WEBAUTHN_USER_ENTITY_INFORMATION.BaselineVersion, native.dwVersion);
+                AssertThat.AreEqual(3, native.cbId);
+                AssertThat.AreNotEqual(IntPtr.Zero, native.pbId);
+                AssertThat.IsNull(native.pwszName);
+                AssertThat.IsNull(native.pwszIcon);
+                AssertThat.IsNull(native.pwszDisplayName);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             using (credential.ToNative(Transport.Any, out var native))
             {
                 var recovered = NativeConvert.FromNative(native);
-                Assert.AreEqual(credential, recovered);
+                AssertThat.AreEqual(credential, recovered);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             using (credentialList.ToNative(Transport.Any, out var native))
             {
-                Assert.IsNull(native);
+                AssertThat.IsNull(native);
             }
         }
 
@@ -132,7 +132,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             using (credentialList.ToNative(Transport.Any, out var native))
             {
                 var recovered = NativeConvert.FromNative(native);
-                CollectionAssert.AreEquivalent(credentialList, recovered);
+                CollectionAssertThat.AreEquivalent(credentialList, recovered!);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             using (credentialList.ToNative(Transport.Any, out var native))
             {
                 var recovered = NativeConvert.FromNative(native);
-                CollectionAssert.AreEquivalent(credentialList, recovered);
+                CollectionAssertThat.AreEquivalent(credentialList, recovered!);
             }
         }
     }

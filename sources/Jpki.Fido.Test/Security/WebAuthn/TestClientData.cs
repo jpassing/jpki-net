@@ -37,7 +37,7 @@ namespace Jpki.Test.Security.WebAuthn
         [Test]
         public void WhenHashAlgorithmUnknown_ThenConstructorThrowsException()
         {
-            Assert.Throws<ArgumentException>(
+            AssertThat.Throws<ArgumentException>(
                 () => new ClientData(new byte[] { 1, 2, 3 }, (CoseHashAlgorithm)0));
         }
 
@@ -64,7 +64,7 @@ namespace Jpki.Test.Security.WebAuthn
             var clientDataJson = Encoding.UTF8.GetString(Convert.FromBase64String(clientDataBase64));
             var clientData = ClientData.FromJson(clientDataJson);
 
-            CollectionAssert.AreEqual(
+            CollectionAssertThat.AreEqual(
                 Convert.FromBase64String("QULSHADZT/udUEraj5m3IfSxka5ON8oBQPaWtpg8+ss="),
                 clientData.Hash);
         }

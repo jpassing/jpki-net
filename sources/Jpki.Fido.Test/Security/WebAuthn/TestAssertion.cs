@@ -78,11 +78,11 @@ namespace Jpki.Test.Security.WebAuthn
                 Convert.FromBase64String(signature));
 
 
-            Assert.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsNull(assertion.AuthenticatorData.AttestedCredentialData);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsNull(assertion.AuthenticatorData.AttestedCredentialData);
 
-            Assert.IsNotNull(attestation.AuthenticatorData.AttestedCredentialData);
-            Assert.IsTrue(assertion.Verify(attestation.AuthenticatorData.AttestedCredentialData!.Key));
+            AssertThat.IsNotNull(attestation.AuthenticatorData.AttestedCredentialData);
+            AssertThat.IsTrue(assertion.Verify(attestation.AuthenticatorData.AttestedCredentialData!.Key));
         }
 
         [Test]
@@ -132,11 +132,11 @@ namespace Jpki.Test.Security.WebAuthn
                 Convert.FromBase64String(signature));
 
 
-            Assert.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsNull(assertion.AuthenticatorData.AttestedCredentialData);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsNull(assertion.AuthenticatorData.AttestedCredentialData);
 
-            Assert.IsNotNull(attestation.AuthenticatorData.AttestedCredentialData);
-            Assert.IsTrue(assertion.Verify(attestation.AuthenticatorData.AttestedCredentialData!.Key));
+            AssertThat.IsNotNull(attestation.AuthenticatorData.AttestedCredentialData);
+            AssertThat.IsTrue(assertion.Verify(attestation.AuthenticatorData.AttestedCredentialData!.Key));
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace Jpki.Test.Security.WebAuthn
                 null,
                 Transport.Test);
 
-            Assert.Throws<InvalidAttestationException>(() => assertion.Verify(credential));
+            AssertThat.Throws<InvalidAttestationException>(() => assertion.Verify(credential));
         }
     }
 }

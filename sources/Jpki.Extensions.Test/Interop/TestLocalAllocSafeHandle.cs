@@ -31,13 +31,13 @@ namespace Jpki.Test.Interop
         public void WhenFreed_ThenHandleIsInvalid()
         {
             var handle = LocalAllocSafeHandle.LocalAlloc(8);
-            Assert.IsFalse(handle.IsClosed);
-            Assert.IsFalse(handle.IsInvalid);
+            AssertThat.IsFalse(handle.IsClosed);
+            AssertThat.IsFalse(handle.IsInvalid);
 
             handle.Dispose();
 
-            Assert.IsTrue(handle.IsClosed);
-            Assert.IsFalse(handle.IsInvalid);
+            AssertThat.IsTrue(handle.IsClosed);
+            AssertThat.IsFalse(handle.IsInvalid);
         }
     }
 }

@@ -37,10 +37,10 @@ namespace Jpki.Test.Security.WebAuthn
             var c1 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC, 0xDD });
             var c2 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC, 0xDD });
 
-            Assert.IsTrue(c1.Equals(c2));
-            Assert.IsTrue(c1 == c2);
-            Assert.IsFalse(c1 != c2);
-            Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
+            AssertThat.IsTrue(c1.Equals(c2));
+            AssertThat.IsTrue(c1 == c2);
+            AssertThat.IsFalse(c1 != c2);
+            AssertThat.AreEqual(c1.GetHashCode(), c2.GetHashCode());
         }
 
         [Test]
@@ -49,10 +49,10 @@ namespace Jpki.Test.Security.WebAuthn
             var c1 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC });
             var c2 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC, 0xDD });
 
-            Assert.IsFalse(c1.Equals(c2));
-            Assert.IsTrue(c1 != c2);
-            Assert.IsFalse(c1 == c2);
-            Assert.AreNotEqual(c1.GetHashCode(), c2.GetHashCode());
+            AssertThat.IsFalse(c1.Equals(c2));
+            AssertThat.IsTrue(c1 != c2);
+            AssertThat.IsFalse(c1 == c2);
+            AssertThat.AreNotEqual(c1.GetHashCode(), c2.GetHashCode());
         }
     }
 }

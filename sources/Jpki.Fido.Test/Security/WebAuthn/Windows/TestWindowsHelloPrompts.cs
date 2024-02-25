@@ -69,9 +69,9 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.IsNotNull(credential);
-            Assert.IsNull(credential.AttestationStatement);
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsNotNull(credential);
+            AssertThat.IsNull(credential.AttestationStatement);
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
 
             var assertion = await WindowsHello
                 .CreateAssertionAsync(
@@ -86,9 +86,9 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.IsNull(assertion.UserId);
-            Assert.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsFalse(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsFalse(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
 
             assertion.Verify(credential);
         }
@@ -110,15 +110,15 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.IsNotNull(credential);
+            AssertThat.IsNotNull(credential);
             credential.Verify();
 
-            Assert.IsNotNull(credential.AttestationStatement);
-            Assert.IsNotNull(credential.AttestationStatement!.CertificateChain);
-            CollectionAssert.IsNotEmpty(credential.AttestationStatement.CertificateChain);
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.IsNotNull(credential.AttestationStatement!.CertificateChain);
+            CollectionAssertThat.IsNotEmpty(credential.AttestationStatement.CertificateChain!);
 
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
 
             var assertion = await WindowsHello
                 .CreateAssertionAsync(
@@ -133,9 +133,9 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.IsNull(assertion.UserId);
-            Assert.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
-            Assert.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
 
             assertion.Verify(credential);
         }
@@ -156,7 +156,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.IsNotNull(credential);
+            AssertThat.IsNotNull(credential);
 
             var assertion = await WindowsHello
                 .CreateAssertionAsync(
@@ -170,7 +170,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     CancellationToken.None)
                 .ConfigureAwait(true);
 
-            Assert.AreEqual(Data.User.Id, assertion.UserId);
+            AssertThat.AreEqual(Data.User.Id, assertion.UserId);
             assertion.Verify(credential);
         }
     }

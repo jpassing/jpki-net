@@ -37,7 +37,7 @@ namespace Jpki.Security.WebAuthn
             this.Value = value.ExpectNotNull(nameof(value));
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is CredentialId credential &&
                 credential.Value.SequenceEqual(this.Value);

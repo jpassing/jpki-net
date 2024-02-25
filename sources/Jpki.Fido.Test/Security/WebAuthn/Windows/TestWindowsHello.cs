@@ -100,7 +100,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             if (WindowsHello.IsPlatformAuthenticatorAvailable)
             {
-                Assert.Inconclusive("Platform authenticator present");
+                AssertThat.Inconclusive("Platform authenticator present");
                 return;
             }
 

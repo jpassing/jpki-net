@@ -45,10 +45,10 @@ namespace Jpki.Test.Security.WebAuthn
         {
             var authData = new AuthenticatorData(AuthenticatorDataWithoutCredentialData);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 AuthenticatorDataFlags.UserPresent,
                 authData.Flags);
-            Assert.IsNull(authData.AttestedCredentialData);
+            AssertThat.IsNull(authData.AttestedCredentialData);
         }
 
         [Test]
@@ -56,25 +56,25 @@ namespace Jpki.Test.Security.WebAuthn
         {
             var authData = new AuthenticatorData(AuthenticatorData);
 
-            Assert.AreEqual(
+            AssertThat.AreEqual(
                 AuthenticatorDataFlags.UserPresent | AuthenticatorDataFlags.AttestedCredentialDataIncluded,
                 authData.Flags);
-            Assert.AreEqual(0, authData.SignCount);
-            Assert.AreEqual(32, authData.RelyingPartyIdHash.Length);
-            Assert.AreEqual(55, authData.RelyingPartyIdHash[0]);
-            Assert.AreEqual(64, authData.AttestedCredentialData!.CredentialId.Value.Length);
-            Assert.AreEqual(128, authData.AttestedCredentialData.CredentialId.Value[0]);
-            Assert.AreEqual(Guid.Empty, authData.AttestedCredentialData.Aaguid);
+            AssertThat.AreEqual(0, authData.SignCount);
+            AssertThat.AreEqual(32, authData.RelyingPartyIdHash.Length);
+            AssertThat.AreEqual(55, authData.RelyingPartyIdHash[0]);
+            AssertThat.AreEqual(64, authData.AttestedCredentialData!.CredentialId.Value.Length);
+            AssertThat.AreEqual(128, authData.AttestedCredentialData.CredentialId.Value[0]);
+            AssertThat.AreEqual(Guid.Empty, authData.AttestedCredentialData.Aaguid);
 
-            Assert.IsNotNull(authData.AttestedCredentialData.Key);
-            Assert.AreEqual(CoseKeyType.EC2, authData.AttestedCredentialData.Key.KeyType);
-            Assert.AreEqual(CoseSignatureAlgorithm.ES256, authData.AttestedCredentialData.Key.Algorithm);
+            AssertThat.IsNotNull(authData.AttestedCredentialData.Key);
+            AssertThat.AreEqual(CoseKeyType.EC2, authData.AttestedCredentialData.Key.KeyType);
+            AssertThat.AreEqual(CoseSignatureAlgorithm.ES256, authData.AttestedCredentialData.Key.Algorithm);
         }
 
         [Test]
         public void WhenDataTruncated_ThenCtorThrowsException()
         {
-            Assert.Throws<ArgumentException>(
+            AssertThat.Throws<ArgumentException>(
                 () => new AuthenticatorData(new byte[36]));
         }
     }
