@@ -6,10 +6,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit" Version="4.0.1" />
-    <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.7.1" />
-    <PackageReference Include="NUnit.Extension.NUnitV2Driver" Version="3.9.0" />
-    <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter" Version="3.7.0" />
-    <PackageReference Include="NUnit.Extension.TeamCityEventListener" Version="1.0.9" />
     <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" developmentDependency="true" />
     <PackageReference Include="System.Security.Cryptography.Cng" Version="5.0.0" />

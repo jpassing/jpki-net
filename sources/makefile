@@ -47,7 +47,7 @@ NUNIT_COVERAGE_FILTER = \
 	+[Jpki.Extensions]* \
 	+[Jpki.Fido]* \
 
-NUGET_PACKAGES=$(HOMEPATH)\.nuget\packages
+NUGET_PACKAGES=$(USERPROFILE)\.nuget\packages
 IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
     
 #------------------------------------------------------------------------------
@@ -82,7 +82,6 @@ test-net60: $(MAIN_ASSEMBLY)
 		--framework net6.0-windows \
 		--configuration $(CONFIGURATION) \
 		--filter "TestCategory!=RequiresHumanInteraction"
-
 
 test-net70: $(MAIN_ASSEMBLY)
 	@echo "========================================================"
