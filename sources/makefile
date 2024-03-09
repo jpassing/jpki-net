@@ -58,7 +58,7 @@ default: package
 
 $(MAIN_ASSEMBLY):
 	@echo "========================================================"
-	@echo "=== Building solution                                ==="
+	@echo "=== Building solution ($(TARGET_FRAMEWORK))"
 	@echo "========================================================"
 
 	msbuild /t:Rebuild "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM);TargetFramework=$(TARGET_FRAMEWORK);AssemblyVersionNumber=$(BINARY_VERSION);Version=$(BINARY_VERSION)"
@@ -93,14 +93,14 @@ $(MAIN_ASSEMBLY):
 
 restore:
 	@echo "========================================================"
-	@echo "=== Restoring nuget packages                         ==="
+	@echo "=== Restoring nuget packages"
 	@echo "========================================================"
 
 	nuget restore
 
 package:
 	@echo "========================================================"
-	@echo "=== Building solution (all frameworks)               ==="
+	@echo "=== Building solution (all frameworks)"
 	@echo "========================================================"
 
 	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net47 $(MAIN_ASSEMBLY)
@@ -108,7 +108,7 @@ package:
 
 clean:
 	@echo "========================================================"
-	@echo "=== Cleaning solution                                ==="
+	@echo "=== Cleaning solution"
 	@echo "========================================================"
 
 	msbuild /t:Clean "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM)"
