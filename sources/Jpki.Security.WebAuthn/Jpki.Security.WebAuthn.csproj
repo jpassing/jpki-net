@@ -9,6 +9,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Jpki.Extensions\Jpki.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
   </ItemGroup>
 </Project>

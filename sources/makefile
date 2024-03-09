@@ -41,11 +41,11 @@ MAIN_ASSEMBLY = $(ASSEMBLY_DIR)\Jpki.dll
 
 TARGET_FRAMEWORK = net47
 NUNIT_ASSEMBLIES = \
-	Jpki.Extensions.Test\bin\$(PLATFORM_FOLDER)\$(CONFIGURATION)\$(TARGET_FRAMEWORK)\Jpki.Extensions.Test.dll \
-	Jpki.Fido.Test\bin\$(PLATFORM_FOLDER)\$(CONFIGURATION)\$(TARGET_FRAMEWORK)\Jpki.Fido.Test.dll
+	Jpki.Security.Cryptography.Test\bin\$(PLATFORM_FOLDER)\$(CONFIGURATION)\$(TARGET_FRAMEWORK)\Jpki.Security.Cryptography.Test.dll \
+	Jpki.Security.WebAuthn.Test\bin\$(PLATFORM_FOLDER)\$(CONFIGURATION)\$(TARGET_FRAMEWORK)\Jpki.Security.WebAuthn.Test.dll
 NUNIT_COVERAGE_FILTER = \
-	+[Jpki.Extensions]* \
-	+[Jpki.Fido]* \
+	+[Jpki.Security.Cryptography]* \
+	+[Jpki.Security.WebAuthn]* \
 
 NUGET_PACKAGES=$(USERPROFILE)\.nuget\packages
 IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
