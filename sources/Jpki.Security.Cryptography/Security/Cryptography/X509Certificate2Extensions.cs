@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Jpki.Security.Cryptography
 {
-    internal static class X509Certificate2Extensions
+    public static class X509Certificate2Extensions
     {
 
 #if !NET7_0_OR_GREATER
@@ -69,10 +69,10 @@ namespace Jpki.Security.Cryptography
         }
 
 
-            /// <summary>
-            /// Find an extension by OID. Returns null if not found.
-            /// </summary>
-            public static bool TryGetExtension(
+        /// <summary>
+        /// Find an extension by OID. Returns null if not found.
+        /// </summary>
+        public static bool TryGetExtension(
             this X509Certificate2 certificate,
             Oid oid,
             [NotNullWhen(true)] out X509Extension? extension)

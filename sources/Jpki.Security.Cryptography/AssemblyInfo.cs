@@ -23,3 +23,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Jpki.Security.WebAuthn")]
 [assembly: InternalsVisibleTo("Jpki.Security.Cryptography.Test")]
+[assembly: InternalsVisibleTo("Jpki.Powershell")]

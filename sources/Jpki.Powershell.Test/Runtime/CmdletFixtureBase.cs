@@ -26,7 +26,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 
-namespace Jpki.Powershell.Test
+namespace Jpki.Powershell.Test.Runtime
 {
     /// <summary>
     /// Base class for cmdlet test fixtures.

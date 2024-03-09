@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Jpki.Powershell": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "workingDirectory": "-NoExit -Command import-module .\\Jpki.Powershell.dll",
+      "hotReloadEnabled": false
+    }
+  }
+}

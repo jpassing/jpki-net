@@ -19,13 +19,12 @@
 // under the License.
 //
 
-using Jpki.Powershell.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Threading;
 
-namespace Jpki.Powershell
+namespace Jpki.Powershell.Runtime
 {
     /// <summary>
     /// Base class for Cmdlets.
@@ -49,17 +48,6 @@ namespace Jpki.Powershell
             this.cancellationTokenSource?.Cancel();
 
             base.StopProcessing();
-        }
-
-        /// <summary>
-        /// Write a collection of objects, one at a time.
-        /// </summary>
-        protected void WriteCollection<T>(IEnumerable<T> objects)
-        {
-            foreach (var o in objects)
-            {
-                WriteObject(o);
-            }
         }
 
         //---------------------------------------------------------------------

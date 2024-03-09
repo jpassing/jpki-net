@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
 
-namespace PowerIam.Util
+namespace Jpki.Powershell.Runtime
 {
     public static class TaskExtensions
     {
