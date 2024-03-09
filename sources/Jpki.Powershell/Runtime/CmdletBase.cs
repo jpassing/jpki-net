@@ -94,7 +94,6 @@ namespace Jpki.Powershell.Runtime
             }
             catch (AggregateException e)
             {
-                // TODO: Write error?
                 throw e.Unwrap();
             }
         }

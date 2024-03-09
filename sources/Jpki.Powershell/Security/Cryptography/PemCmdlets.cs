@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Security.Cryptography
 {
-    public static class X509Certificate2Cmdlets
+    public static class PemCmdlets
     {
-        public class ConvertFromPem : AsyncCmdletBase<X509Certificate2>
+        [Cmdlet(VerbsData.ConvertFrom, "Pem")]
+        public class ConvertCertificateFromPem : AsyncCmdletBase<X509Certificate2>
         {
             [Parameter(Mandatory = true, ValueFromPipeline = true)]
             public string? Pem { get; set; }
@@ -24,7 +25,8 @@ namespace Jpki.Powershell.Security.Cryptography
             }
         }
 
-        public class ConvertToPem : AsyncCmdletBase<string>
+        [Cmdlet(VerbsData.ConvertTo, "Pem")]
+        public class ConvertCertificateToPem : AsyncCmdletBase<string>
         {
             [Parameter(Mandatory = true, ValueFromPipeline = true)]
             public X509Certificate2? Certificate { get; set; }
