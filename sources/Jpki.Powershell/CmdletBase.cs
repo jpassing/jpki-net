@@ -28,7 +28,7 @@ using System.Threading;
 namespace Jpki.Powershell
 {
     /// <summary>
-    /// Base class for all Cmdlets.
+    /// Base class for Cmdlets.
     /// </summary>
     public abstract class CmdletBase : Cmdlet
     {
@@ -36,10 +36,7 @@ namespace Jpki.Powershell
 
         private CancellationTokenSource GetCancellationTokenSource()
         {
-            if (this.cancellationTokenSource == null)
-            {
-                this.cancellationTokenSource = new CancellationTokenSource();
-            }
+            this.cancellationTokenSource ??= new CancellationTokenSource();
 
             return this.cancellationTokenSource;
         }
@@ -70,7 +67,8 @@ namespace Jpki.Powershell
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// <inheritdoc/>
+        /// Overrides the default BeginProcessing method and calls an
+        /// async counterpart.
         /// </summary>
         protected override sealed void BeginProcessing()
         {
@@ -85,7 +83,8 @@ namespace Jpki.Powershell
         }
 
         /// <summary>
-        /// Overridable in subclasses.
+        /// Overridable in subclasses. When the user cancels a command,
+        /// the cancellation token is set.
         /// </summary>
         protected virtual void BeginProcessing(CancellationToken cancellationToken)
         {
@@ -96,7 +95,8 @@ namespace Jpki.Powershell
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// <inheritdoc/>
+        /// Overrides the default ProcessRecord method and calls an
+        /// async counterpart.
         /// </summary>
         protected override sealed void ProcessRecord()
         {
@@ -112,7 +112,8 @@ namespace Jpki.Powershell
         }
 
         /// <summary>
-        /// Overridable in subclasses.
+        /// Overridable in subclasses. When the user cancels a command,
+        /// the cancellation token is set.
         /// </summary>
         protected virtual void ProcessRecord(CancellationToken cancellationToken)
         {
@@ -123,7 +124,8 @@ namespace Jpki.Powershell
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// <inheritdoc/>
+        /// Overrides the default EndProcessing method and calls an
+        /// async counterpart.
         /// </summary>
         protected override sealed void EndProcessing()
         {
@@ -141,10 +143,25 @@ namespace Jpki.Powershell
         }
 
         /// <summary>
-        /// Overridable in subclasses.
+        /// Overridable in subclasses. When the user cancels a command,
+        /// the cancellation token is set.
         /// </summary>
         protected virtual void EndProcessing(CancellationToken cancellationToken)
         {
+        }
+
+        //---------------------------------------------------------------------
+        // Unit testing.
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Execute cmdlet overrides directly. Intended for testing only.
+        /// </summary>
+        public void Execute(CancellationToken cancellationToken)
+        {
+            BeginProcessing(cancellationToken);
+            ProcessRecord(cancellationToken);
+            EndProcessing(cancellationToken);
         }
     }
 }
