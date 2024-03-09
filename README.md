@@ -1,6 +1,6 @@
 # JPKI.Net
 
-## Jpki.Extensions
+## Jpki.Security.Cryptography
 
 This library contains extension methods that "backport"
 PKI-related methods introduced in .NET 5, 6, or 7 to older runtime versions, including:
@@ -21,17 +21,17 @@ PKI-related methods introduced in .NET 5, 6, or 7 to older runtime versions, inc
 The library 
 [uses the Windows CryptoAPI and CNG native APIs to implement these "missing" methods](https://jpassing.com/2021/12/05/importing-rsa-public-keys-in-downlevel-dotnet-and-dotnet-framework-versions/).
 
-`Jpki.Extensions` has no runtime dependencies and supports the following runtimes:
+`Jpki.Security.Cryptography` has no runtime dependencies and supports the following runtimes:
 * .NET Framework 4.7+
 * .NET 6.0+ (Windows)
 
-## Jpki.Fido
+## Jpki.Security.WebAuthn
 
 This library is a managed wrapper for the (semi-documented) Windows Hello 
 [WebAuthn API](https://github.com/microsoft/webauthn) to create WebAuthn
 assertions and credentials in .NET.
 
-`Jpki.Fido` depends on `Jpki.Extensions` but has no further runtime dependencies.
+`Jpki.Security.WebAuthn` depends on `Jpki.Security.Cryptography` but has no further runtime dependencies.
 It supports the following runtimes:
 * .NET Framework 4.7+
 * .NET 6.0+ (Windows)

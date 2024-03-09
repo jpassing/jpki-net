@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <RootNamespace>Jpki</RootNamespace>
-
-    <PackageId>JPKI.Extensions</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  <Import Project="..\Jpki.props" />
-</Project>

@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Jpki.Security.Cryptography</RootNamespace>
+
+    <PackageId>Jpki.Security.Cryptography</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <Import Project="..\Jpki.props" />
+</Project>

@@ -2,13 +2,13 @@
   <Import Project="..\Jpki.props" />
   <PropertyGroup>
     <UseWindowsForms>True</UseWindowsForms>
-    <RootNamespace>Jpki</RootNamespace>
+    <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
     
-    <PackageId>JPKI.Fido</PackageId>
+    <PackageId>Jpki.Security.WebAuthn</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Jpki.Extensions\Jpki.Extensions.csproj" />
+    <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
   </ItemGroup>
 </Project>
