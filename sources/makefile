@@ -54,52 +54,16 @@ IISEXPRESS=$(PROGRAMFILES)\IIS Express\iisexpress.exe
 # Output targets
 #------------------------------------------------------------------------------
 
-default: test
+default: package
 
 $(MAIN_ASSEMBLY):
 	@echo "========================================================"
 	@echo "=== Building solution                                ==="
 	@echo "========================================================"
 
-	msbuild /t:Rebuild "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM);AssemblyVersionNumber=$(BINARY_VERSION);Version=$(BINARY_VERSION)"
-	
-restore:
-	@echo "========================================================"
-	@echo "=== Restoring nuget packages                         ==="
-	@echo "========================================================"
+	msbuild /t:Rebuild "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM);TargetFramework=$(TARGET_FRAMEWORK);AssemblyVersionNumber=$(BINARY_VERSION);Version=$(BINARY_VERSION)"
 
-	nuget restore
-
-build: $(MAIN_ASSEMBLY)
-
-test-net60: $(MAIN_ASSEMBLY)
-	@echo "========================================================"
-	@echo "=== Testing solution (.NET 6.0)                      ==="
-	@echo "========================================================"
-
-	dotnet test \
-		--no-build \
-		--framework net6.0-windows \
-		--configuration $(CONFIGURATION) \
-		--filter "TestCategory!=RequiresHumanInteraction"
-
-test-net70: $(MAIN_ASSEMBLY)
-	@echo "========================================================"
-	@echo "=== Testing solution (.NET 7.0)                      ==="
-	@echo "========================================================"
-
-	dotnet test \
-		--no-build \
-		--framework net7.0-windows \
-		--configuration $(CONFIGURATION) \
-		--filter "TestCategory!=RequiresHumanInteraction"
-
-# NB. The OpenCover version must match the version of the CLR installed
-test-net47: $(MAIN_ASSEMBLY)
-	@echo "========================================================"
-	@echo "=== Testing solution (.NET FX 4.7, with coverage)    ==="
-	@echo "========================================================"
-
+!if ("$(TARGET_FRAMEWORK)" == "net47")
 	OpenCover.Console.exe \
 		-register:user \
 		-returntargetcode \
@@ -115,11 +79,36 @@ test-net47: $(MAIN_ASSEMBLY)
 		-reporttypes:HTML
 	del $(MAKEDIR)\*.log
 
-test: test-net60 test-net70 test-net47
+!else
+ 	dotnet test \
+ 		--no-build \
+ 		--framework $(TARGET_FRAMEWORK) \
+ 		--configuration $(CONFIGURATION) \
+ 		--filter "TestCategory!=RequiresHumanInteraction"
+!endif
+
+#------------------------------------------------------------------------------
+# Main targets
+#------------------------------------------------------------------------------
+
+restore:
+	@echo "========================================================"
+	@echo "=== Restoring nuget packages                         ==="
+	@echo "========================================================"
+
+	nuget restore
+
+package:
+	@echo "========================================================"
+	@echo "=== Building solution (all frameworks)               ==="
+	@echo "========================================================"
+
+	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net47 $(MAIN_ASSEMBLY)
+	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net6.0-windows $(MAIN_ASSEMBLY)
 
 clean:
 	@echo "========================================================"
-	@echo "=== Building solution                                ==="
+	@echo "=== Cleaning solution                                ==="
 	@echo "========================================================"
 
 	msbuild /t:Clean "/p:Configuration=$(CONFIGURATION);Platform=$(PLATFORM)"
