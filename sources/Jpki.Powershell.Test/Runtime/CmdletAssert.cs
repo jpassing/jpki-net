@@ -19,6 +19,7 @@
 // under the License.
 //
 
+using Jpki.Powershell.Runtime;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,30 +30,93 @@ using System.Management.Automation.Host;
 namespace Jpki.Powershell.Test.Runtime
 {
     /// <summary>
-    /// Base class for cmdlet test fixtures.
+    /// Assertions for cmdlets.
     /// </summary>
-    public abstract class CmdletFixtureBase<TResult>
+    public static class CmdletAssert
     {
-        private CommandRuntime<TResult>? runtime;
-
-        /// <summary>
-        /// Get mock runtime to run Cmdlet with.
-        /// </summary>
-        protected CommandRuntime<TResult> Runtime
+        public static TResult WritesSingleObject<TResult>(CmdletBase cmdlet)
         {
-            get
-            {
-                this.runtime ??= new CommandRuntime<TResult>();
+            var runtime = new CommandRuntime<object>();
+            cmdlet.CommandRuntime = runtime;
 
-                return this.runtime;
+            cmdlet.Execute();
+            if (runtime.Errors.Any())
+            {
+                throw new AssertionException(
+                    $"Cmdlet wrote one or more non-terminating errors");
+            }
+            else if (!runtime.Output.Any())
+            {
+                throw new AssertionException("Cmdlet did write any object");
+            }
+            else if (runtime.Output.Count > 1)
+            {
+                throw new AssertionException("Cmdlet wrote more than one object");
+            }
+
+            var result = runtime.Output.First();
+
+            if (result == null)
+            {
+                throw new AssertionException("Cmdlet wrote null");
+            }
+            else if (result is TResult)
+            {
+                return (TResult)result;
+            }
+            else
+            {
+                throw new AssertionException(
+                    $"Expected cmdlet to wrute object of type {typeof(TResult).Name}, " +
+                    $"but received object of type {result.GetType().Name}");
             }
         }
 
-        [TearDown] 
-        public void TearDown() 
+        public static TException? ThrowsException<TException>(CmdletBase cmdlet)
+            where TException : Exception
         {
-            this.runtime = null;
+            var runtime = new CommandRuntime<object>();
+            cmdlet.CommandRuntime = runtime;
+
+            try
+            {
+                cmdlet.Execute();
+
+                throw new AssertionException(
+                    $"Excpected exception {typeof(TException).Name}, " +
+                    $"but Cmdlet succeeded");
+            }
+            catch (Exception e) when (e.Unwrap() is TException)
+            { 
+                return (TException)e.Unwrap();
+            }
+            catch (Exception e)
+            {
+                throw new AssertionException(
+                    $"Excpected exception {typeof(TException).Name}, " +
+                    $"but caught {e.GetType().Name}", e);
+            }
         }
+
+        public static ErrorRecord WritesError(CmdletBase cmdlet)
+        {
+            var runtime = new CommandRuntime<object>();
+            cmdlet.CommandRuntime = runtime;
+
+            cmdlet.Execute();
+
+            if (!runtime.Errors.Any())
+            {
+                throw new AssertionException(
+                    "Expected cmdlet to write error, but no errors were written");
+            }
+            else
+            {
+                return runtime.Errors.First();
+            }
+        }
+
+
 
         //---------------------------------------------------------------------
         // Inner classes.

@@ -144,11 +144,11 @@ namespace Jpki.Powershell.Runtime
         /// <summary>
         /// Execute cmdlet overrides directly. Intended for testing only.
         /// </summary>
-        public void Execute(CancellationToken cancellationToken)
+        public void Execute()
         {
-            BeginProcessing(cancellationToken);
-            ProcessRecord(cancellationToken);
-            EndProcessing(cancellationToken);
+            BeginProcessing();
+            ProcessRecord();
+            EndProcessing();
         }
     }
 }
