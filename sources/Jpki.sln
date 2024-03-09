@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		makefile = makefile
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Extensions", "Jpki.Extensions\Jpki.Extensions.csproj", "{FFE60311-CCF8-46F9-A69E-D45AD3E12CEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Security.Cryptography", "Jpki.Extensions\Jpki.Security.Cryptography.csproj", "{FFE60311-CCF8-46F9-A69E-D45AD3E12CEB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Extensions.Test", "Jpki.Extensions.Test\Jpki.Extensions.Test.csproj", "{20111F50-A73A-4825-A37A-1F42920C082C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Security.Cryptography.Test", "Jpki.Extensions.Test\Jpki.Security.Cryptography.Test.csproj", "{20111F50-A73A-4825-A37A-1F42920C082C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Fido", "Jpki.Fido\Jpki.Fido.csproj", "{6C641898-5EEB-4177-8E05-8AE0CF248751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Security.WebAuthn", "Jpki.Fido\Jpki.Security.WebAuthn.csproj", "{6C641898-5EEB-4177-8E05-8AE0CF248751}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Fido.Test", "Jpki.Fido.Test\Jpki.Fido.Test.csproj", "{7B2124FB-0D53-4C57-90BC-824942AE4941}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Security.WebAuthn.Test", "Jpki.Fido.Test\Jpki.Security.WebAuthn.Test.csproj", "{7B2124FB-0D53-4C57-90BC-824942AE4941}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Build", "Jpki\Jpki.Build.csproj", "{83F04876-1B36-4153-9C7E-16AD531744C2}"
 EndProject

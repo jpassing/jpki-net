@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Jpki.props" />
   <PropertyGroup>
-    <RootNamespace>Jpki</RootNamespace>
+    <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jpki.Fido\Jpki.Fido.csproj" />
+    <ProjectReference Include="..\Jpki.Fido\Jpki.Security.WebAuthn.csproj" />
   </ItemGroup>
 
   <ItemGroup>

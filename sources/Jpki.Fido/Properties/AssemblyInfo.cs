@@ -21,4 +21,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Jpki.Fido.Test")]
+[assembly: InternalsVisibleTo("Jpki.Security.WebAuthn.Test")]
