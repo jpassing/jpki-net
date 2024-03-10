@@ -65,8 +65,7 @@ namespace Jpki.Powershell.Test.Security.Cryptography
                 Certificate = X509Certificate2Extensions.CreateFromPem(CertificatePem)
             };
 
-            var pem = CmdletAssert.WritesSingleObject<string>(cmdlet);
-
+            CmdletAssert.WritesSingleObject<string>(cmdlet);
         }
     }
 }

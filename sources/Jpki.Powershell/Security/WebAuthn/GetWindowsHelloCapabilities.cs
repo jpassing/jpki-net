@@ -29,19 +29,19 @@ namespace Jpki.Powershell.Security.WebAuthn
 {
     [Cmdlet(VerbsCommon.Get, "WindowsHelloCapabilities")]
     public class GetWindowsHelloCapabilities 
-        : AsyncCmdletBase<GetWindowsHelloCapabilities.ConfigurationDetails>
+        : AsyncCmdletBase<GetWindowsHelloCapabilities.Capabilities>
     {
-        protected override Task<ConfigurationDetails> ProcessRecordAsync(
+        protected override Task<Capabilities> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
-            return Task.FromResult(new ConfigurationDetails()
+            return Task.FromResult(new Capabilities()
             {
                 IsPlatformAuthenticatorAvailable = WindowsHello.IsPlatformAuthenticatorAvailable,
                 ApiVersionNumber = WindowsHello.ApiVersionNumber,
             });
         }
 
-        public class ConfigurationDetails
+        public class Capabilities
         {
             public bool IsPlatformAuthenticatorAvailable { get; internal set; }
             public uint ApiVersionNumber { get; internal set; }
