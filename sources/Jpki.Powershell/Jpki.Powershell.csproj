@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\Jpki.Security.WebAuthn\Jpki.Security.WebAuthn.csproj" />
   </ItemGroup>
 </Project>
