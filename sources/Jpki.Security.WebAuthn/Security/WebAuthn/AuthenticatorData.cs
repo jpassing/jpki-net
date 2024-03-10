@@ -21,7 +21,6 @@
 
 using Jpki.Format;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Jpki.Security.WebAuthn
 {

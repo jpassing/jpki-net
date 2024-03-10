@@ -37,7 +37,7 @@ namespace Jpki.Powershell.Security.Cryptography
         protected override Task<X509Certificate2> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
-            var certificate =  X509Certificate2Extensions
+            var certificate = X509Certificate2Extensions
                 .CreateFromPem(this.Pem.ExpectNotNull(nameof(this.Pem)));
 
             return Task.FromResult(certificate);

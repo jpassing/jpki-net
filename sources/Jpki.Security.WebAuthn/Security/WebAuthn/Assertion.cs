@@ -20,7 +20,6 @@
 //
 
 using Jpki.Security.Cryptography.Cose;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Jpki.Security.WebAuthn

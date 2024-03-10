@@ -66,7 +66,7 @@ namespace Jpki.Powershell.Test.Security.Cryptography
             };
 
             var pem = CmdletAssert.WritesSingleObject<string>(cmdlet);
-            
+
         }
     }
 }

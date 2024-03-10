@@ -19,8 +19,6 @@
 // under the License.
 //
 
-using System;
-
 #if !NET5_0_OR_GREATER
 #pragma warning disable IDE0060 // Remove unused parameter
 namespace System.Diagnostics.CodeAnalysis

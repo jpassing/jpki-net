@@ -21,8 +21,8 @@
 
 using Jpki.Powershell.Runtime;
 using NUnit.Framework;
-using System.Reflection;
 using System;
+using System.Reflection;
 
 namespace Jpki.Powershell.Test.Runtime
 {
