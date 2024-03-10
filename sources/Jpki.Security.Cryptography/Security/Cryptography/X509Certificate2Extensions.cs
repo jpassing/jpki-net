@@ -57,6 +57,12 @@ namespace Jpki.Security.Cryptography
 #if NET6_0_OR_GREATER
             return X509Certificate2.CreateFromPem(certPem);
 #else
+            if (string.IsNullOrEmpty(certPem))
+            {
+                throw new CryptographicException(
+                    "The certificate is empty");
+            }
+
             var envelope = PemEnvelope.Parse(certPem);
             if (envelope.Format != PemEnvelope.DataFormat.Certificate)
             {

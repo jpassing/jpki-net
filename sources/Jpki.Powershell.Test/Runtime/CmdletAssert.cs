@@ -89,7 +89,7 @@ namespace Jpki.Powershell.Test.Runtime
             {
                 throw new AssertionException(
                     $"Excpected exception {typeof(TException).Name}, " +
-                    $"but caught {e.GetType().Name}", e);
+                    $"but caught {e.GetType().Name}: {e.Message}", e);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Jpki.Powershell.Test.Runtime
         // Inner classes.
         //---------------------------------------------------------------------
 
-        public class Runtime : CmdletBase.ITestingRuntime
+        public class Runtime : CmdletBase.ISurrogateRuntime
         {            
             public List<object> Output { get; } = new List<object>();
 

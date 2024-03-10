@@ -139,17 +139,17 @@ namespace Jpki.Powershell.Runtime
         //---------------------------------------------------------------------
         // Unit testing.
         //
-        // Allow using a minimal runtime for executing unit tests.
+        // Allow using a surrogate runtime for executing unit tests.
         //---------------------------------------------------------------------
 
-        private ITestingRuntime? testingRuntime = null;
+        private ISurrogateRuntime? surrogateRuntime = null;
 
         /// <summary>
         /// Execute cmdlet overrides directly. Intended for testing only.
         /// </summary>
-        internal void Execute(ITestingRuntime runtime)
+        internal void Execute(ISurrogateRuntime runtime)
         {
-            this.testingRuntime = runtime;
+            this.surrogateRuntime = runtime;
             try
             {
                 BeginProcessing();
@@ -158,35 +158,59 @@ namespace Jpki.Powershell.Runtime
             }
             finally
             {
-                this.testingRuntime = null;
+                this.surrogateRuntime = null;
             }
         }
 
         public new void WriteObject(object sendToPipeline, bool enumerateCollection)
         {
-            this.testingRuntime?.WriteObject(sendToPipeline, enumerateCollection);
-            base.WriteObject(sendToPipeline, enumerateCollection);
+            if (this.surrogateRuntime != null)
+            {
+                this.surrogateRuntime.WriteObject(sendToPipeline, enumerateCollection);
+            }
+            else
+            {
+                base.WriteObject(sendToPipeline, enumerateCollection);
+            }
         }
 
         public new void WriteObject(object sendToPipeline)
         {
-            this.testingRuntime?.WriteObject(sendToPipeline);
-            base.WriteObject(sendToPipeline);
+            if (this.surrogateRuntime != null)
+            {
+                this.surrogateRuntime.WriteObject(sendToPipeline);
+            }
+            else
+            {
+                base.WriteObject(sendToPipeline);
+            }
         }
 
         public new void WriteWarning(string text)
         {
-            this.testingRuntime?.WriteWarning(text);
-            base.WriteWarning(text);
+            if (this.surrogateRuntime != null)
+            {
+                this.surrogateRuntime.WriteWarning(text);
+            }
+            else
+            {
+                base.WriteWarning(text);
+            }
         }
 
         public new void WriteError(ErrorRecord errorRecord)
         {
-            this.testingRuntime?.WriteError(errorRecord);
-            base.WriteError(errorRecord);
+            if (this.surrogateRuntime != null)
+            {
+                this.surrogateRuntime.WriteError(errorRecord);
+            }
+            else
+            {
+                base.WriteError(errorRecord);
+            }
         }
 
-        internal interface ITestingRuntime
+        internal interface ISurrogateRuntime
         {
             void WriteObject(object sendToPipeline, bool enumerateCollection);
             void WriteObject(object sendToPipeline);

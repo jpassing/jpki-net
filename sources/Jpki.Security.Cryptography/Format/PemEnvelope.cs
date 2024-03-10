@@ -22,6 +22,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Jpki.Security.Cryptography
@@ -86,7 +87,8 @@ namespace Jpki.Security.Cryptography
 
             if (format == null)
             {
-                throw new FormatException("The key is missing a header/footer");
+                throw new CryptographicException(
+                    "The content doesn't contain a valid PEM header and footer");
             }
 
             //

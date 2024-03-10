@@ -22,6 +22,7 @@
 using Jpki.Security.Cryptography;
 using NUnit.Framework;
 using System;
+using System.Security.Cryptography;
 
 namespace Jpki.Test.Format
 {
@@ -83,8 +84,8 @@ namespace Jpki.Test.Format
         public void WhenHeaderMalformed_ThenParseThrowsException()
         {
             AssertThat.Throws<ArgumentException>(() => PemEnvelope.Parse(""));
-            AssertThat.Throws<FormatException>(() => PemEnvelope.Parse("--"));
-            AssertThat.Throws<FormatException>(() => PemEnvelope.Parse("-----BEGIN PRIVATE KEY-----"));
+            AssertThat.Throws<CryptographicException>(() => PemEnvelope.Parse("--"));
+            AssertThat.Throws<CryptographicException>(() => PemEnvelope.Parse("-----BEGIN PRIVATE KEY-----"));
         }
 
         [Test]
