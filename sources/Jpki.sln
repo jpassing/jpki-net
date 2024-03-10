@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Security.WebAuthn.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Build", "Jpki\Jpki.Build.csproj", "{83F04876-1B36-4153-9C7E-16AD531744C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jpki.Powershell", "Jpki.Powershell\Jpki.Powershell.csproj", "{04D7531B-574D-452A-9FA8-A10C20562C99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Powershell", "Jpki.Powershell\Jpki.Powershell.csproj", "{04D7531B-574D-452A-9FA8-A10C20562C99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jpki.Powershell.Test", "Jpki.Powershell.Test\Jpki.Powershell.Test.csproj", "{EF89FDD9-E35B-4B76-A726-9BBB4D3C1B1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.Powershell.Test", "Jpki.Powershell.Test\Jpki.Powershell.Test.csproj", "{EF89FDD9-E35B-4B76-A726-9BBB4D3C1B1E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jpki.NUnit", "Jpki.Nunit\Jpki.NUnit.csproj", "{80B66880-C413-43BF-8668-10BA6D342B4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{EF89FDD9-E35B-4B76-A726-9BBB4D3C1B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF89FDD9-E35B-4B76-A726-9BBB4D3C1B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF89FDD9-E35B-4B76-A726-9BBB4D3C1B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B66880-C413-43BF-8668-10BA6D342B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B66880-C413-43BF-8668-10BA6D342B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B66880-C413-43BF-8668-10BA6D342B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B66880-C413-43BF-8668-10BA6D342B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

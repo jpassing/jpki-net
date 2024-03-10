@@ -11,5 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Powershell\Jpki.Powershell.csproj" />
+    <ProjectReference Include="..\Jpki.Nunit\Jpki.NUnit.csproj" />
   </ItemGroup>
 </Project>

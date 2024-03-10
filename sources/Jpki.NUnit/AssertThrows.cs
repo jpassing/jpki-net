@@ -23,25 +23,10 @@ using NUnit.Framework;
 using System;
 using System.Reflection;
 
-namespace Jpki.Test
+namespace NUnit.Framework
 {
-    internal static class AssertThrows
+    public static class AssertThrows
     {
-        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception
-        {
-            return AssertThat.Throws<TActual>(() =>
-            {
-                try
-                {
-                    code();
-                }
-                catch (AggregateException e)
-                {
-                    throw e.Unwrap();
-                }
-            });
-        }
-
         private static Exception Unwrap(this Exception e)
         {
             if (e is AggregateException aggregate &&
@@ -58,6 +43,21 @@ namespace Jpki.Test
             {
                 return e;
             }
+        }
+
+        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception
+        {
+            return AssertThat.Throws<TActual>(() =>
+            {
+                try
+                {
+                    code();
+                }
+                catch (AggregateException e)
+                {
+                    throw e.Unwrap();
+                }
+            });
         }
     }
 }

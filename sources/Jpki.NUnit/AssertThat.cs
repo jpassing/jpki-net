@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2023 Johannes Passing
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,28 +19,26 @@
 // under the License.
 //
 
-using Jpki.Powershell.Runtime;
-using NUnit.Framework;
-using System;
-using System.Reflection;
+using NUnit.Framework.Legacy;
 
-namespace Jpki.Powershell.Test
+namespace NUnit.Framework
 {
-    internal static class AssertThrows
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    public class AssertThat : ClassicAssert
     {
-        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception
-        {
-            return AssertThat.Throws<TActual>(() =>
-            {
-                try
-                {
-                    code();
-                }
-                catch (AggregateException e)
-                {
-                    throw e.Unwrap();
-                }
-            });
-        }
     }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    public class CollectionAssertThat : CollectionAssert
+    { }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    public class StringAssertThat : StringAssert
+    { }
 }
