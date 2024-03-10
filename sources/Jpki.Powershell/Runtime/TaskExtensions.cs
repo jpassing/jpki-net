@@ -1,5 +1,5 @@
-//
-// Copyright 2023 Johannes Passing
+﻿//
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,8 +19,24 @@
 // under the License.
 //
 
-using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("Jpki.Security.WebAuthn")]
-[assembly: InternalsVisibleTo("Jpki.Security.Cryptography.Test")]
-[assembly: InternalsVisibleTo("Jpki.Powershell")]
+#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+
+namespace Jpki.Powershell.Runtime
+{
+    public static class TaskExtensions
+    {
+        /// <summary>
+        /// Block until a Task is completed and return its result.
+        /// </summary>
+        public static T GetResult<T>(
+            this Task<T> task,
+            CancellationToken cancellationToken)
+        {
+            task.Wait(cancellationToken);
+            return task.Result;
+        }
+    }
+}

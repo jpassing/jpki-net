@@ -1,5 +1,5 @@
 //
-// Copyright 2023 Johannes Passing
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -21,6 +21,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Jpki.Security.WebAuthn")]
-[assembly: InternalsVisibleTo("Jpki.Security.Cryptography.Test")]
-[assembly: InternalsVisibleTo("Jpki.Powershell")]
+[assembly: InternalsVisibleTo("Jpki.Powershell.Test")]

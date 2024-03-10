@@ -56,6 +56,22 @@ namespace Jpki.Test.Security.Cryptography
         //---------------------------------------------------------------------
 
         [Test]
+        public void WhenPemNullOrEmpty_ThenCreateFromPemThrowsExxeption(
+            [Values(null, "", " ")] string pem)
+        {
+            Assert.Throws<CryptographicException>(
+                () => X509Certificate2Extensions.CreateFromPem(pem));
+        }
+
+        [Test]
+        public void WhenPemMalformed_ThenCreateFromPemThrowsExxeption(
+            [Values(1, 10, 100)] int limit)
+        {
+            Assert.Throws<CryptographicException>(
+                () => X509Certificate2Extensions.CreateFromPem(CertificatePem.Substring(0, limit)));
+        }
+
+        [Test]
         public void WhenPemContainsCertificate_ThenCreateFromPemSucceeds()
         {
             var certificate = X509Certificate2Extensions.CreateFromPem(CertificatePem);

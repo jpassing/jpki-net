@@ -1,5 +1,5 @@
-//
-// Copyright 2023 Johannes Passing
+﻿//
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,8 +19,26 @@
 // under the License.
 //
 
-using System.Runtime.CompilerServices;
+using NUnit.Framework.Legacy;
 
-[assembly: InternalsVisibleTo("Jpki.Security.WebAuthn")]
-[assembly: InternalsVisibleTo("Jpki.Security.Cryptography.Test")]
-[assembly: InternalsVisibleTo("Jpki.Powershell")]
+namespace NUnit.Framework
+{
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class AssertThat : ClassicAssert
+    {
+    }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class CollectionAssertThat : CollectionAssert
+    { }
+
+    /// <summary>
+    /// Alias for NUnit 3-style assertion.
+    /// </summary>
+    internal class StringAssertThat : StringAssert
+    { }
+}

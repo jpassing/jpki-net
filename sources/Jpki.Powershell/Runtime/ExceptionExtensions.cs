@@ -1,5 +1,5 @@
-//
-// Copyright 2023 Johannes Passing
+﻿//
+// Copyright 2024 Johannes Passing
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,8 +19,29 @@
 // under the License.
 //
 
-using System.Runtime.CompilerServices;
+using System;
+using System.Reflection;
 
-[assembly: InternalsVisibleTo("Jpki.Security.WebAuthn")]
-[assembly: InternalsVisibleTo("Jpki.Security.Cryptography.Test")]
-[assembly: InternalsVisibleTo("Jpki.Powershell")]
+namespace Jpki.Powershell.Runtime
+{
+    internal static class ExceptionExtensions
+    {
+        public static Exception Unwrap(this Exception e)
+        {
+            if (e is AggregateException aggregate &&
+                aggregate.InnerException != null)
+            {
+                return aggregate.InnerException.Unwrap();
+            }
+            else if (e is TargetInvocationException target &&
+                target.InnerException != null)
+            {
+                return target.InnerException.Unwrap();
+            }
+            else
+            {
+                return e;
+            }
+        }
+    }
+}

@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Jpki.Security.Cryptography
 {
-    internal static class X509Certificate2Extensions
+    public static class X509Certificate2Extensions
     {
 
 #if !NET7_0_OR_GREATER
@@ -57,6 +57,12 @@ namespace Jpki.Security.Cryptography
 #if NET6_0_OR_GREATER
             return X509Certificate2.CreateFromPem(certPem);
 #else
+            if (string.IsNullOrEmpty(certPem))
+            {
+                throw new CryptographicException(
+                    "The certificate is empty");
+            }
+
             var envelope = PemEnvelope.Parse(certPem);
             if (envelope.Format != PemEnvelope.DataFormat.Certificate)
             {
@@ -69,10 +75,10 @@ namespace Jpki.Security.Cryptography
         }
 
 
-            /// <summary>
-            /// Find an extension by OID. Returns null if not found.
-            /// </summary>
-            public static bool TryGetExtension(
+        /// <summary>
+        /// Find an extension by OID. Returns null if not found.
+        /// </summary>
+        public static bool TryGetExtension(
             this X509Certificate2 certificate,
             Oid oid,
             [NotNullWhen(true)] out X509Extension? extension)
