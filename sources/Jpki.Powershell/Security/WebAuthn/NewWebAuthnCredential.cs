@@ -16,6 +16,8 @@ namespace Jpki.Powershell.Security.WebAuthn
         private const string SimpleParameterSet = null;
         private const string DetailedParameterSet = null;
 
+        // TODO: inject IAuthenticator
+
         //---------------------------------------------------------------------
         // Detailed parameter set.
         //---------------------------------------------------------------------

@@ -57,6 +57,16 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         }
 
         //---------------------------------------------------------------------
+        // ApiVersionNumber.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void ApiVersionNumber()
+        {
+            AssertThat.AreNotEqual(0, WindowsHello.ApiVersionNumber);
+        }
+
+        //---------------------------------------------------------------------
         // CreateCredential.
         //---------------------------------------------------------------------
 

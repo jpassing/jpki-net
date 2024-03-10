@@ -94,7 +94,7 @@ namespace Jpki.Powershell.Runtime
             catch (AggregateException e)
             {
                 var unwrapped = e.Unwrap();
-                if (!(e is OperationCanceledException))
+                if (!(unwrapped is OperationCanceledException))
                 {
                     throw e.Unwrap();
                 }
