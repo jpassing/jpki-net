@@ -12,6 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
-    <ProjectReference Include="..\Jpki.Testing\Jpki.Testing.csproj" />
+    <ProjectReference Include="..\Jpki.Nunit\Jpki.NUnit.csproj" />
   </ItemGroup>
 </Project>

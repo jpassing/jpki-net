@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Security.WebAuthn\Jpki.Security.WebAuthn.csproj" />
-    <ProjectReference Include="..\Jpki.Testing\Jpki.Testing.csproj" />
+    <ProjectReference Include="..\Jpki.Nunit\Jpki.NUnit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
