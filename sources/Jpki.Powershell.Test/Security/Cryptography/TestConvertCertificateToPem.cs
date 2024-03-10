@@ -1,5 +1,6 @@
 ﻿using Jpki.Powershell.Security.Cryptography;
 using Jpki.Powershell.Test.Runtime;
+using Jpki.Security.Cryptography;
 using NUnit.Framework;
 using System;
 
@@ -31,7 +32,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace Jpki.Powershell.Test.Security.Cryptography
 {
     [TestFixture]
-    public class TestConvertCertificateFromPem
+    public class TestConvertCertificateToPem
     {
         private const string CertificatePem =
             @"-----BEGIN CERTIFICATE-----
@@ -49,37 +50,27 @@ namespace Jpki.Powershell.Test.Security.Cryptography
             -----END CERTIFICATE-----";
 
         [Test]
-        public void WhenPemIsNull_CmdletThrowsException()
+        public void WhenCertificateIsNull_CmdletThrowsException(
+            [Values("", "----", "-----BEGIN RSA PUBLIC KEY-----\n")] string pem)
         {
-            var cmdlet = new ConvertCertificateFromPem()
+            var cmdlet = new ConvertCertificateToPem()
             {
-                Pem = null
+                Certificate = null
             };
 
             CmdletAssert.ThrowsException<ArgumentNullException>(cmdlet);
         }
 
         [Test]
-        public void WhenPemIsEmptyOrMalformed_CmdletThrowsException(
-            [Values("", "----", "-----BEGIN RSA PUBLIC KEY-----\n")] string pem)
-        {
-            var cmdlet = new ConvertCertificateFromPem()
-            {
-                Pem = pem
-            };
-
-            CmdletAssert.ThrowsException<CryptographicException>(cmdlet);
-        }
-
-        [Test]
         public void WhenPemValid_CmdletReturnsCertificate()
         {
-            var cmdlet = new ConvertCertificateFromPem()
+            var cmdlet = new ConvertCertificateToPem()
             {
-                Pem = CertificatePem
+                Certificate = X509Certificate2Extensions.CreateFromPem(CertificatePem)
             };
 
-            CmdletAssert.WritesSingleObject<X509Certificate2>(cmdlet);
+            var pem = CmdletAssert.WritesSingleObject<string>(cmdlet);
+            
         }
     }
 }

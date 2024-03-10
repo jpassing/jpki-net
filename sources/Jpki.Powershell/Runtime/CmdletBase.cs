@@ -20,7 +20,6 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Management.Automation;
 using System.Threading;
 
@@ -139,16 +138,60 @@ namespace Jpki.Powershell.Runtime
 
         //---------------------------------------------------------------------
         // Unit testing.
+        //
+        // Allow using a minimal runtime for executing unit tests.
         //---------------------------------------------------------------------
+
+        private ITestingRuntime? testingRuntime = null;
 
         /// <summary>
         /// Execute cmdlet overrides directly. Intended for testing only.
         /// </summary>
-        public void Execute()
+        internal void Execute(ITestingRuntime runtime)
         {
-            BeginProcessing();
-            ProcessRecord();
-            EndProcessing();
+            this.testingRuntime = runtime;
+            try
+            {
+                BeginProcessing();
+                ProcessRecord();
+                EndProcessing();
+            }
+            finally
+            {
+                this.testingRuntime = null;
+            }
+        }
+
+        public new void WriteObject(object sendToPipeline, bool enumerateCollection)
+        {
+            this.testingRuntime?.WriteObject(sendToPipeline, enumerateCollection);
+            base.WriteObject(sendToPipeline, enumerateCollection);
+        }
+
+        public new void WriteObject(object sendToPipeline)
+        {
+            this.testingRuntime?.WriteObject(sendToPipeline);
+            base.WriteObject(sendToPipeline);
+        }
+
+        public new void WriteWarning(string text)
+        {
+            this.testingRuntime?.WriteWarning(text);
+            base.WriteWarning(text);
+        }
+
+        public new void WriteError(ErrorRecord errorRecord)
+        {
+            this.testingRuntime?.WriteError(errorRecord);
+            base.WriteError(errorRecord);
+        }
+
+        internal interface ITestingRuntime
+        {
+            void WriteObject(object sendToPipeline, bool enumerateCollection);
+            void WriteObject(object sendToPipeline);
+            void WriteWarning(string text);
+            void WriteError(ErrorRecord errorRecord);
         }
     }
 }

@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Host;
 
 namespace Jpki.Powershell.Test.Runtime
 {
@@ -36,10 +35,8 @@ namespace Jpki.Powershell.Test.Runtime
     {
         public static TResult WritesSingleObject<TResult>(CmdletBase cmdlet)
         {
-            var runtime = new CommandRuntime<object>();
-            cmdlet.CommandRuntime = runtime;
-
-            cmdlet.Execute();
+            var runtime = new Runtime();
+            cmdlet.Execute(runtime);
             if (runtime.Errors.Any())
             {
                 throw new AssertionException(
@@ -75,12 +72,10 @@ namespace Jpki.Powershell.Test.Runtime
         public static TException? ThrowsException<TException>(CmdletBase cmdlet)
             where TException : Exception
         {
-            var runtime = new CommandRuntime<object>();
-            cmdlet.CommandRuntime = runtime;
-
             try
             {
-                cmdlet.Execute();
+                var runtime = new Runtime();
+                cmdlet.Execute(runtime);
 
                 throw new AssertionException(
                     $"Excpected exception {typeof(TException).Name}, " +
@@ -100,10 +95,8 @@ namespace Jpki.Powershell.Test.Runtime
 
         public static ErrorRecord WritesError(CmdletBase cmdlet)
         {
-            var runtime = new CommandRuntime<object>();
-            cmdlet.CommandRuntime = runtime;
-
-            cmdlet.Execute();
+            var runtime = new Runtime();
+            cmdlet.Execute(runtime);
 
             if (!runtime.Errors.Any())
             {
@@ -116,105 +109,17 @@ namespace Jpki.Powershell.Test.Runtime
             }
         }
 
-
-
         //---------------------------------------------------------------------
         // Inner classes.
         //---------------------------------------------------------------------
 
-        /// <summary>
-        /// Mock runtime, inspired by
-        /// https://github.com/atheken/nuget/blob/master/test/PowerShellCmdlets.Test/MockCommandRuntime.cs
-        /// </summary>
-        /// <typeparam name="T">Cmdlet output type</typeparam>
-        public class CommandRuntime<T> : ICommandRuntime2
-        {
-            private readonly List<object> output = new List<object>();
-
-            public List<T> Output
-            {
-                get => this.output.Cast<T>().ToList();
-            }
+        public class Runtime : CmdletBase.ITestingRuntime
+        {            
+            public List<object> Output { get; } = new List<object>();
 
             public List<ErrorRecord> Errors { get; } = new List<ErrorRecord>();
 
             public List<string> Warnings { get; } = new List<string>();
-
-            //-----------------------------------------------------------------
-            // ICommandRuntime2.
-            //-----------------------------------------------------------------
-
-            public PSHost Host => throw new NotImplementedException();
-
-            public PSTransactionContext CurrentPSTransaction => throw new NotImplementedException();
-
-            public bool ShouldContinue(string query, string caption, bool hasSecurityImpact, ref bool yesToAll, ref bool noToAll)
-            {
-                return true;
-            }
-
-            public bool ShouldContinue(string query, string caption, ref bool yesToAll, ref bool noToAll)
-            {
-                return true;
-            }
-
-            public bool ShouldContinue(string query, string caption)
-            {
-                return true;
-            }
-
-            public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption, out ShouldProcessReason shouldProcessReason)
-            {
-                shouldProcessReason = ShouldProcessReason.None;
-                return true;
-            }
-
-            public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption)
-            {
-                return true;
-            }
-
-            public bool ShouldProcess(string target, string action)
-            {
-                return true;
-            }
-
-            public bool ShouldProcess(string target)
-            {
-                return true;
-            }
-
-            public void ThrowTerminatingError(ErrorRecord errorRecord)
-            {
-                if (errorRecord.Exception != null)
-                {
-                    throw errorRecord.Exception;
-                }
-
-                throw new InvalidOperationException(errorRecord.ToString());
-            }
-
-            public bool TransactionAvailable()
-            {
-                return false;
-            }
-
-            public void WriteCommandDetail(string text)
-            {
-            }
-
-            public void WriteDebug(string text)
-            {
-            }
-
-            public void WriteError(ErrorRecord errorRecord)
-            {
-                this.Errors.Add(errorRecord);
-            }
-
-            public void WriteInformation(InformationRecord informationRecord)
-            {
-            }
 
             public void WriteObject(object sendToPipeline, bool enumerateCollection)
             {
@@ -241,19 +146,12 @@ namespace Jpki.Powershell.Test.Runtime
 
             public void WriteObject(object sendToPipeline)
             {
-                this.output.Add(sendToPipeline);
+                this.Output.Add(sendToPipeline);
             }
 
-            public void WriteProgress(long sourceId, ProgressRecord progressRecord)
+            public void WriteError(ErrorRecord errorRecord)
             {
-            }
-
-            public void WriteProgress(ProgressRecord progressRecord)
-            {
-            }
-
-            public void WriteVerbose(string text)
-            {
+                this.Errors.Add(errorRecord);
             }
 
             public void WriteWarning(string text)
