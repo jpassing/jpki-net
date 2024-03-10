@@ -1,4 +1,25 @@
-﻿using Jpki.Powershell.Runtime;
+﻿//
+// Copyright 2024 Johannes Passing
+//
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+// 
+//   http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+
+using Jpki.Powershell.Runtime;
 using Jpki.Security.Cryptography.Cose;
 using Jpki.Security.WebAuthn;
 using Jpki.Security.WebAuthn.Windows;
@@ -10,13 +31,11 @@ using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Security.WebAuthn
 {
-    [Cmdlet(VerbsCommon.New, "WebAuthnCredential")]
-    public class NewWebAuthnCredential : AsyncCmdletBase<Credential>
+    [Cmdlet(VerbsCommon.New, "WindowsHelloWebAuthnCredential")]
+    public class NewWindowsHelloWebAuthnCredential : AsyncCmdletBase<Credential>
     {
         private const string SimpleParameterSet = null;
         private const string DetailedParameterSet = null;
-
-        // TODO: inject IAuthenticator
 
         //---------------------------------------------------------------------
         // Detailed parameter set.
@@ -50,11 +69,40 @@ namespace Jpki.Powershell.Security.WebAuthn
 
         [Parameter(Mandatory = false, ParameterSetName = nameof(SimpleParameterSet))]
         [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
-        public WindowsHello.AttestationOptions? AttestationOptions { get; set; }
+        public CoseSignatureAlgorithm SignatureAlgorithm { get; set; }
+            = CoseSignatureAlgorithm.ES256;
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(SimpleParameterSet))]
+        [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
+        public AuthenticatorAttachment Authenticator { get; set; }
+            = AuthenticatorAttachment.CrossPlatform;
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(SimpleParameterSet))]
+        [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
+        public UserVerificationRequirement UserVerification { get; set; }
+            = UserVerificationRequirement.Preferred;
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(SimpleParameterSet))]
+        [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
+        public AttestationConveyance Attestation { get; set; }
+            = AttestationConveyance.None;
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(SimpleParameterSet))]
+        [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
+        public ResidentKeyRequirement ResidentKey { get; set; }
 
         protected override Task<Credential> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
+            var options = new WindowsHello.AttestationOptions()
+            {
+                SignatureAlgorithms = new[] { this.SignatureAlgorithm },
+                Authenticator = this.Authenticator,
+                UserVerification = this.UserVerification,
+                Attestation = this.Attestation,
+                ResidentKey = this.ResidentKey,
+            };
+
             if (this.RelyingParty != null &&
                 this.User != null &&
                 this.ClientData != null)
@@ -67,7 +115,7 @@ namespace Jpki.Powershell.Security.WebAuthn
                     this.RelyingParty,
                     this.User,
                     this.ClientData,
-                    this.AttestationOptions ?? new WindowsHello.AttestationOptions(),
+                    options,
                     cancellationToken);
             }
             else if (this.RelyingPartyId != null &&
@@ -82,7 +130,7 @@ namespace Jpki.Powershell.Security.WebAuthn
                     new RelyingParty(this.RelyingPartyId, this.RelyingPartyId, null),
                     new User(Encoding.UTF8.GetBytes(this.UserId), this.UserId, null, null),
                     new ClientData(Encoding.UTF8.GetBytes(this.ClientDataJson), CoseHashAlgorithm.SHA_256),
-                    this.AttestationOptions ?? new WindowsHello.AttestationOptions(),
+                    options,
                     cancellationToken);
             }
             else
