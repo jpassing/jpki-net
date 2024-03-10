@@ -19,7 +19,6 @@
 // under the License.
 //
 
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Jpki.Security.WebAuthn

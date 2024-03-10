@@ -20,7 +20,6 @@
 //
 
 using Jpki.Interop;
-using Microsoft.SqlServer.Server;
 using System;
 using System.ComponentModel;
 using System.Security.Cryptography;

@@ -21,9 +21,8 @@
 
 using Jpki.Format.Cbor;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Jpki.Security.WebAuthn // Rename namespace to FidoAuth
+namespace Jpki.Security.WebAuthn
 {
     /// <summary>
     /// Attestation, represents a successful registration of an

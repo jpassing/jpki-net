@@ -128,7 +128,7 @@ namespace Jpki.Test.Security.Cryptography
                 var certificate = CreateCertificate(key);
 
                 AssertThat.IsTrue(certificate.TryGetExtension(
-                    Oids.BasicConstraints, 
+                    Oids.BasicConstraints,
                     out var extension));
                 AssertThat.IsNotNull(extension);
             }

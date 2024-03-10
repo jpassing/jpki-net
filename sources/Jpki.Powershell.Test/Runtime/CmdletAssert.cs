@@ -82,7 +82,7 @@ namespace Jpki.Powershell.Test.Runtime
                     $"but Cmdlet succeeded");
             }
             catch (Exception e) when (e.Unwrap() is TException)
-            { 
+            {
                 return (TException)e.Unwrap();
             }
             catch (Exception e)
@@ -114,7 +114,7 @@ namespace Jpki.Powershell.Test.Runtime
         //---------------------------------------------------------------------
 
         public class Runtime : CmdletBase.ISurrogateRuntime
-        {            
+        {
             public List<object> Output { get; } = new List<object>();
 
             public List<ErrorRecord> Errors { get; } = new List<ErrorRecord>();

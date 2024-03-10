@@ -19,13 +19,10 @@
 // under the License.
 //
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Jpki.Security.Cryptography
 {

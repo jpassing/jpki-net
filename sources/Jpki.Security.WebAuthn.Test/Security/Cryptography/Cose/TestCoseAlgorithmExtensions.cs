@@ -19,7 +19,6 @@
 // under the License.
 //
 
-using Jpki.Security.Cryptography;
 using Jpki.Security.Cryptography.Cose;
 using NUnit.Framework;
 using System;

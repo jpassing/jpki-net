@@ -28,6 +28,10 @@ namespace Jpki.Powershell.Runtime
 {
     public abstract class AsyncCmdletBase<TResult> : CmdletBase
     {
+        protected AsyncCmdletBase()
+        {
+        }
+
         //---------------------------------------------------------------------
         // Begin processing.
         //---------------------------------------------------------------------

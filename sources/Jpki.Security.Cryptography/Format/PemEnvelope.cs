@@ -74,7 +74,7 @@ namespace Jpki.Security.Cryptography
             //
             // Inspect header to determine format.
             //
-            
+
             DataFormat? format = null;
             foreach (var formatCandidate in Enum.GetValues(typeof(DataFormat)))
             {

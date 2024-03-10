@@ -23,7 +23,6 @@ using Jpki.Interop;
 using Jpki.Security.Cryptography.Cose;
 using Microsoft.Win32.SafeHandles;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Jpki.Security.WebAuthn.Windows

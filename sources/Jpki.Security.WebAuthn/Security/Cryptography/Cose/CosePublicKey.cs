@@ -20,10 +20,8 @@
 //
 
 using Jpki.Format.Cbor;
-using Jpki.Security.Cryptography;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace Jpki.Security.Cryptography.Cose
