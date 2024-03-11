@@ -4,6 +4,12 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Security\WebAuthn\NewBrowserWebAuthnCredential.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Security\WebAuthn\NewBrowserWebAuthnCredential.html" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
