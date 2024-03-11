@@ -6,7 +6,6 @@
     <PackageId>Jpki.Security.WebAuthn</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
   </ItemGroup>

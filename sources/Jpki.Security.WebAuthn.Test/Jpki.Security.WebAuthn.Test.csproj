@@ -4,7 +4,7 @@
     <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.EndsWith(`-windows`))">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.EndsWith('-windows'))">
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
@@ -22,7 +22,7 @@
     <ProjectReference Include="..\Jpki.Nunit\Jpki.NUnit.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.EndsWith('-windows'))">
     <Reference Include="System.Windows.Forms">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Windows.Forms.dll</HintPath>
     </Reference>
