@@ -2,6 +2,9 @@
   <Import Project="..\Jpki.props" />
   <PropertyGroup>
     <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.EndsWith(`-windows`))">
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 

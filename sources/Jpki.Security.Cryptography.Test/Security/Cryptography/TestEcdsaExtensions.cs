@@ -144,6 +144,23 @@ namespace Jpki.Test.Security.Cryptography
                     format));
             }
         }
+        private static ECDsa CreateKey()
+        {
+#if WINDOWS
+            return new ECDsaCng();
+#else
+            return ECDsa.Create();
+#endif
+        }
+
+        private static ECDsa CreateKey(int keySize)
+        {
+#if WINDOWS
+            return  new ECDsaCng(keySize);
+#else
+            return ECDsa.Create();
+#endif
+        }
 
         //---------------------------------------------------------------------
         // Ex/ImportSubjectPublicKeyInfo.
@@ -153,11 +170,11 @@ namespace Jpki.Test.Security.Cryptography
         public void WhenKeyValid_ThenExportSubjectPublicKeyInfoReturnsDerBlob(
             [Values(256, 384, 521)] int keySize)
         {
-            using (var originalKey = new ECDsaCng(keySize))
+            using (var originalKey = CreateKey(keySize))
             {
                 var subjectPublicKeyInfoDer = originalKey.ExportSubjectPublicKeyInfo();
 
-                using (var reimportedKey = new ECDsaCng())
+                using (var reimportedKey = CreateKey())
                 {
                     reimportedKey.ImportSubjectPublicKeyInfo(subjectPublicKeyInfoDer, out var _);
                     AssertPublicKeysEqual(originalKey, reimportedKey);
@@ -173,7 +190,7 @@ namespace Jpki.Test.Security.Cryptography
         public void WhenPemContainsSubjectPublicKeyInfo_ThenImportFromPemSucceeds(
             [Values(256, 384, 521)] int keySize)
         {
-            using (var importedKey = new ECDsaCng(keySize))
+            using (var importedKey = CreateKey(keySize))
             {
                 importedKey.ImportFromPem(SubjectPublicKeyInfoPem);
 
@@ -188,7 +205,7 @@ namespace Jpki.Test.Security.Cryptography
         [Test]
         public void WhenPemContainsRsaPublicKey_ThenImportFromPemThrowsException()
         {
-            using (var importedKey = new ECDsaCng())
+            using (var importedKey = CreateKey())
             {
                 AssertThat.Throws<CryptographicException>(
                     () => importedKey.ImportFromPem(RsaSubjectPublicKeyInfoPem));
@@ -202,11 +219,11 @@ namespace Jpki.Test.Security.Cryptography
         [Test]
         public void ExportSubjectPublicKeyInfoPem()
         {
-            using (var originalKey = new ECDsaCng())
+            using (var originalKey = CreateKey())
             {
                 var pem = originalKey.ExportSubjectPublicKeyInfoPem();
 
-                using (var importedKey = new ECDsaCng())
+                using (var importedKey = CreateKey())
                 {
                     importedKey.ImportFromPem(pem);
                 }
