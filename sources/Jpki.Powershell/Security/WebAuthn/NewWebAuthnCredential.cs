@@ -22,7 +22,6 @@
 using Jpki.Powershell.Runtime;
 using Jpki.Security.Cryptography.Cose;
 using Jpki.Security.WebAuthn;
-using Jpki.Security.WebAuthn.Windows;
 using System;
 using System.Management.Automation;
 using System.Text;
@@ -32,10 +31,10 @@ using System.Threading.Tasks;
 namespace Jpki.Powershell.Security.WebAuthn
 {
     /// <summary>
-    /// Create a new WebAuthn credential using Windows Hello.
+    /// Create a new WebAuthn credential.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "WindowsHelloWebAuthnCredential")]
-    public class NewWindowsHelloWebAuthnCredential : AsyncCmdletBase<Credential>
+    [Cmdlet(VerbsCommon.New, "WebAuthnCredential")]
+    public class NewWebAuthnCredential : AsyncCmdletBase<Credential>
     {
         private const string SimpleParameterSet = null;
         private const string DetailedParameterSet = null;

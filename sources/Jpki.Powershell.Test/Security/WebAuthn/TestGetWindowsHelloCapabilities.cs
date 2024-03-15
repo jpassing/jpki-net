@@ -31,11 +31,11 @@ namespace Jpki.Powershell.Test.Security.WebAuthn
         [Test]
         public void Execute()
         {
-            var cmdlet = new GetWindowsHelloCapabilities();
+            var cmdlet = new GetWebAuthnCapabilities();
             var capabilities = CmdletAssert
-                .WritesSingleObject<GetWindowsHelloCapabilities.Capabilities>(cmdlet);
+                .WritesSingleObject<GetWebAuthnCapabilities.Capabilities>(cmdlet);
 
-            AssertThat.AreNotEqual(0, capabilities.ApiVersionNumber);
+            AssertThat.AreNotEqual(0, capabilities.WindowsHelloApiVersionNumber);
         }
     }
 }

@@ -28,11 +28,11 @@ using System.Threading.Tasks;
 namespace Jpki.Powershell.Security.WebAuthn
 {
     /// <summary>
-    /// Return basic capability information about WindowsHello.
+    /// Return basic capability information about WebAuthn.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "WindowsHelloCapabilities")]
-    public class GetWindowsHelloCapabilities 
-        : AsyncCmdletBase<GetWindowsHelloCapabilities.Capabilities>
+    [Cmdlet(VerbsCommon.Get, "WebAuthnCapabilities")]
+    public class GetWebAuthnCapabilities 
+        : AsyncCmdletBase<GetWebAuthnCapabilities.Capabilities>
     {
         protected override Task<Capabilities> ProcessRecordAsync(
             CancellationToken cancellationToken)
@@ -41,7 +41,7 @@ namespace Jpki.Powershell.Security.WebAuthn
             {
                 IsPlatformAuthenticatorAvailable = Authenticators.IsPlatformAuthenticatorAvailable,
 #if WINDOWS || NETFRAMEWORK
-                ApiVersionNumber = WindowsHello.ApiVersion,
+                WindowsHelloApiVersionNumber = Jpki.Security.WebAuthn.Windows.WindowsHello.ApiVersion,
 #endif
             });
         }
@@ -49,7 +49,7 @@ namespace Jpki.Powershell.Security.WebAuthn
         public class Capabilities
         {
             public bool IsPlatformAuthenticatorAvailable { get; internal set; }
-            public uint ApiVersionNumber { get; internal set; }
+            public uint WindowsHelloApiVersionNumber { get; internal set; }
         }
     }
 }
