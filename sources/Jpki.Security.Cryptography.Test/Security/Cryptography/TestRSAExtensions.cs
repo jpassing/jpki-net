@@ -21,6 +21,7 @@
 
 using Jpki.Security.Cryptography;
 using NUnit.Framework;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -226,6 +227,7 @@ namespace Jpki.Test.Security.Cryptography
         }
     }
 
+#if WINDOWS
     [TestFixture]
     public class TestRSAExtensions_CNG : TestRSAExtensions
     {
@@ -243,4 +245,16 @@ namespace Jpki.Test.Security.Cryptography
             return new RSACryptoServiceProvider();
         }
     }
+
+#else
+
+    [TestFixture]
+    public class TestRSAExtensions_CryptoServiceProvicer : TestRSAExtensions
+    {
+        protected override RSA CreateKey()
+        {
+            return RSA.Create();
+        }
+    }
+#endif
 }

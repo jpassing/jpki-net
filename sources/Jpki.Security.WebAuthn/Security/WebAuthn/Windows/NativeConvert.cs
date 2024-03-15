@@ -19,6 +19,8 @@
 // under the License.
 //
 
+#if WINDOWS
+
 using Jpki.Interop;
 using Jpki.Security.Cryptography.Cose;
 using System;
@@ -201,3 +203,5 @@ namespace Jpki.Security.WebAuthn.Windows
         }
     }
 }
+
+#endif

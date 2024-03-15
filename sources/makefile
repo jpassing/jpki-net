@@ -107,6 +107,7 @@ package:
 
 	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net47 $(MAIN_ASSEMBLY)
 	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net6.0-windows $(MAIN_ASSEMBLY)
+	$(MAKE) $(MAKEFLAGS) TARGET_FRAMEWORK=net6.0 $(MAIN_ASSEMBLY)
 
 clean:
 	@echo "========================================================"

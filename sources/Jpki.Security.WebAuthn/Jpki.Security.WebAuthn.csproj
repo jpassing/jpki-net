@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Jpki.props" />
   <PropertyGroup>
-    <UseWindowsForms>True</UseWindowsForms>
     <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
     
     <PackageId>Jpki.Security.WebAuthn</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Jpki.Security.Cryptography\Jpki.Security.Cryptography.csproj" />
   </ItemGroup>

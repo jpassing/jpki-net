@@ -19,6 +19,9 @@
 // under the License.
 //
 
+// TODO: throw PlatformNotSupportedException instead of excluding class
+#if WINDOWS
+
 using Jpki.Format.Cbor;
 using Jpki.Interop;
 using Jpki.Security.Cryptography.Cose;
@@ -534,3 +537,4 @@ namespace Jpki.Security.WebAuthn.Windows
         }
     }
 }
+#endif
