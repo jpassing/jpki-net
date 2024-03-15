@@ -180,6 +180,132 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                     () => attestationTask.Wait());
             }
         }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertionWithoutAttestationAndUserVerification()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        Attestation = AttestationConveyance.None,
+                        ResidentKey = ResidentKeyRequirement.Any,
+                        UserVerification = UserVerificationRequirement.Discouraged
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+            AssertThat.IsNull(credential.AttestationStatement);
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.NonResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id },
+                        UserVerification = UserVerificationRequirement.Discouraged
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsFalse(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            assertion.Verify(credential);
+        }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertioWithAttestationAndUserVerification()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        Attestation = AttestationConveyance.Indirect,
+                        UserVerification = UserVerificationRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+            credential.Verify();
+
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.IsNotNull(credential.AttestationStatement!.CertificateChain);
+            CollectionAssertThat.IsNotEmpty(credential.AttestationStatement.CertificateChain!);
+
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.NonResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id },
+                        UserVerification = UserVerificationRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            assertion.Verify(credential);
+        }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertioWithResidentKey()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.ResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        ResidentKey = ResidentKeyRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.ResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id }
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.AreEqual(Data.User.Id, assertion.UserId);
+            assertion.Verify(credential);
+        }
     }
 }
 #endif

@@ -37,12 +37,19 @@ using System.Threading.Tasks;
 
 namespace Jpki.Security.WebAuthn.Windows
 {
+    /// <summary>
+    /// Uses the Windows Hello API (webauthn.dll) to create WebAuthn
+    /// credentials and assertions.
+    /// </summary>
     public class WindowsHello : IAuthenticator
     {
         internal WindowsHello()
         {
         }
 
+        /// <summary>
+        /// Query API version of webauthn.dll.
+        /// </summary>
         public uint ApiVersion => (uint)NativeMethods.WebAuthNGetApiVersionNumber();
 
         //---------------------------------------------------------------------
