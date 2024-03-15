@@ -61,16 +61,27 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         //---------------------------------------------------------------------
 
         [Test]
+        public void WebAuthNGetApiVersionNumber()
+        {
+            var windowsHello = (WindowsHello)Authenticators.WindowsHello;
+            AssertThat.GreaterOrEqual(windowsHello.ApiVersion, 2);
+        }
+
+        //---------------------------------------------------------------------
+        // CreateCredential.
+        //---------------------------------------------------------------------
+
+        [Test]
         public void WhenSignatureAlgorithmsEmpty_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => WindowsHello
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
                         Data.User,
                         ClientData.FromJson("{}"),
-                        new WindowsHello.AttestationOptions()
+                        new AttestationOptions()
                         {
                             SignatureAlgorithms = Array.Empty<CoseSignatureAlgorithm>()
                         },
@@ -82,13 +93,13 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WhenSignatureAlgorithmsInvalid_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => WindowsHello
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
                         Data.User,
                         ClientData.FromJson("{}"),
-                        new WindowsHello.AttestationOptions()
+                        new AttestationOptions()
                         {
                             SignatureAlgorithms = new[] { (CoseSignatureAlgorithm)9999 }
                         },
@@ -100,20 +111,20 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [RequiresHumanInteraction]
         public void WhenNoPlatformAuthenticatorPresent_ThenCreateCredentialThrowsException()
         {
-            if (WindowsHello.IsPlatformAuthenticatorAvailable)
+            if (Authenticators.IsPlatformAuthenticatorAvailable)
             {
                 AssertThat.Inconclusive("Platform authenticator present");
                 return;
             }
 
             AssertThrows.AggregateException<WebAuthnException>(
-                () => WindowsHello
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
                         Data.User,
                         ClientData.FromJson("{}"),
-                        new WindowsHello.AttestationOptions()
+                        new AttestationOptions()
                         {
                             Authenticator = AuthenticatorAttachment.Platform
                         },
@@ -127,13 +138,13 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cts = new CancellationTokenSource())
             {
-                var attestationTask = WindowsHello
+                var attestationTask = Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
                         Data.User,
                         ClientData.FromJson("{}"),
-                        new WindowsHello.AttestationOptions(),
+                        new AttestationOptions(),
                         cts.Token);
 
                 await Task.Delay(250);
@@ -154,12 +165,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cts = new CancellationTokenSource())
             {
-                var attestationTask = WindowsHello
+                var attestationTask = Authenticators.WindowsHello
                     .CreateAssertionAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
                         ClientData.FromJson("{}"),
-                        new WindowsHello.AssertionOptions(),
+                        new AssertionOptions(),
                         cts.Token);
 
                 await Task.Delay(250);
@@ -168,6 +179,132 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                 AssertThrows.AggregateException<OperationCanceledException>(
                     () => attestationTask.Wait());
             }
+        }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertionWithoutAttestationAndUserVerification()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        Attestation = AttestationConveyance.None,
+                        ResidentKey = ResidentKeyRequirement.Any,
+                        UserVerification = UserVerificationRequirement.Discouraged
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+            AssertThat.IsNull(credential.AttestationStatement);
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.NonResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id },
+                        UserVerification = UserVerificationRequirement.Discouraged
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsFalse(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            assertion.Verify(credential);
+        }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertioWithAttestationAndUserVerification()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        Attestation = AttestationConveyance.Indirect,
+                        UserVerification = UserVerificationRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+            credential.Verify();
+
+            AssertThat.IsNotNull(credential.AttestationStatement);
+            AssertThat.IsNotNull(credential.AttestationStatement!.CertificateChain);
+            CollectionAssertThat.IsNotEmpty(credential.AttestationStatement.CertificateChain!);
+
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.NonResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id },
+                        UserVerification = UserVerificationRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNull(assertion.UserId);
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
+            AssertThat.IsTrue(assertion.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
+
+            assertion.Verify(credential);
+        }
+
+        [Test]
+        [RequiresHumanInteraction]
+        public async Task CreateAssertioWithResidentKey()
+        {
+            var credential = await Authenticators.WindowsHello
+                .CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.ResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        ResidentKey = ResidentKeyRequirement.Required
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.IsNotNull(credential);
+
+            var assertion = await Authenticators.WindowsHello
+                .CreateAssertionAsync(
+                    this.form.Handle,
+                    Data.ResidentRelyingParty,
+                    ClientData.FromJson("{}"),
+                    new AssertionOptions()
+                    {
+                        AllowedCredentials = new[] { credential.Id }
+                    },
+                    CancellationToken.None)
+                .ConfigureAwait(true);
+
+            AssertThat.AreEqual(Data.User.Id, assertion.UserId);
+            assertion.Verify(credential);
         }
     }
 }

@@ -19,7 +19,6 @@
 // under the License.
 //
 
-// TODO: throw PlatformNotSupportedException instead of excluding class
 #if WINDOWS
 
 using Jpki.Format.Cbor;
@@ -38,8 +37,21 @@ using System.Threading.Tasks;
 
 namespace Jpki.Security.WebAuthn.Windows
 {
-    public static class WindowsHello
+    /// <summary>
+    /// Uses the Windows Hello API (webauthn.dll) to create WebAuthn
+    /// credentials and assertions.
+    /// </summary>
+    public class WindowsHello : IAuthenticator
     {
+        internal WindowsHello()
+        {
+        }
+
+        /// <summary>
+        /// Query API version of webauthn.dll.
+        /// </summary>
+        public uint ApiVersion => (uint)NativeMethods.WebAuthNGetApiVersionNumber();
+
         //---------------------------------------------------------------------
         // Attestation.
         //---------------------------------------------------------------------
@@ -119,18 +131,18 @@ namespace Jpki.Security.WebAuthn.Windows
                         cExtensions = 0
                     },
 
-                    dwAuthenticatorAttachment = (NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.Authenticator,
+                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.Authenticator,
                     bRequireResidentKey = options.ResidentKey == ResidentKeyRequirement.Required,
                     bPreferResidentKey = options.ResidentKey == ResidentKeyRequirement.Preferred,
-                    dwUserVerificationRequirement = (NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT)options.UserVerification,
-                    dwAttestationConveyancePreference = (NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE)options.Attestation,
+                    dwUserVerificationRequirement = (WEBAUTHN_USER_VERIFICATION_REQUIREMENT)options.UserVerification,
+                    dwAttestationConveyancePreference = (WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE)options.Attestation,
                     dwFlags = 0,
                     bBrowserInPrivateMode = false,
 
                     pCancellationId = cancellationGuid.Handle,
                     pExcludeCredentialList = IntPtr.Zero,
-                    dwEnterpriseAttestation = NativeMethods.WEBAUTHN_ENTERPRISE_ATTESTATION.NONE,
-                    dwLargeBlobSupport = NativeMethods.WEBAUTHN_LARGE_BLOB_SUPPORT.NONE
+                    dwEnterpriseAttestation = WEBAUTHN_ENTERPRISE_ATTESTATION.NONE,
+                    dwLargeBlobSupport = WEBAUTHN_LARGE_BLOB_SUPPORT.NONE
                 };
 
                 var hresult = NativeMethods.WebAuthNAuthenticatorMakeCredential(
@@ -180,7 +192,7 @@ namespace Jpki.Security.WebAuthn.Windows
                         .AssumeNotNull());
 
                     AttestationStatement attestationStatement = null;
-                    if (nativeAttestation.dwAttestationDecodeType == NativeMethods.WEBAUTHN_ATTESTATION_DECODE.COMMON)
+                    if (nativeAttestation.dwAttestationDecodeType == WEBAUTHN_ATTESTATION_DECODE.COMMON)
                     {
                         var commonStatement = Marshal.PtrToStructure<NativeMethods.WEBAUTHN_COMMON_ATTESTATION>(
                             nativeAttestation.pvAttestationDecode);
@@ -278,38 +290,6 @@ namespace Jpki.Security.WebAuthn.Windows
             }
         }
 
-        /// <summary>
-        /// Create a new credential.
-        /// </summary>
-        public static Task<Credential> CreateCredentialAsync(
-            IntPtr windowHandle,
-            RelyingParty relyingParty,
-            User user,
-            ClientData clientData,
-            AttestationOptions options,
-            CancellationToken cancellationToken)
-        {
-            //
-            // Run on background thread so that the caller can
-            // cancel the operation using the provided cancellation
-            // token.
-            //
-            return Task.Run(() =>
-            {
-                using (var cancellationGuid = new CancellationGuid())
-                {
-                    cancellationGuid.Bind(cancellationToken);
-                    return CreateCredential(
-                        windowHandle,
-                        relyingParty,
-                        user,
-                        clientData,
-                        options,
-                        cancellationGuid);
-                }
-            });
-        }
-
         //---------------------------------------------------------------------
         // Assertion.
         //---------------------------------------------------------------------
@@ -351,10 +331,10 @@ namespace Jpki.Security.WebAuthn.Windows
                         cExtensions = 0,
                         pExtensions = IntPtr.Zero
                     },
-                    dwAuthenticatorAttachment = (NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT)
+                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)
                         options.AuthenticatorAttachment,
 
-                    dwUserVerificationRequirement = (NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT)
+                    dwUserVerificationRequirement = (WEBAUTHN_USER_VERIFICATION_REQUIREMENT)
                         options.UserVerification,
 
                     dwFlags = 0,
@@ -444,7 +424,40 @@ namespace Jpki.Security.WebAuthn.Windows
             }
         }
 
-        public static Task<Assertion> CreateAssertionAsync(
+        //---------------------------------------------------------------------
+        // IAuthenticator.
+        //---------------------------------------------------------------------
+
+        public Task<Credential> CreateCredentialAsync(
+            IntPtr windowHandle,
+            RelyingParty relyingParty,
+            User user,
+            ClientData clientData,
+            AttestationOptions options,
+            CancellationToken cancellationToken)
+        {
+            //
+            // Run on background thread so that the caller can
+            // cancel the operation using the provided cancellation
+            // token.
+            //
+            return Task.Run(() =>
+            {
+                using (var cancellationGuid = new CancellationGuid())
+                {
+                    cancellationGuid.Bind(cancellationToken);
+                    return CreateCredential(
+                        windowHandle,
+                        relyingParty,
+                        user,
+                        clientData,
+                        options,
+                        cancellationGuid);
+                }
+            });
+        }
+
+        public Task<Assertion> CreateAssertionAsync(
             IntPtr windowHandle,
             RelyingParty relyingParty,
             ClientData clientData,
@@ -469,71 +482,6 @@ namespace Jpki.Security.WebAuthn.Windows
                         cancellationGuid);
                 }
             });
-        }
-
-        //---------------------------------------------------------------------
-        // Capabilities.
-        //---------------------------------------------------------------------
-
-        public static bool IsPlatformAuthenticatorAvailable
-        {
-            get
-            {
-                var hr = NativeMethods.WebAuthNIsUserVerifyingPlatformAuthenticatorAvailable(
-                    out var available);
-
-                if (hr != HRESULT.S_OK)
-                {
-                    throw WebAuthnException.FromHresult(
-                        hr,
-                        "WebAuthNIsUserVerifyingPlatformAuthenticatorAvailable",
-                        "Determining presence of platform authenticator failed");
-                }
-
-                return available;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Inner clases.
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Options for creating credential attestations.
-        /// </summary>
-        public class AttestationOptions
-        {
-            public CoseSignatureAlgorithm[] SignatureAlgorithms { get; set; }
-                = new[] { CoseSignatureAlgorithm.ES256 };
-
-            public AuthenticatorAttachment Authenticator { get; set; }
-                = AuthenticatorAttachment.CrossPlatform;
-
-            public UserVerificationRequirement UserVerification { get; set; }
-                = UserVerificationRequirement.Preferred;
-
-            public AttestationConveyance Attestation { get; set; }
-                = AttestationConveyance.None;
-
-            public ResidentKeyRequirement ResidentKey { get; set; }
-
-            public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
-        }
-
-        /// <summary>
-        /// Options for creating assertions.
-        /// </summary>
-        public class AssertionOptions
-        {
-            public ICollection<CredentialId>? AllowedCredentials { get; set; }
-
-            public AuthenticatorAttachment AuthenticatorAttachment { get; set; }
-                = AuthenticatorAttachment.Any;
-
-            public UserVerificationRequirement UserVerification { get; set; }
-                = UserVerificationRequirement.Any;
-
-            public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
         }
     }
 }

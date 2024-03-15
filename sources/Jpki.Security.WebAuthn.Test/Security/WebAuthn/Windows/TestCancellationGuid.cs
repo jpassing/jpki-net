@@ -19,6 +19,9 @@
 // under the License.
 //
 
+
+#if WINDOWS
+
 using Jpki.Security.WebAuthn.Windows;
 using NUnit.Framework;
 using System;
@@ -52,3 +55,5 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         }
     }
 }
+
+#endif
