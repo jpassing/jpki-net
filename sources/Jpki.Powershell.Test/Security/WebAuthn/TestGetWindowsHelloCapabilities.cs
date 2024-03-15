@@ -19,6 +19,8 @@
 // under the License.
 //
 
+#if WINDOWS || NETFRAMEWORK
+
 using Jpki.Powershell.Security.WebAuthn;
 using Jpki.Powershell.Test.Runtime;
 using NUnit.Framework;
@@ -39,3 +41,5 @@ namespace Jpki.Powershell.Test.Security.WebAuthn
         }
     }
 }
+
+#endif

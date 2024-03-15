@@ -99,7 +99,7 @@ namespace Jpki.Powershell.Security.WebAuthn
             var options = new AttestationOptions()
             {
                 SignatureAlgorithms = new[] { this.SignatureAlgorithm },
-                Authenticator = this.Authenticator,
+                AuthenticatorAttachment = this.Authenticator,
                 UserVerification = this.UserVerification,
                 Attestation = this.Attestation,
                 ResidentKey = this.ResidentKey,
