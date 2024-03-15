@@ -19,6 +19,8 @@
 // under the License.
 //
 
+#if WINDOWS
+
 using Jpki.Interop;
 using Jpki.Security.Cryptography.Cose;
 using Microsoft.Win32.SafeHandles;
@@ -243,16 +245,6 @@ namespace Jpki.Security.WebAuthn.Windows
         {
             public uint cCredentials;
             public /* PWEBAUTHN_CREDENTIAL */ IntPtr pCredentials;
-        }
-
-        internal enum WEBAUTHN_CTAP_TRANSPORT : uint
-        {
-            USB = 0x00000001,
-            NFC = 0x00000002,
-            BLE = 0x00000004,
-            TEST = 0x00000008,
-            INTERNAL = 0x00000010,
-            FLAGS_MASK = 0x0000001F,
         }
 
         /// <summary>
@@ -883,3 +875,4 @@ namespace Jpki.Security.WebAuthn.Windows
         }
     }
 }
+#endif

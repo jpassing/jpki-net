@@ -65,4 +65,14 @@ namespace Jpki.Security.WebAuthn.Windows
         NONE = 0,
         COMMON = 1
     }
+
+    internal enum WEBAUTHN_CTAP_TRANSPORT : uint
+    {
+        USB = 0x00000001,
+        NFC = 0x00000002,
+        BLE = 0x00000004,
+        TEST = 0x00000008,
+        INTERNAL = 0x00000010,
+        FLAGS_MASK = 0x0000001F,
+    }
 }

@@ -52,6 +52,16 @@ namespace Jpki.Security.WebAuthn
         Direct = WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.DIRECT,
     }
 
+    public enum Transport : uint
+    {
+        Usb = WEBAUTHN_CTAP_TRANSPORT.USB,
+        Nfc = WEBAUTHN_CTAP_TRANSPORT.NFC,
+        Ble = WEBAUTHN_CTAP_TRANSPORT.BLE,
+        Test = WEBAUTHN_CTAP_TRANSPORT.TEST,
+        Internal = WEBAUTHN_CTAP_TRANSPORT.INTERNAL,
+        Any = WEBAUTHN_CTAP_TRANSPORT.FLAGS_MASK
+    }
+
     public enum ResidentKeyRequirement
     {
         Any,

@@ -43,6 +43,8 @@ namespace Jpki.Security.WebAuthn.Windows
         {
         }
 
+        public uint ApiVersion => (uint)NativeMethods.WebAuthNGetApiVersionNumber();
+
         //---------------------------------------------------------------------
         // Attestation.
         //---------------------------------------------------------------------

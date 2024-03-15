@@ -61,6 +61,17 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         //---------------------------------------------------------------------
 
         [Test]
+        public void WebAuthNGetApiVersionNumber()
+        {
+            var windowsHello = (WindowsHello)Authenticators.WindowsHello;
+            AssertThat.GreaterOrEqual(windowsHello.ApiVersion, 22);
+        }
+
+        //---------------------------------------------------------------------
+        // CreateCredential.
+        //---------------------------------------------------------------------
+
+        [Test]
         public void WhenSignatureAlgorithmsEmpty_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(

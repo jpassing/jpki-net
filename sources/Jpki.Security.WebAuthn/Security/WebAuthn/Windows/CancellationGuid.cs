@@ -19,6 +19,9 @@
 // under the License.
 //
 
+
+#if WINDOWS
+
 using Jpki.Interop;
 using System;
 using System.Runtime.InteropServices;
@@ -78,3 +81,5 @@ namespace Jpki.Security.WebAuthn.Windows
         }
     }
 }
+
+#endif

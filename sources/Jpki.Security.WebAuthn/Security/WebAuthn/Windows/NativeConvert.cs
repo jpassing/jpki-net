@@ -111,7 +111,7 @@ namespace Jpki.Security.WebAuthn.Windows
             native = new NativeMethods.WEBAUTHN_CREDENTIAL_EX()
             {
                 dwVersion = NativeMethods.WEBAUTHN_CREDENTIAL_EX.BaselineVersion,
-                dwTransports = (NativeMethods.WEBAUTHN_CTAP_TRANSPORT)transport,
+                dwTransports = (WEBAUTHN_CTAP_TRANSPORT)transport,
                 pwszCredentialType = NativeMethods.WEBAUTHN_CREDENTIAL_TYPE.PUBLIC_KEY,
                 cbId = (uint)credentialId.Value.Length,
                 pbId = idPtr
