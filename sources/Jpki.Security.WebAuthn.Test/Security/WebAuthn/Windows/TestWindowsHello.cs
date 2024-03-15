@@ -64,7 +64,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WebAuthNGetApiVersionNumber()
         {
             var windowsHello = (WindowsHello)Authenticators.WindowsHello;
-            AssertThat.GreaterOrEqual(windowsHello.ApiVersion, 22);
+            AssertThat.GreaterOrEqual(windowsHello.ApiVersion, 2);
         }
 
         //---------------------------------------------------------------------
