@@ -26,7 +26,7 @@ using System.Threading;
 
 namespace Jpki.Security.WebAuthn.Windows
 {
-    public sealed class CancellationGuid : IDisposable
+    internal sealed class CancellationGuid : IDisposable
     {
         private readonly LocalAllocSafeHandle guidHandle;
 
