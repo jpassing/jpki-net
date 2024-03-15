@@ -64,7 +64,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WhenSignatureAlgorithmsEmpty_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => WindowsHello.Instance
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
@@ -82,7 +82,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WhenSignatureAlgorithmsInvalid_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => WindowsHello.Instance
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
@@ -100,14 +100,14 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [RequiresHumanInteraction]
         public void WhenNoPlatformAuthenticatorPresent_ThenCreateCredentialThrowsException()
         {
-            if (WindowsHello.IsPlatformAuthenticatorAvailable)
+            if (Authenticators.IsPlatformAuthenticatorAvailable)
             {
                 AssertThat.Inconclusive("Platform authenticator present");
                 return;
             }
 
             AssertThrows.AggregateException<WebAuthnException>(
-                () => WindowsHello.Instance
+                () => Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
@@ -127,7 +127,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cts = new CancellationTokenSource())
             {
-                var attestationTask = WindowsHello.Instance
+                var attestationTask = Authenticators.WindowsHello
                     .CreateCredentialAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,
@@ -154,7 +154,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cts = new CancellationTokenSource())
             {
-                var attestationTask = WindowsHello.Instance
+                var attestationTask = Authenticators.WindowsHello
                     .CreateAssertionAsync(
                         this.form!.Handle,
                         Data.NonResidentRelyingParty,

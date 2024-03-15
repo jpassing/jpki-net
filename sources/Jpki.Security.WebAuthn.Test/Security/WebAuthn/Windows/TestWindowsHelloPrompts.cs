@@ -56,7 +56,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task NonResidentKeyWithoutAttestationAndUserVerification()
         {
-            var credential = await WindowsHello.Instance
+            var credential = await Authenticators.WindowsHello
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.NonResidentRelyingParty,
@@ -75,7 +75,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             AssertThat.IsNull(credential.AttestationStatement);
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
 
-            var assertion = await WindowsHello.Instance
+            var assertion = await Authenticators.WindowsHello
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.NonResidentRelyingParty,
@@ -98,7 +98,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task NonResidentKeyWithAttestationAndUserVerification()
         {
-            var credential = await WindowsHello.Instance
+            var credential = await Authenticators.WindowsHello
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.NonResidentRelyingParty,
@@ -122,7 +122,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
 
-            var assertion = await WindowsHello.Instance
+            var assertion = await Authenticators.WindowsHello
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.NonResidentRelyingParty,
@@ -145,7 +145,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task ResidentKey()
         {
-            var credential = await WindowsHello.Instance
+            var credential = await Authenticators.WindowsHello
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.ResidentRelyingParty,
@@ -160,7 +160,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             AssertThat.IsNotNull(credential);
 
-            var assertion = await WindowsHello.Instance
+            var assertion = await Authenticators.WindowsHello
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.ResidentRelyingParty,
