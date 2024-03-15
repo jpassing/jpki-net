@@ -20,7 +20,7 @@
 //
 
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Interop;
 using System;

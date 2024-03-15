@@ -227,7 +227,7 @@ namespace Jpki.Test.Security.Cryptography
         }
     }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
     [TestFixture]
     public class TestRSAExtensions_CNG : TestRSAExtensions
     {

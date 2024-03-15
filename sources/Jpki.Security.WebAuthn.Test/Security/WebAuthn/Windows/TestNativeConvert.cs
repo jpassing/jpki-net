@@ -19,7 +19,7 @@
 // under the License.
 //
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Security.Cryptography.Cose;
 using Jpki.Security.WebAuthn;

@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Security.WebAuthn
 {
+    /// <summary>
+    /// Create a new WebAuthn credential using Windows Hello.
+    /// </summary>
     [Cmdlet(VerbsCommon.New, "WindowsHelloWebAuthnCredential")]
     public class NewWindowsHelloWebAuthnCredential : AsyncCmdletBase<Credential>
     {

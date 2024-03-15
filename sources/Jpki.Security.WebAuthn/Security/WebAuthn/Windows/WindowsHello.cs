@@ -19,7 +19,7 @@
 // under the License.
 //
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Format.Cbor;
 using Jpki.Interop;
