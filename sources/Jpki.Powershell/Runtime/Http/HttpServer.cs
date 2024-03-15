@@ -32,7 +32,7 @@ namespace Jpki.Powershell.Runtime.Http
     /// </summary>
     internal class HttpServer : IDisposable
     {
-        private readonly CancellationTokenSource cancelByDisposal = new CancellationTokenSource();
+        private readonly CancellationTokenSource stopTokenSource = new CancellationTokenSource();
 
         /// <summary>
         /// A random, unused port. Evaluated once to ensure that the random
@@ -79,6 +79,11 @@ namespace Jpki.Powershell.Runtime.Http
         }
 
         /// <summary>
+        /// URL to direct requests to.
+        /// </summary>
+        public Uri BaseUri => new Uri(this.Prefix);
+
+        /// <summary>
         /// Handle HTTP request, to be overriden.
         /// </summary>
         protected virtual void HandleRequest(
@@ -98,7 +103,7 @@ namespace Jpki.Powershell.Runtime.Http
             // Cancel on user request or when disposed.
             //
             var combinedCancellationToken = CancellationTokenSource
-                .CreateLinkedTokenSource(this.cancelByDisposal.Token, userCancellationToken)
+                .CreateLinkedTokenSource(this.stopTokenSource.Token, userCancellationToken)
                 .Token;
 
             using (combinedCancellationToken.Register(listener.Stop))
@@ -133,13 +138,18 @@ namespace Jpki.Powershell.Runtime.Http
             }
         }
 
+        public void Stop()
+        {
+            this.stopTokenSource.Cancel();
+        }
+
         //---------------------------------------------------------------------
         // IDisposable.
         //---------------------------------------------------------------------
 
         protected virtual void Dispose(bool disposing)
         {
-            this.cancelByDisposal.Cancel();
+            this.stopTokenSource.Cancel();
         }
 
         public void Dispose()

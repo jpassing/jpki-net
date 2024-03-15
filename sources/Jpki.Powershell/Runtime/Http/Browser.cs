@@ -19,24 +19,27 @@
 // under the License.
 //
 
-using System.Threading;
-using System.Threading.Tasks;
+using System;
+using System.Diagnostics;
 
-#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
-
-namespace Jpki.Powershell.Runtime
+namespace Jpki.Powershell.Runtime.Http
 {
-    internal static class TaskExtensions
+    internal static class Browser
     {
-        /// <summary>
-        /// Block until a Task is completed and return its result.
-        /// </summary>
-        public static T GetResult<T>(
-            this Task<T> task,
-            CancellationToken cancellationToken)
+        public static void Navigate(Uri address)
         {
-            task.Wait(cancellationToken);
-            return task.Result;
+            using (Process.Start(new ProcessStartInfo()
+            {
+                UseShellExecute = true,
+                Verb = "open",
+
+                //
+                // NB. Use AbsoluteUri instead of ToString because AbsoluteUri
+                // messes with URL encoding to make URIs "more readable".
+                //
+                FileName = address.AbsoluteUri
+            }))
+            { };
         }
     }
 }

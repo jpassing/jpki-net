@@ -19,7 +19,7 @@
 // under the License.
 //
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Security.Cryptography.Cose;
 using Jpki.Security.WebAuthn;
@@ -57,14 +57,23 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         }
 
         //---------------------------------------------------------------------
+        // ApiVersionNumber.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void ApiVersionNumber()
+        {
+            AssertThat.AreNotEqual(0, WindowsHello.ApiVersion);
+        }
+
+        //---------------------------------------------------------------------
         // CreateCredential.
         //---------------------------------------------------------------------
 
         [Test]
-        public void WebAuthNGetApiVersionNumber()
+        public void ApiVersion()
         {
-            var windowsHello = (WindowsHello)Authenticators.WindowsHello;
-            AssertThat.GreaterOrEqual(windowsHello.ApiVersion, 2);
+            AssertThat.GreaterOrEqual(WindowsHello.ApiVersion, 2);
         }
 
         //---------------------------------------------------------------------

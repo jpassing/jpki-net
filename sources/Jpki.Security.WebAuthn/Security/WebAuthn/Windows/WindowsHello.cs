@@ -19,7 +19,7 @@
 // under the License.
 //
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Format.Cbor;
 using Jpki.Interop;
@@ -50,7 +50,7 @@ namespace Jpki.Security.WebAuthn.Windows
         /// <summary>
         /// Query API version of webauthn.dll.
         /// </summary>
-        public uint ApiVersion => (uint)NativeMethods.WebAuthNGetApiVersionNumber();
+        public static uint ApiVersion => (uint)NativeMethods.WebAuthNGetApiVersionNumber();
 
         //---------------------------------------------------------------------
         // Attestation.

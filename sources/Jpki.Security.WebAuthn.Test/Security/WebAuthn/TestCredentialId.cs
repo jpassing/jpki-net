@@ -27,6 +27,22 @@ namespace Jpki.Test.Security.WebAuthn
     [TestFixture]
     public class TestCredentialId
     {
+        [Test]
+        public void ToStringReturnsBase64()
+        {
+            var c1 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC, 0xDD });
+            AssertThat.AreEqual("qrvM3Q==", c1.ToString());
+        }
+
+        [Test]
+        public void ParseConvertsBase64()
+        {
+            var c1 = CredentialId.Parse("qrvM3Q==");
+            var c2 = new CredentialId(new byte[] { 0xAA, 0xBB, 0xCC, 0xDD });
+
+            AssertThat.AreEqual(c1, c2);
+        }
+
         //---------------------------------------------------------------------
         // Equality.
         //---------------------------------------------------------------------

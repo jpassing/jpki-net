@@ -19,24 +19,27 @@
 // under the License.
 //
 
-using System.Threading;
-using System.Threading.Tasks;
+#if WINDOWS || NETFRAMEWORK
 
-#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+using Jpki.Powershell.Security.WebAuthn;
+using Jpki.Powershell.Test.Runtime;
+using NUnit.Framework;
 
-namespace Jpki.Powershell.Runtime
+namespace Jpki.Powershell.Test.Security.WebAuthn
 {
-    internal static class TaskExtensions
+    [TestFixture]
+    public class TestGetWindowsHelloCapabilities
     {
-        /// <summary>
-        /// Block until a Task is completed and return its result.
-        /// </summary>
-        public static T GetResult<T>(
-            this Task<T> task,
-            CancellationToken cancellationToken)
+        [Test]
+        public void Execute()
         {
-            task.Wait(cancellationToken);
-            return task.Result;
+            var cmdlet = new GetWebAuthnCapabilities();
+            var capabilities = CmdletAssert
+                .WritesSingleObject<GetWebAuthnCapabilities.Capabilities>(cmdlet);
+
+            AssertThat.AreNotEqual(0, capabilities.WindowsHelloApiVersionNumber);
         }
     }
 }
+
+#endif

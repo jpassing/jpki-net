@@ -30,7 +30,7 @@ namespace Jpki.Security.WebAuthn
     {
         public static IAuthenticator WindowsHello// TODO: test non-windows
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             get => new WindowsHello();
 #else
             get => throw new PlatformNotSupportedException(
@@ -44,7 +44,7 @@ namespace Jpki.Security.WebAuthn
 
         public static bool IsPlatformAuthenticatorAvailable // TODO: test non-windows
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             get
             {
                 var hr = NativeMethods.WebAuthNIsUserVerifyingPlatformAuthenticatorAvailable(

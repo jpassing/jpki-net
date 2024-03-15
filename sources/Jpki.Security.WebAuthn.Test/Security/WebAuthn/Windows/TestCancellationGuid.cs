@@ -20,7 +20,7 @@
 //
 
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 
 using Jpki.Security.WebAuthn.Windows;
 using NUnit.Framework;

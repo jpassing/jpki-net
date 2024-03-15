@@ -21,6 +21,7 @@
 
 using Jpki.Powershell.Runtime.Http;
 using NUnit.Framework;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -48,7 +49,21 @@ namespace Jpki.Powershell.Test.Runtime.Http
         }
 
         //---------------------------------------------------------------------
-        // Prefix.
+        // Stop.
+        //---------------------------------------------------------------------
+
+        [Test]
+        public void StopStopsListener()
+        {
+            var server = new HttpServer();
+            var runTask = server.RunAsync(CancellationToken.None);
+            server.Stop();
+
+            AssertThrows.AggregateException<TaskCanceledException>(() => runTask.Wait());
+        }
+
+        //---------------------------------------------------------------------
+        // Prefix, BaseUri.
         //---------------------------------------------------------------------
 
         [Test]
@@ -60,6 +75,7 @@ namespace Jpki.Powershell.Test.Runtime.Http
             })
             {
                 AssertThat.AreEqual("http://localhost:8080/", server.Prefix);
+                AssertThat.AreEqual(new Uri("http://localhost:8080/"), server.BaseUri);
             }
         }
 

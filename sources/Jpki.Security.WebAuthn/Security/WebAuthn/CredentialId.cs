@@ -19,6 +19,7 @@
 // under the License.
 //
 
+using System;
 using System.Linq;
 
 namespace Jpki.Security.WebAuthn
@@ -35,6 +36,26 @@ namespace Jpki.Security.WebAuthn
         {
             this.Value = value.ExpectNotNull(nameof(value));
         }
+
+        /// <summary>
+        /// Return Base64 representation.
+        /// </summary>
+        public override string ToString()
+        {
+            return Convert.ToBase64String(this.Value);
+        }
+
+        /// <summary>
+        /// Parse Base64 representation.
+        /// </summary>
+        public static CredentialId Parse(string value)
+        {
+            return new CredentialId(Convert.FromBase64String(value));
+        }
+
+        //---------------------------------------------------------------------
+        // Equality.
+        //---------------------------------------------------------------------
 
         public override bool Equals(object? obj)
         {
