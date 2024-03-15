@@ -21,7 +21,7 @@
 
 using Jpki.Security.WebAuthn.Windows;
 
-namespace Jpki.Security.WebAuthn.Security.WebAuthn
+namespace Jpki.Security.WebAuthn
 {
     //
     // NB. The WebAuthn specification doesn't define numeric values

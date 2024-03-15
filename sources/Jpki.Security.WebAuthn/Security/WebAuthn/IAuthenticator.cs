@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Jpki.Security.WebAuthn.Security.WebAuthn
+namespace Jpki.Security.WebAuthn
 {
     public interface IAuthenticator
     {
@@ -17,7 +17,7 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn
             User user,
             ClientData clientData,
             AttestationOptions options,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken);
 
         Task<Assertion> CreateAssertionAsync(
             IntPtr windowHandle,

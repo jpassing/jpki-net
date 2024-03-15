@@ -22,7 +22,6 @@
 #if WINDOWS
 
 using Jpki.Security.WebAuthn;
-using Jpki.Security.WebAuthn.Security.WebAuthn;
 using Jpki.Security.WebAuthn.Windows;
 using NUnit.Framework;
 using System.Threading;
@@ -57,13 +56,13 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task NonResidentKeyWithoutAttestationAndUserVerification()
         {
-            var credential = await WindowsHello
+            var credential = await WindowsHello.Instance
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.NonResidentRelyingParty,
                     Data.User,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AttestationOptions()
+                    new AttestationOptions()
                     {
                         Attestation = AttestationConveyance.None,
                         ResidentKey = ResidentKeyRequirement.Any,
@@ -76,12 +75,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             AssertThat.IsNull(credential.AttestationStatement);
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
 
-            var assertion = await WindowsHello
+            var assertion = await WindowsHello.Instance
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.NonResidentRelyingParty,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AssertionOptions()
+                    new AssertionOptions()
                     {
                         AllowedCredentials = new[] { credential.Id },
                         UserVerification = UserVerificationRequirement.Discouraged
@@ -99,13 +98,13 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task NonResidentKeyWithAttestationAndUserVerification()
         {
-            var credential = await WindowsHello
+            var credential = await WindowsHello.Instance
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.NonResidentRelyingParty,
                     Data.User,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AttestationOptions()
+                    new AttestationOptions()
                     {
                         Attestation = AttestationConveyance.Indirect,
                         UserVerification = UserVerificationRequirement.Required
@@ -123,12 +122,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserPresent));
             AssertThat.IsTrue(credential.AuthenticatorData.Flags.HasFlag(AuthenticatorDataFlags.UserVerified));
 
-            var assertion = await WindowsHello
+            var assertion = await WindowsHello.Instance
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.NonResidentRelyingParty,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AssertionOptions()
+                    new AssertionOptions()
                     {
                         AllowedCredentials = new[] { credential.Id },
                         UserVerification = UserVerificationRequirement.Required
@@ -146,13 +145,13 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         [Test]
         public async Task ResidentKey()
         {
-            var credential = await WindowsHello
+            var credential = await WindowsHello.Instance
                 .CreateCredentialAsync(
                     this.form!.Handle,
                     Data.ResidentRelyingParty,
                     Data.User,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AttestationOptions()
+                    new AttestationOptions()
                     {
                         ResidentKey = ResidentKeyRequirement.Required
                     },
@@ -161,12 +160,12 @@ namespace Jpki.Test.Security.WebAuthn.Windows
 
             AssertThat.IsNotNull(credential);
 
-            var assertion = await WindowsHello
+            var assertion = await WindowsHello.Instance
                 .CreateAssertionAsync(
                     this.form.Handle,
                     Data.ResidentRelyingParty,
                     ClientData.FromJson("{}"),
-                    new WindowsHello.AssertionOptions()
+                    new AssertionOptions()
                     {
                         AllowedCredentials = new[] { credential.Id }
                     },
