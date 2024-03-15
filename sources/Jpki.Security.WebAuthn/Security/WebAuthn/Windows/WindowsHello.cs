@@ -39,7 +39,7 @@ using System.Threading.Tasks;
 
 namespace Jpki.Security.WebAuthn.Windows
 {
-    public static class WindowsHello
+    public class WindowsHello : IAuthenticator
     {
         //---------------------------------------------------------------------
         // Attestation.
@@ -279,38 +279,6 @@ namespace Jpki.Security.WebAuthn.Windows
             }
         }
 
-        /// <summary>
-        /// Create a new credential.
-        /// </summary>
-        public static Task<Credential> CreateCredentialAsync(
-            IntPtr windowHandle,
-            RelyingParty relyingParty,
-            User user,
-            ClientData clientData,
-            AttestationOptions options,
-            CancellationToken cancellationToken)
-        {
-            //
-            // Run on background thread so that the caller can
-            // cancel the operation using the provided cancellation
-            // token.
-            //
-            return Task.Run(() =>
-            {
-                using (var cancellationGuid = new CancellationGuid())
-                {
-                    cancellationGuid.Bind(cancellationToken);
-                    return CreateCredential(
-                        windowHandle,
-                        relyingParty,
-                        user,
-                        clientData,
-                        options,
-                        cancellationGuid);
-                }
-            });
-        }
-
         //---------------------------------------------------------------------
         // Assertion.
         //---------------------------------------------------------------------
@@ -445,7 +413,40 @@ namespace Jpki.Security.WebAuthn.Windows
             }
         }
 
-        public static Task<Assertion> CreateAssertionAsync(
+        //---------------------------------------------------------------------
+        // IAuthenticator.
+        //---------------------------------------------------------------------
+
+        public Task<Credential> CreateCredentialAsync(
+            IntPtr windowHandle,
+            RelyingParty relyingParty,
+            User user,
+            ClientData clientData,
+            AttestationOptions options,
+            CancellationToken cancellationToken)
+        {
+            //
+            // Run on background thread so that the caller can
+            // cancel the operation using the provided cancellation
+            // token.
+            //
+            return Task.Run(() =>
+            {
+                using (var cancellationGuid = new CancellationGuid())
+                {
+                    cancellationGuid.Bind(cancellationToken);
+                    return CreateCredential(
+                        windowHandle,
+                        relyingParty,
+                        user,
+                        clientData,
+                        options,
+                        cancellationGuid);
+                }
+            });
+        }
+
+        public Task<Assertion> CreateAssertionAsync(
             IntPtr windowHandle,
             RelyingParty relyingParty,
             ClientData clientData,
@@ -493,48 +494,6 @@ namespace Jpki.Security.WebAuthn.Windows
 
                 return available;
             }
-        }
-
-        //---------------------------------------------------------------------
-        // Inner clases.
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Options for creating credential attestations.
-        /// </summary>
-        public class AttestationOptions
-        {
-            public CoseSignatureAlgorithm[] SignatureAlgorithms { get; set; }
-                = new[] { CoseSignatureAlgorithm.ES256 };
-
-            public AuthenticatorAttachment Authenticator { get; set; }
-                = AuthenticatorAttachment.CrossPlatform;
-
-            public UserVerificationRequirement UserVerification { get; set; }
-                = UserVerificationRequirement.Preferred;
-
-            public AttestationConveyance Attestation { get; set; }
-                = AttestationConveyance.None;
-
-            public ResidentKeyRequirement ResidentKey { get; set; }
-
-            public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
-        }
-
-        /// <summary>
-        /// Options for creating assertions.
-        /// </summary>
-        public class AssertionOptions
-        {
-            public ICollection<CredentialId>? AllowedCredentials { get; set; }
-
-            public AuthenticatorAttachment AuthenticatorAttachment { get; set; }
-                = AuthenticatorAttachment.Any;
-
-            public UserVerificationRequirement UserVerification { get; set; }
-                = UserVerificationRequirement.Any;
-
-            public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
         }
     }
 }
