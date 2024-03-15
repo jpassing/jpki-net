@@ -94,7 +94,7 @@ namespace Jpki.Powershell.Security.WebAuthn
         protected override Task<Credential> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
-            var options = new WindowsHello.AttestationOptions()
+            var options = new AttestationOptions()
             {
                 SignatureAlgorithms = new[] { this.SignatureAlgorithm },
                 Authenticator = this.Authenticator,
@@ -110,7 +110,7 @@ namespace Jpki.Powershell.Security.WebAuthn
                 //
                 //  Detailed parameter set.
                 //
-                return WindowsHello.CreateCredentialAsync(
+                return Authenticators.WindowsHello.CreateCredentialAsync(
                     IntPtr.Zero,
                     this.RelyingParty,
                     this.User,
@@ -125,7 +125,7 @@ namespace Jpki.Powershell.Security.WebAuthn
                 //
                 //  Simple parameter set.
                 //
-                return WindowsHello.CreateCredentialAsync(
+                return Authenticators.WindowsHello.CreateCredentialAsync(
                     IntPtr.Zero,
                     new RelyingParty(this.RelyingPartyId, this.RelyingPartyId, null),
                     new User(Encoding.UTF8.GetBytes(this.UserId), this.UserId, null, null),

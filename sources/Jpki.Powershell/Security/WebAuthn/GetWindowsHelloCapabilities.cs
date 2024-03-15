@@ -20,6 +20,7 @@
 //
 
 using Jpki.Powershell.Runtime;
+using Jpki.Security.WebAuthn;
 using Jpki.Security.WebAuthn.Windows;
 using System.Management.Automation;
 using System.Threading;
@@ -36,8 +37,10 @@ namespace Jpki.Powershell.Security.WebAuthn
         {
             return Task.FromResult(new Capabilities()
             {
-                IsPlatformAuthenticatorAvailable = WindowsHello.IsPlatformAuthenticatorAvailable,
-                ApiVersionNumber = WindowsHello.ApiVersionNumber,
+                IsPlatformAuthenticatorAvailable = Authenticators.IsPlatformAuthenticatorAvailable,
+#if WINDOWS
+                ApiVersionNumber = WindowsHello.ApiVersion,
+#endif
             });
         }
 
