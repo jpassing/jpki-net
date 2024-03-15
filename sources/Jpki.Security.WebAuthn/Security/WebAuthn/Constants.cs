@@ -19,30 +19,37 @@
 // under the License.
 //
 
-namespace Jpki.Security.WebAuthn.Windows
+using Jpki.Security.WebAuthn.Windows;
+
+namespace Jpki.Security.WebAuthn.Security.WebAuthn
 {
+    //
+    // NB. The WebAuthn specification doesn't define numeric values
+    // for these enums, so we're using the Windows Hello values.
+    //
+
     public enum AuthenticatorAttachment : uint
     {
-        Any = NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT.ANY,
-        Platform = NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT.PLATFORM,
-        CrossPlatform = NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT.CROSS_PLATFORM,
-        CrossPlatformU2fV2 = NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT.CROSS_PLATFORM_U2F_V2,
+        Any = WEBAUTHN_AUTHENTICATOR_ATTACHMENT.ANY,
+        Platform = WEBAUTHN_AUTHENTICATOR_ATTACHMENT.PLATFORM,
+        CrossPlatform = WEBAUTHN_AUTHENTICATOR_ATTACHMENT.CROSS_PLATFORM,
+        CrossPlatformU2fV2 = WEBAUTHN_AUTHENTICATOR_ATTACHMENT.CROSS_PLATFORM_U2F_V2,
     }
 
     public enum UserVerificationRequirement : uint
     {
-        Any = NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT.ANY,
-        Required = NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT.REQUIRED,
-        Preferred = NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT.PREFERRED,
-        Discouraged = NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT.DISCOURAGED,
+        Any = WEBAUTHN_USER_VERIFICATION_REQUIREMENT.ANY,
+        Required = WEBAUTHN_USER_VERIFICATION_REQUIREMENT.REQUIRED,
+        Preferred = WEBAUTHN_USER_VERIFICATION_REQUIREMENT.PREFERRED,
+        Discouraged = WEBAUTHN_USER_VERIFICATION_REQUIREMENT.DISCOURAGED,
     }
 
     public enum AttestationConveyance : uint
     {
-        Any = NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.ANY,
-        None = NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.NONE,
-        Indirect = NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.INDIRECT,
-        Direct = NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.DIRECT,
+        Any = WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.ANY,
+        None = WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.NONE,
+        Indirect = WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.INDIRECT,
+        Direct = WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE.DIRECT,
     }
 
     public enum ResidentKeyRequirement

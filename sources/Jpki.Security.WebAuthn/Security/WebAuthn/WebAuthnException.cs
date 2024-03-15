@@ -27,11 +27,11 @@ namespace Jpki.Security.WebAuthn
 {
     public class WebAuthnException : Exception
     {
-        public WebAuthnException(string message) : base(message)
+        internal WebAuthnException(string message) : base(message)
         {
         }
 
-        public WebAuthnException(string message, Exception innerException)
+        internal WebAuthnException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

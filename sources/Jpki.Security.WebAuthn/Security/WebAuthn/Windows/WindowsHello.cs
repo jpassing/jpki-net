@@ -25,6 +25,7 @@
 using Jpki.Format.Cbor;
 using Jpki.Interop;
 using Jpki.Security.Cryptography.Cose;
+using Jpki.Security.WebAuthn.Security.WebAuthn;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -119,18 +120,18 @@ namespace Jpki.Security.WebAuthn.Windows
                         cExtensions = 0
                     },
 
-                    dwAuthenticatorAttachment = (NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.Authenticator,
+                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.Authenticator,
                     bRequireResidentKey = options.ResidentKey == ResidentKeyRequirement.Required,
                     bPreferResidentKey = options.ResidentKey == ResidentKeyRequirement.Preferred,
-                    dwUserVerificationRequirement = (NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT)options.UserVerification,
-                    dwAttestationConveyancePreference = (NativeMethods.WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE)options.Attestation,
+                    dwUserVerificationRequirement = (WEBAUTHN_USER_VERIFICATION_REQUIREMENT)options.UserVerification,
+                    dwAttestationConveyancePreference = (WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE)options.Attestation,
                     dwFlags = 0,
                     bBrowserInPrivateMode = false,
 
                     pCancellationId = cancellationGuid.Handle,
                     pExcludeCredentialList = IntPtr.Zero,
-                    dwEnterpriseAttestation = NativeMethods.WEBAUTHN_ENTERPRISE_ATTESTATION.NONE,
-                    dwLargeBlobSupport = NativeMethods.WEBAUTHN_LARGE_BLOB_SUPPORT.NONE
+                    dwEnterpriseAttestation = WEBAUTHN_ENTERPRISE_ATTESTATION.NONE,
+                    dwLargeBlobSupport = WEBAUTHN_LARGE_BLOB_SUPPORT.NONE
                 };
 
                 var hresult = NativeMethods.WebAuthNAuthenticatorMakeCredential(
@@ -180,7 +181,7 @@ namespace Jpki.Security.WebAuthn.Windows
                         .AssumeNotNull());
 
                     AttestationStatement attestationStatement = null;
-                    if (nativeAttestation.dwAttestationDecodeType == NativeMethods.WEBAUTHN_ATTESTATION_DECODE.COMMON)
+                    if (nativeAttestation.dwAttestationDecodeType == WEBAUTHN_ATTESTATION_DECODE.COMMON)
                     {
                         var commonStatement = Marshal.PtrToStructure<NativeMethods.WEBAUTHN_COMMON_ATTESTATION>(
                             nativeAttestation.pvAttestationDecode);
@@ -351,10 +352,10 @@ namespace Jpki.Security.WebAuthn.Windows
                         cExtensions = 0,
                         pExtensions = IntPtr.Zero
                     },
-                    dwAuthenticatorAttachment = (NativeMethods.WEBAUTHN_AUTHENTICATOR_ATTACHMENT)
+                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)
                         options.AuthenticatorAttachment,
 
-                    dwUserVerificationRequirement = (NativeMethods.WEBAUTHN_USER_VERIFICATION_REQUIREMENT)
+                    dwUserVerificationRequirement = (WEBAUTHN_USER_VERIFICATION_REQUIREMENT)
                         options.UserVerification,
 
                     dwFlags = 0,

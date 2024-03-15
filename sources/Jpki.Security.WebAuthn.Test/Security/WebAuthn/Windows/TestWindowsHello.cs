@@ -23,6 +23,7 @@
 
 using Jpki.Security.Cryptography.Cose;
 using Jpki.Security.WebAuthn;
+using Jpki.Security.WebAuthn.Security.WebAuthn;
 using Jpki.Security.WebAuthn.Windows;
 using NUnit.Framework;
 using System;

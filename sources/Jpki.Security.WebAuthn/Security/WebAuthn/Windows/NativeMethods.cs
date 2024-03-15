@@ -422,50 +422,6 @@ namespace Jpki.Security.WebAuthn.Windows
             public bool bBrowserInPrivateMode;
         }
 
-        internal enum WEBAUTHN_AUTHENTICATOR_ATTACHMENT : uint
-        {
-            ANY = 0,
-            PLATFORM = 1,
-            CROSS_PLATFORM = 2,
-            CROSS_PLATFORM_U2F_V2 = 3,
-        }
-
-        internal enum WEBAUTHN_USER_VERIFICATION_REQUIREMENT : uint
-        {
-            ANY = 0,
-            REQUIRED = 1,
-            PREFERRED = 2,
-            DISCOURAGED = 3,
-        }
-
-        internal enum WEBAUTHN_ATTESTATION_CONVEYANCE_PREFERENCE : uint
-        {
-            ANY = 0,
-            NONE = 1,
-            INDIRECT = 2,
-            DIRECT = 3,
-        }
-
-        internal enum WEBAUTHN_ENTERPRISE_ATTESTATION : uint
-        {
-            NONE = 0,
-            VENDOR_FACILITATED = 1,
-            PLATFORM_MANAGED = 2,
-        }
-
-        internal enum WEBAUTHN_LARGE_BLOB_SUPPORT : uint
-        {
-            NONE = 0,
-            REQUIRED = 1,
-            PREFERRED = 2,
-        }
-
-        internal enum WEBAUTHN_ATTESTATION_DECODE : uint
-        {
-            NONE = 0,
-            COMMON = 1
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         internal struct WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS
         {

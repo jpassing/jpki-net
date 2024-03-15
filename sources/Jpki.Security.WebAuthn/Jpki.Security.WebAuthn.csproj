@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Jpki.props" />
   <PropertyGroup>
-    <RootNamespace>Jpki.Security.WebAuthn</RootNamespace>
-    
     <PackageId>Jpki.Security.WebAuthn</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
