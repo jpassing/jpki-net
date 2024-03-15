@@ -27,6 +27,9 @@ using System.Threading.Tasks;
 
 namespace Jpki.Security.WebAuthn
 {
+    /// <summary>
+    /// WebAuthn authenticator.
+    /// </summary>
     public interface IAuthenticator
     {
         /// <summary>
@@ -51,41 +54,61 @@ namespace Jpki.Security.WebAuthn
             CancellationToken cancellationToken);
     }
 
+    public abstract class AuthenticatorOptions
+    {
+
+        /// <summary>
+        /// Types of authenticator the user is allowed to use.
+        /// </summary>
+        public AuthenticatorAttachment AuthenticatorAttachment { get; set; }
+            = AuthenticatorAttachment.Any;
+
+        /// <summary>
+        /// Type of verification the user is expected to perform.
+        /// </summary>
+        public UserVerificationRequirement UserVerification { get; set; }
+            = UserVerificationRequirement.Any;
+
+        /// <summary>
+        /// Timeout allotted for authentication.
+        /// </summary>
+        public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
+    }
+
     /// <summary>
     /// Options for creating credential attestations.
     /// </summary>
-    public class AttestationOptions
+    public class AttestationOptions : AuthenticatorOptions
     {
+        /// <summary>
+        /// Signature algorithms the authenticator
+        /// is allowed to use.
+        /// </summary>
         public CoseSignatureAlgorithm[] SignatureAlgorithms { get; set; }
             = new[] { CoseSignatureAlgorithm.ES256 };
 
-        public AuthenticatorAttachment Authenticator { get; set; }
-            = AuthenticatorAttachment.CrossPlatform;
-
-        public UserVerificationRequirement UserVerification { get; set; }
-            = UserVerificationRequirement.Preferred;
-
+        /// <summary>
+        /// Determines whether the authenticator is expected to
+        /// return an attestation.
+        /// </summary>
         public AttestationConveyance Attestation { get; set; }
             = AttestationConveyance.None;
 
+        /// <summary>
+        /// Determines whether the authenticator is expected
+        /// to allocate a resident key or not.
+        /// </summary>
         public ResidentKeyRequirement ResidentKey { get; set; }
-
-        public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
     }
 
     /// <summary>
     /// Options for creating assertions.
     /// </summary>
-    public class AssertionOptions
+    public class AssertionOptions : AuthenticatorOptions
     {
+        /// <summary>
+        /// Set of existing credentials the authenticator can use.
+        /// </summary>
         public ICollection<CredentialId>? AllowedCredentials { get; set; }
-
-        public AuthenticatorAttachment AuthenticatorAttachment { get; set; }
-            = AuthenticatorAttachment.Any;
-
-        public UserVerificationRequirement UserVerification { get; set; }
-            = UserVerificationRequirement.Any;
-
-        public TimeSpan Timeout { get; set; } = TimeSpan.Zero;
     }
 }
