@@ -131,7 +131,7 @@ namespace Jpki.Security.WebAuthn.Windows
                         cExtensions = 0
                     },
 
-                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.Authenticator,
+                    dwAuthenticatorAttachment = (WEBAUTHN_AUTHENTICATOR_ATTACHMENT)options.AuthenticatorAttachment,
                     bRequireResidentKey = options.ResidentKey == ResidentKeyRequirement.Required,
                     bPreferResidentKey = options.ResidentKey == ResidentKeyRequirement.Preferred,
                     dwUserVerificationRequirement = (WEBAUTHN_USER_VERIFICATION_REQUIREMENT)options.UserVerification,

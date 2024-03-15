@@ -126,7 +126,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                         ClientData.FromJson("{}"),
                         new AttestationOptions()
                         {
-                            Authenticator = AuthenticatorAttachment.Platform
+                            AuthenticatorAttachment = AuthenticatorAttachment.Platform
                         },
                         CancellationToken.None)
                     .Wait());
