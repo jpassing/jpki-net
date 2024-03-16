@@ -84,36 +84,32 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         public void WhenSignatureAlgorithmsEmpty_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => Authenticators.WindowsHello
-                    .CreateCredentialAsync(
-                        this.form!.Handle,
-                        Data.NonResidentRelyingParty,
-                        Data.User,
-                        ClientData.FromJson("{}"),
-                        new AttestationOptions()
-                        {
-                            SignatureAlgorithms = Array.Empty<CoseSignatureAlgorithm>()
-                        },
-                        CancellationToken.None)
-                    .Wait());
+                () => Authenticators.WindowsHello.CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        SignatureAlgorithms = Array.Empty<CoseSignatureAlgorithm>()
+                    },
+                    CancellationToken.None));
         }
 
         [Test]
         public void WhenSignatureAlgorithmsInvalid_ThenCreateCredentialThrowsException()
         {
             AssertThrows.AggregateException<ArgumentException>(
-                () => Authenticators.WindowsHello
-                    .CreateCredentialAsync(
-                        this.form!.Handle,
-                        Data.NonResidentRelyingParty,
-                        Data.User,
-                        ClientData.FromJson("{}"),
-                        new AttestationOptions()
-                        {
-                            SignatureAlgorithms = new[] { (CoseSignatureAlgorithm)9999 }
-                        },
-                        CancellationToken.None)
-                    .Wait());
+                () => Authenticators.WindowsHello.CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        SignatureAlgorithms = new[] { (CoseSignatureAlgorithm)9999 }
+                    },
+                    CancellationToken.None));
         }
 
         [Test]
@@ -127,18 +123,16 @@ namespace Jpki.Test.Security.WebAuthn.Windows
             }
 
             AssertThrows.AggregateException<WebAuthnException>(
-                () => Authenticators.WindowsHello
-                    .CreateCredentialAsync(
-                        this.form!.Handle,
-                        Data.NonResidentRelyingParty,
-                        Data.User,
-                        ClientData.FromJson("{}"),
-                        new AttestationOptions()
-                        {
-                            AuthenticatorAttachment = AuthenticatorAttachment.Platform
-                        },
-                        CancellationToken.None)
-                    .Wait());
+                () => Authenticators.WindowsHello.CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions()
+                    {
+                        AuthenticatorAttachment = AuthenticatorAttachment.Platform
+                    },
+                    CancellationToken.None));
         }
 
         [Test]
@@ -147,20 +141,19 @@ namespace Jpki.Test.Security.WebAuthn.Windows
         {
             using (var cts = new CancellationTokenSource())
             {
-                var attestationTask = Authenticators.WindowsHello
-                    .CreateCredentialAsync(
-                        this.form!.Handle,
-                        Data.NonResidentRelyingParty,
-                        Data.User,
-                        ClientData.FromJson("{}"),
-                        new AttestationOptions(),
-                        cts.Token);
+                var attestationTask = Authenticators.WindowsHello.CreateCredentialAsync(
+                    this.form!.Handle,
+                    Data.NonResidentRelyingParty,
+                    Data.User,
+                    ClientData.FromJson("{}"),
+                    new AttestationOptions(),
+                    cts.Token);
 
                 await Task.Delay(250);
                 cts.Cancel();
 
                 AssertThrows.AggregateException<OperationCanceledException>(
-                    () => attestationTask.Wait());
+                    () => attestationTask);
             }
         }
 
@@ -186,7 +179,7 @@ namespace Jpki.Test.Security.WebAuthn.Windows
                 cts.Cancel();
 
                 AssertThrows.AggregateException<OperationCanceledException>(
-                    () => attestationTask.Wait());
+                    () => attestationTask);
             }
         }
 

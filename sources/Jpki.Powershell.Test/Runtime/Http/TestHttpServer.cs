@@ -45,7 +45,7 @@ namespace Jpki.Powershell.Test.Runtime.Http
                 runTask = server.RunAsync(CancellationToken.None);
             }
 
-            AssertThrows.AggregateException<TaskCanceledException>(() => runTask.Wait());
+            AssertThrows.AggregateException<TaskCanceledException>(() => runTask);
         }
 
         //---------------------------------------------------------------------
@@ -59,7 +59,7 @@ namespace Jpki.Powershell.Test.Runtime.Http
             var runTask = server.RunAsync(CancellationToken.None);
             server.Stop();
 
-            AssertThrows.AggregateException<TaskCanceledException>(() => runTask.Wait());
+            AssertThrows.AggregateException<TaskCanceledException>(() => runTask);
         }
 
         //---------------------------------------------------------------------
