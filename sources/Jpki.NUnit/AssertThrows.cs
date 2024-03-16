@@ -45,7 +45,7 @@ namespace NUnit.Framework
             }
         }
 
-        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception
+        public static TActual? AggregateException<TActual>(TestDelegate code) where TActual : Exception // TODO: use Task
         {
             return AssertThat.Throws<TActual>(() =>
             {

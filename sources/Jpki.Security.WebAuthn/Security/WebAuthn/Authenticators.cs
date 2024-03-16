@@ -28,7 +28,7 @@ namespace Jpki.Security.WebAuthn
 {
     public static class Authenticators
     {
-        public static IAuthenticator WindowsHello// TODO: test non-windows
+        public static IAuthenticator WindowsHello
         {
 #if WINDOWS || NETFRAMEWORK
             get => new WindowsHello();
@@ -42,7 +42,7 @@ namespace Jpki.Security.WebAuthn
         // Capabilities.
         //---------------------------------------------------------------------
 
-        public static bool IsPlatformAuthenticatorAvailable // TODO: test non-windows
+        public static bool IsPlatformAuthenticatorAvailable
         {
 #if WINDOWS || NETFRAMEWORK
             get
