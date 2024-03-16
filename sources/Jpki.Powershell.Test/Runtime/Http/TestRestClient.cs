@@ -82,7 +82,7 @@ namespace Jpki.Powershell.Test.Runtime.Http
             AssertThrows.AggregateException<HttpRequestException>(
                 () => client.GetStringAsync(
                     NotFoundUrl,
-                    CancellationToken.None).Wait());
+                    CancellationToken.None));
         }
 
         //---------------------------------------------------------------------
@@ -122,7 +122,7 @@ namespace Jpki.Powershell.Test.Runtime.Http
             AssertThrows.AggregateException<HttpRequestException>(
                 () => client.GetJsonAsync<SampleResource>(
                     NotFoundUrl,
-                    CancellationToken.None).Wait());
+                    CancellationToken.None));
         }
     }
 }

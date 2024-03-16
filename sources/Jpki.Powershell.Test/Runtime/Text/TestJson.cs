@@ -61,8 +61,8 @@ namespace Jpki.Powershell.Test.Runtime.Text
                 var c = Json.Deserialize<SomeClass>(stream);
 
                 AssertThat.NotNull(c);
-                AssertThat.AreEqual("aa", c.A);
-                AssertThat.AreEqual("bb", c.B);
+                AssertThat.AreEqual("aa", c!.A);
+                AssertThat.AreEqual("bb", c!.B);
             }
         }
 
@@ -74,8 +74,8 @@ namespace Jpki.Powershell.Test.Runtime.Text
             var c = Json.Deserialize<SomeClass>(json);
             
             AssertThat.NotNull(c);
-            AssertThat.AreEqual("aa", c.A);
-            AssertThat.AreEqual("bb", c.B);
+            AssertThat.AreEqual("aa", c!.A);
+            AssertThat.AreEqual("bb", c!.B);
         }
 
         [Test]
