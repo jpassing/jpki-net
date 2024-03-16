@@ -1,7 +1,29 @@
-﻿using System.Collections.Generic;
+﻿//
+// Copyright 2024 Johannes Passing
+//
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+// 
+//   http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
 
-namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
+using System.Collections.Generic;
+
+namespace Jpki.Security.WebAuthn.Metadata
 {
+    
     /// <summary>
     /// The metadata statement as defined in [FIDOMetadataStatement].
     /// </summary>
@@ -19,7 +41,7 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
             [JsonProperty("authenticationAlgorithms")] List<string> authenticationAlgorithms,
             [JsonProperty("publicKeyAlgAndEncodings")] List<string> publicKeyAlgAndEncodings,
             [JsonProperty("attestationTypes")] List<string> attestationTypes,
-            [JsonProperty("userVerificationDetails")] List<List<>> userVerificationDetails,
+            [JsonProperty("userVerificationDetails")] IReadOnlyList<IReadOnlyList<UserVerificationDetails>> userVerificationDetails,
             [JsonProperty("keyProtection")] List<string> keyProtection,
             [JsonProperty("matcherProtection")] List<string> matcherProtection,
             [JsonProperty("cryptoStrength")] int cryptoStrength,
@@ -28,14 +50,14 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
             [JsonProperty("tcDisplayContentType")] string tcDisplayContentType,
             [JsonProperty("attestationRootCertificates")] List<string> attestationRootCertificates,
             [JsonProperty("icon")] string icon,
-            [JsonProperty("authenticatorGetInfo")] AuthenticatorGetInfo authenticatorGetInfo,
+            [JsonProperty("authenticatorGetInfo")] IDictionary<string, object> authenticatorGetInfo,
             [JsonProperty("attestationCertificateKeyIdentifiers")] List<string> attestationCertificateKeyIdentifiers,
             [JsonProperty("isKeyRestricted")] bool? isKeyRestricted,
             [JsonProperty("isFreshUserVerificationRequired")] bool? isFreshUserVerificationRequired,
             [JsonProperty("aaid")] string aaid,
             [JsonProperty("supportedExtensions")] List<ExtensionDescriptor> supportedExtensions,
             [JsonProperty("alternativeDescriptions")] IDictionary<string, string> alternativeDescriptions,
-            [JsonProperty("tcDisplayPNGCharacteristics")] List<DisplayPNGCharacteristicsDescriptor> tcDisplayPNGCharacteristics
+            [JsonProperty("tcDisplayPNGCharacteristics")] List<DisplayPngCharacteristicsDescriptor> tcDisplayPNGCharacteristics
         )
         {
             this.LegalHeader = legalHeader;
@@ -110,7 +132,7 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
         /// }
         /// </summary>
         [JsonProperty("alternativeDescriptions")]
-        public Dictionary<string, string> AlternativeDescriptions { get; }
+        public IDictionary<string, string> AlternativeDescriptions { get; }
 
         /// <summary>
         /// Earliest (i.e. lowest) trustworthy authenticatorVersion meeting the 
@@ -226,7 +248,7 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
         /// A list of alternative DisplayPNGCharacteristicsDescriptor.
         /// </summary>
         [JsonProperty("tcDisplayPNGCharacteristics")]
-        public IReadOnlyList<DisplayPNGCharacteristicsDescriptor> TcDisplayPNGCharacteristics { get; }
+        public IReadOnlyList<DisplayPngCharacteristicsDescriptor> TcDisplayPNGCharacteristics { get; }
 
         /// <summary>
         /// List of attestation trust anchors for the batch chain 
@@ -251,14 +273,13 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
         /// Describes supported versions, extensions, AAGUID of the device and its capabilities.
         /// </summary>
         [JsonProperty("authenticatorGetInfo")]
-        public AuthenticatorGetInfo AuthenticatorGetInfo { get; }
+        public IDictionary<string, object> AuthenticatorGetInfo { get; }
     }
-
 
     public class UserVerificationDetails
     {
         [JsonConstructor]
-        public Root(
+        public UserVerificationDetails(
             [JsonProperty("userVerificationMethod")] string userVerificationMethod
         )
         {
@@ -306,140 +327,146 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
         public int Minor { get; }
     }
 
+    ///// <summary>
+    ///// Describes supported versions, extensions, AAGUID of the 
+    ///// device and its capabilities.
+    ///// 
+    ///// The information is the same reported by an authenticator 
+    ///// when invoking the 'authenticatorGetInfo' method, see[FIDOCTAP].
+    ///// </summary>
+    //public class AuthenticatorInfo
+    //{
+    //    [JsonConstructor]
+    //    public AuthenticatorInfo(
+    //        [JsonProperty("versions")] List<string> versions,
+    //        [JsonProperty("extensions")] List<string> extensions,
+    //        [JsonProperty("aaguid")] string aaguid,
+    //        [JsonProperty("options")] Options options,
+    //        [JsonProperty("maxMsgSize")] int maxMsgSize,
+    //        [JsonProperty("pinUvAuthProtocols")] List<int> pinUvAuthProtocols,
+    //        [JsonProperty("maxCredentialIdLength")] int? maxCredentialIdLength,
+    //        [JsonProperty("transports")] List<string> transports,
+    //        [JsonProperty("algorithms")] List<Algorithm> algorithms,
+    //        [JsonProperty("preferredPlatformUvAttempts")] int? preferredPlatformUvAttempts,
+    //        [JsonProperty("uvModality")] int? uvModality,
+    //        [JsonProperty("certifications")] Certifications certifications,
+    //        [JsonProperty("remainingDiscoverableCredentials")] int? remainingDiscoverableCredentials,
+    //        [JsonProperty("maxCredentialCountInList")] int? maxCredentialCountInList,
+    //        [JsonProperty("firmwareVersion")] int? firmwareVersion,
+    //        [JsonProperty("maxSerializedLargeBlobArray")] int? maxSerializedLargeBlobArray,
+    //        [JsonProperty("forcePINChange")] bool? forcePINChange,
+    //        [JsonProperty("minPINLength")] int? minPINLength,
+    //        [JsonProperty("maxCredBlobLength")] int? maxCredBlobLength,
+    //        [JsonProperty("maxRPIDsForSetMinPINLength")] int? maxRPIDsForSetMinPINLength
+    //    )
+    //    {
+    //        this.Versions = versions;
+    //        this.Extensions = extensions;
+    //        this.Aaguid = aaguid;
+    //        this.Options = options;
+    //        this.MaxMsgSize = maxMsgSize;
+    //        this.PinUvAuthProtocols = pinUvAuthProtocols;
+    //        this.MaxCredentialIdLength = maxCredentialIdLength;
+    //        this.Transports = transports;
+    //        this.Algorithms = algorithms;
+    //        this.PreferredPlatformUvAttempts = preferredPlatformUvAttempts;
+    //        this.UvModality = uvModality;
+    //        this.Certifications = certifications;
+    //        this.RemainingDiscoverableCredentials = remainingDiscoverableCredentials;
+    //        this.MaxCredentialCountInList = maxCredentialCountInList;
+    //        this.FirmwareVersion = firmwareVersion;
+    //        this.MaxSerializedLargeBlobArray = maxSerializedLargeBlobArray;
+    //        this.ForcePINChange = forcePINChange;
+    //        this.MinPINLength = minPINLength;
+    //        this.MaxCredBlobLength = maxCredBlobLength;
+    //        this.MaxRPIDsForSetMinPINLength = maxRPIDsForSetMinPINLength;
+    //    }
 
-    public class AuthenticatorGetInfo
-    {
-        [JsonConstructor]
-        public AuthenticatorGetInfo(
-            [JsonProperty("versions")] List<string> versions,
-            [JsonProperty("extensions")] List<string> extensions,
-            [JsonProperty("aaguid")] string aaguid,
-            [JsonProperty("options")] Options options,
-            [JsonProperty("maxMsgSize")] int maxMsgSize,
-            [JsonProperty("pinUvAuthProtocols")] List<int> pinUvAuthProtocols,
-            [JsonProperty("maxCredentialIdLength")] int? maxCredentialIdLength,
-            [JsonProperty("transports")] List<string> transports,
-            [JsonProperty("algorithms")] List<Algorithm> algorithms,
-            [JsonProperty("preferredPlatformUvAttempts")] int? preferredPlatformUvAttempts,
-            [JsonProperty("uvModality")] int? uvModality,
-            [JsonProperty("certifications")] Certifications certifications,
-            [JsonProperty("remainingDiscoverableCredentials")] int? remainingDiscoverableCredentials,
-            [JsonProperty("maxCredentialCountInList")] int? maxCredentialCountInList,
-            [JsonProperty("firmwareVersion")] int? firmwareVersion,
-            [JsonProperty("maxSerializedLargeBlobArray")] int? maxSerializedLargeBlobArray,
-            [JsonProperty("forcePINChange")] bool? forcePINChange,
-            [JsonProperty("minPINLength")] int? minPINLength,
-            [JsonProperty("maxCredBlobLength")] int? maxCredBlobLength,
-            [JsonProperty("maxRPIDsForSetMinPINLength")] int? maxRPIDsForSetMinPINLength
-        )
-        {
-            this.Versions = versions;
-            this.Extensions = extensions;
-            this.Aaguid = aaguid;
-            this.Options = options;
-            this.MaxMsgSize = maxMsgSize;
-            this.PinUvAuthProtocols = pinUvAuthProtocols;
-            this.MaxCredentialIdLength = maxCredentialIdLength;
-            this.Transports = transports;
-            this.Algorithms = algorithms;
-            this.PreferredPlatformUvAttempts = preferredPlatformUvAttempts;
-            this.UvModality = uvModality;
-            this.Certifications = certifications;
-            this.RemainingDiscoverableCredentials = remainingDiscoverableCredentials;
-            this.MaxCredentialCountInList = maxCredentialCountInList;
-            this.FirmwareVersion = firmwareVersion;
-            this.MaxSerializedLargeBlobArray = maxSerializedLargeBlobArray;
-            this.ForcePINChange = forcePINChange;
-            this.MinPINLength = minPINLength;
-            this.MaxCredBlobLength = maxCredBlobLength;
-            this.MaxRPIDsForSetMinPINLength = maxRPIDsForSetMinPINLength;
-        }
+    //    /// <summary>
+    //    /// List of supported versions. Supported versions are: 
+    //    /// 
+    //    /// - "FIDO_2_0" for CTAP2/FIDO2/Web Authentication authenticators 
+    //    /// - "U2F_V2" for CTAP1/U2F authenticators.
+    //    /// </summary>
+    //    [JsonProperty("versions")]
+    //    public IReadOnlyList<string> Versions { get; }
 
-        /// <summary>
-        /// List of supported versions. Supported versions are: 
-        /// 
-        /// - "FIDO_2_0" for CTAP2/FIDO2/Web Authentication authenticators 
-        /// - "U2F_V2" for CTAP1/U2F authenticators.
-        /// </summary>
-        [JsonProperty("versions")]
-        public IReadOnlyList<string> Versions { get; }
+    //    /// <summary>
+    //    /// List of supported extensions.
+    //    /// </summary>
+    //    [JsonProperty("extensions")]
+    //    public IReadOnlyList<string> Extensions { get; }
 
-        /// <summary>
-        /// List of supported extensions.
-        /// </summary>
-        [JsonProperty("extensions")]
-        public IReadOnlyList<string> Extensions { get; }
+    //    /// <summary>
+    //    /// The claimed AAGUID.
+    //    /// </summary>
 
-        /// <summary>
-        /// The claimed AAGUID.
-        /// </summary>
+    //    [JsonProperty("aaguid")]
+    //    public string Aaguid { get; }
 
-        [JsonProperty("aaguid")]
-        public string Aaguid { get; }
+    //    /// <summary>
+    //    /// List of supported options.
+    //    /// </summary>
 
-        /// <summary>
-        /// List of supported options.
-        /// </summary>
+    //    [JsonProperty("options")]
+    //    public Options Options { get; }
 
-        [JsonProperty("options")]
-        public Options Options { get; }
+    //    /// <summary>
+    //    /// Maximum message size supported by the authenticator.
+    //    /// </summary>
 
-        /// <summary>
-        /// Maximum message size supported by the authenticator.
-        /// </summary>
+    //    [JsonProperty("maxMsgSize")]
+    //    public int MaxMsgSize { get; }
 
-        [JsonProperty("maxMsgSize")]
-        public int MaxMsgSize { get; }
+    //    /// <summary>
+    //    /// List of supported PIN Protocol versions.
+    //    /// </summary>
 
-        /// <summary>
-        /// List of supported PIN Protocol versions.
-        /// </summary>
+    //    [JsonProperty("pinUvAuthProtocols")]
+    //    public IReadOnlyList<int> PinUvAuthProtocols { get; }
 
-        [JsonProperty("pinUvAuthProtocols")]
-        public IReadOnlyList<int> PinUvAuthProtocols { get; }
+    //    [JsonProperty("maxCredentialIdLength")]
+    //    public int? MaxCredentialIdLength { get; }
 
-        [JsonProperty("maxCredentialIdLength")]
-        public int? MaxCredentialIdLength { get; }
+    //    [JsonProperty("transports")]
+    //    public IReadOnlyList<string> Transports { get; }
 
-        [JsonProperty("transports")]
-        public IReadOnlyList<string> Transports { get; }
+    //    [JsonProperty("algorithms")]
+    //    public IReadOnlyList<Algorithm> Algorithms { get; }
 
-        [JsonProperty("algorithms")]
-        public IReadOnlyList<Algorithm> Algorithms { get; }
+    //    [JsonProperty("preferredPlatformUvAttempts")]
+    //    public int? PreferredPlatformUvAttempts { get; }
 
-        [JsonProperty("preferredPlatformUvAttempts")]
-        public int? PreferredPlatformUvAttempts { get; }
+    //    [JsonProperty("uvModality")]
+    //    public int? UvModality { get; }
 
-        [JsonProperty("uvModality")]
-        public int? UvModality { get; }
+    //    [JsonProperty("certifications")]
+    //    public Certifications Certifications { get; }
 
-        [JsonProperty("certifications")]
-        public Certifications Certifications { get; }
+    //    [JsonProperty("remainingDiscoverableCredentials")]
+    //    public int? RemainingDiscoverableCredentials { get; }
 
-        [JsonProperty("remainingDiscoverableCredentials")]
-        public int? RemainingDiscoverableCredentials { get; }
+    //    [JsonProperty("maxCredentialCountInList")]
+    //    public int? MaxCredentialCountInList { get; }
 
-        [JsonProperty("maxCredentialCountInList")]
-        public int? MaxCredentialCountInList { get; }
+    //    [JsonProperty("firmwareVersion")]
+    //    public int? FirmwareVersion { get; }
 
-        [JsonProperty("firmwareVersion")]
-        public int? FirmwareVersion { get; }
+    //    [JsonProperty("maxSerializedLargeBlobArray")]
+    //    public int? MaxSerializedLargeBlobArray { get; }
 
-        [JsonProperty("maxSerializedLargeBlobArray")]
-        public int? MaxSerializedLargeBlobArray { get; }
+    //    [JsonProperty("forcePINChange")]
+    //    public bool? ForcePINChange { get; }
 
-        [JsonProperty("forcePINChange")]
-        public bool? ForcePINChange { get; }
+    //    [JsonProperty("minPINLength")]
+    //    public int? MinPINLength { get; }
 
-        [JsonProperty("minPINLength")]
-        public int? MinPINLength { get; }
+    //    [JsonProperty("maxCredBlobLength")]
+    //    public int? MaxCredBlobLength { get; }
 
-        [JsonProperty("maxCredBlobLength")]
-        public int? MaxCredBlobLength { get; }
-
-        [JsonProperty("maxRPIDsForSetMinPINLength")]
-        public int? MaxRPIDsForSetMinPINLength { get; }
-    }
+    //    [JsonProperty("maxRPIDsForSetMinPINLength")]
+    //    public int? MaxRPIDsForSetMinPINLength { get; }
+    //}
 
     /// <summary>
     /// This descriptor contains an extension supported by the authenticator.
@@ -485,10 +512,10 @@ namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
     /// characteristics as defined in the PNG [PNG] spec for IHDR 
     /// (image header) and PLTE (palette table)
     /// </summary>
-    public class DisplayPNGCharacteristicsDescriptor
+    public class DisplayPngCharacteristicsDescriptor
     {
         [JsonConstructor]
-        public DisplayPNGCharacteristicsDescriptor(
+        public DisplayPngCharacteristicsDescriptor(
             [JsonProperty("width")] int width,
             [JsonProperty("height")] int height,
             [JsonProperty("bitDepth")] int bitDepth,
