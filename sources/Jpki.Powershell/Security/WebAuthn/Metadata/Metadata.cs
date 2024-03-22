@@ -1,314 +1,226 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿//
+// Copyright 2024 Johannes Passing
+//
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+// 
+//   http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
 
-//namespace Jpki.Security.WebAuthn.Security.WebAuthn.Metadata
-//{
-
-//    /// <summary>
-//    /// Represents the MetadataBLOBPayload.
-//    /// </summary>
-//    public class Root
-//    {
-//        [JsonConstructor]
-//        public Root(
-//            [JsonProperty("legalHeader")] string legalHeader,
-//            [JsonProperty("no")] int no,
-//            [JsonProperty("nextUpdate")] string nextUpdate,
-//            [JsonProperty("entries")] List<Entry> entries
-//        )
-//        {
-//            this.LegalHeader = legalHeader;
-//            this.No = no;
-//            this.NextUpdate = nextUpdate;
-//            this.Entries = entries;
-//        }
-
-//        /// <summary>
-//        /// Indication of the acceptance of the relevant legal agreement for using the MDS.
-//        /// </summary>
-//        [JsonProperty("legalHeader")]
-//        public string LegalHeader { get; }
-
-//        /// <summary>
-//        /// The serial number of this UAF Metadata BLOB Payload.
-//        /// </summary>
-//        [JsonProperty("no")]
-//        public int No { get; }
-
-//        /// <summary>
-//        /// Date when the next update will be provided at latest.
-//        /// </summary>
-//        [JsonProperty("nextUpdate")]
-//        public DateTimeOffset? NextUpdate { get; }
-
-//        [JsonProperty("entries")]
-//        public IReadOnlyList<Entry> Entries { get; }
-//    }
-
-//    /// <summary>
-//    /// Represents the MetadataBLOBPayloadEntry.
-//    /// </summary>
-//    public class Entry
-//    {
-//        [JsonConstructor]
-//        public Entry(
-//            [JsonProperty("aaid")] string aaid,
-//            [JsonProperty("aaguid")] string aaguid,
-//            [JsonProperty("attestationCertificateKeyIdentifiers")] List<string> attestationCertificateKeyIdentifiers,
-//            [JsonProperty("metadataStatement")] MetadataStatement metadataStatement,
-//            [JsonProperty("statusReports")] List<StatusReport> statusReports,
-//            [JsonProperty("timeOfLastStatusChange")] DateTimeOffset timeOfLastStatusChange
-//        )
-//        {
-//            this.Aaguid = aaguid;
-//            this.MetadataStatement = metadataStatement;
-//            this.StatusReports = statusReports;
-//            this.TimeOfLastStatusChange = timeOfLastStatusChange;
-//            this.AttestationCertificateKeyIdentifiers = attestationCertificateKeyIdentifiers;
-//            this.Aaid = aaid;
-//        }
-
-//        /// <summary>
-//        /// The AAID of the authenticator this metadata BLOB payload entry relates to. 
-//        /// See [UAFProtocol] for the definition of the AAID structure. 
-//        /// </summary>
-//        /// 
-//        [JsonProperty("aaid")]
-//        public string Aaid { get; }
-
-//        /// <summary>
-//        /// The Authenticator Attestation GUID. See [FIDOKeyAttestation] for the
-//        /// definition of the AAGUID structure.
-//        /// </summary>
-//        [JsonProperty("aaguid")]
-//        public string Aaguid { get; }
-
-//        /// <summary>
-//        /// A list of the attestation certificate public key identifiers.
-//        /// </summary>
-//        [JsonProperty("attestationCertificateKeyIdentifiers")]
-//        public IReadOnlyList<string> AttestationCertificateKeyIdentifiers { get; }
-
-//        /// <summary>
-//        /// The metadata statement as defined in [FIDOMetadataStatement].
-//        /// </summary>
-//        [JsonProperty("metadataStatement")]
-//        public MetadataStatement MetadataStatement { get; }
-
-//        /// <summary>
-//        /// Status reports applicable to this authenticator.
-//        /// </summary>
-//        [JsonProperty("statusReports")]
-//        public IReadOnlyList<StatusReport> StatusReports { get; }
-
-//        /// <summary>
-//        /// Date since when the status report array was set to the current value.
-//        /// </summary>
-//        [JsonProperty("timeOfLastStatusChange")]
-//        public DateTimeOffset? TimeOfLastStatusChange { get; }
-//    }
+using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 
 
-//    public class Algorithm
-//    {
-//        [JsonConstructor]
-//        public Algorithm(
-//            [JsonProperty("type")] string type,
-//            [JsonProperty("alg")] int alg
-//        )
-//        {
-//            this.Type = type;
-//            this.Alg = alg;
-//        }
+#if NETFRAMEWORK
+using JsonPropertyName = Newtonsoft.Json.JsonPropertyAttribute;
+using JsonConstructorAttribute = Newtonsoft.Json.JsonConstructorAttribute;
+#else
+using JsonPropertyName = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+using JsonConstructorAttribute = System.Text.Json.Serialization.JsonConstructorAttribute;
+#endif
 
-//        [JsonProperty("type")]
-//        public string Type { get; }
+namespace Jpki.Security.WebAuthn.Metadata
+{
+    /// <summary>
+    /// Describes the status of an authenticator model as identified by its 
+    /// AAID/AAGUID or attestationCertificateKeyIdentifiers and potentially 
+    /// some additional information
+    /// </summary>
+    public enum AuthenticatorStatus
+    {
+        Unknown = 0,
 
-//        [JsonProperty("alg")]
-//        public int Alg { get; }
-//    }
+        NOT_FIDO_CERTIFIED,
+        FIDO_CERTIFIED,
+        USER_VERIFICATION_BYPASS,
+        ATTESTATION_KEY_COMPROMISE,
+        USER_KEY_REMOTE_COMPROMISE,
+        USER_KEY_PHYSICAL_COMPROMISE,
+        UPDATE_AVAILABLE,
+        REVOKED,
+        SELF_ASSERTION_SUBMITTED,
+        FIDO_CERTIFIED_L1,
+        FIDO_CERTIFIED_L1plus,
+        FIDO_CERTIFIED_L2,
+        FIDO_CERTIFIED_L2plus,
+        FIDO_CERTIFIED_L3,
+        FIDO_CERTIFIED_L3plus,
+    };
 
+    /// <summary>
+    /// Status reports applicable to this authenticator.
+    /// </summary>
+    public class StatusReport
+    {
+        [JsonPropertyName("status")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string? StatusString { get; set; }
 
+        /// <summary>
+        /// Status of the authenticator.
+        /// </summary>
+        public AuthenticatorStatus Status
+        {
+            get => string.IsNullOrEmpty(this.StatusString)
+                ? AuthenticatorStatus.Unknown
+                : (AuthenticatorStatus)Enum.Parse(
+                    typeof(AuthenticatorStatus), 
+                    this.StatusString);
+        }
 
-//    public class Certifications
-//    {
-//        [JsonConstructor]
-//        public Certifications(
-//            [JsonProperty("FIDO")] int? fIDO,
-//            [JsonProperty("FIPS-CMVP-2")] int? fIPSCMVP2,
-//            [JsonProperty("FIPS-CMVP-2-PHY")] int? fIPSCMVP2PHY
-//        )
-//        {
-//            this.FIDO = fIDO;
-//            this.FIPSCMVP2 = fIPSCMVP2;
-//            this.FIPSCMVP2PHY = fIPSCMVP2PHY;
-//        }
+        /// <summary>
+        /// Date since when the status code was set, if applicable. If no date 
+        /// is given, the status is assumed to be effective while present.
+        /// </summary>
+        [JsonPropertyName("effectiveDate")]
+        public DateTimeOffset? EffectiveDate { get; set; }
 
-//        [JsonProperty("FIDO")]
-//        public int? FIDO { get; }
+        /// <summary>
+        /// Version this status report relates to.
+        /// </summary>
+        [JsonPropertyName("authenticatorVersion")]
+        public long? AuthenticatorVersion { get; set; }
 
-//        [JsonProperty("FIPS-CMVP-2")]
-//        public int? FIPSCMVP2 { get; }
+        /// <summary>
+        /// Base64-encoded PKIX certificate value related to the current status, if applicable.
+        /// </summary>
+        [JsonPropertyName("certificate")]
+        public string? Certificate { get; set; } // TODO: parse
 
-//        [JsonProperty("FIPS-CMVP-2-PHY")]
-//        public int? FIPSCMVP2PHY { get; }
-//    }
+        /// <summary>
+        /// HTTPS URL where additional information may be found related 
+        /// to the current status, if applicable.
+        /// </summary>
+        [JsonPropertyName("url")]
+        public string? Url { get; set; }
 
+        /// <summary>
+        /// Describes the externally visible aspects of the Authenticator 
+        /// certification evaluation.
+        /// </summary>
+        [JsonPropertyName("certificationDescriptor")]
+        public string? CertificationDescriptor { get; set; }
 
+        /// <summary>
+        /// The unique identifier for the issued Certification.
+        /// </summary>
+        [JsonPropertyName("certificateNumber")]
+        public string? CertificateNumber { get; set; }
 
-//    public class Options
-//    {
-//        [JsonConstructor]
-//        public Options(
-//            [JsonProperty("rk")] bool rk,
-//            [JsonProperty("clientPin")] bool clientPin,
-//            [JsonProperty("up")] bool up,
-//            [JsonProperty("uv")] bool uv,
-//            [JsonProperty("plat")] bool? plat,
-//            [JsonProperty("pinUvAuthToken")] bool? pinUvAuthToken,
-//            [JsonProperty("noMcGaPermissionsWithClientPin")] bool? noMcGaPermissionsWithClientPin,
-//            [JsonProperty("bioEnroll")] bool? bioEnroll,
-//            [JsonProperty("userVerificationMgmtPreview")] bool? userVerificationMgmtPreview,
-//            [JsonProperty("uvBioEnroll")] bool? uvBioEnroll,
-//            [JsonProperty("credMgmt")] bool? credMgmt,
-//            [JsonProperty("credentialMgmtPreview")] bool? credentialMgmtPreview,
-//            [JsonProperty("makeCredUvNotRqd")] bool? makeCredUvNotRqd,
-//            [JsonProperty("authnrCfg")] bool? authnrCfg,
-//            [JsonProperty("alwaysUv")] bool? alwaysUv,
-//            [JsonProperty("largeBlobs")] bool? largeBlobs,
-//            [JsonProperty("setMinPINLength")] bool? setMinPINLength,
-//            [JsonProperty("ep")] bool? ep,
-//            [JsonProperty("uvAcfg")] bool? uvAcfg
-//        )
-//        {
-//            this.Rk = rk;
-//            this.ClientPin = clientPin;
-//            this.Up = up;
-//            this.Uv = uv;
-//            this.Plat = plat;
-//            this.PinUvAuthToken = pinUvAuthToken;
-//            this.NoMcGaPermissionsWithClientPin = noMcGaPermissionsWithClientPin;
-//            this.BioEnroll = bioEnroll;
-//            this.UserVerificationMgmtPreview = userVerificationMgmtPreview;
-//            this.UvBioEnroll = uvBioEnroll;
-//            this.CredMgmt = credMgmt;
-//            this.CredentialMgmtPreview = credentialMgmtPreview;
-//            this.MakeCredUvNotRqd = makeCredUvNotRqd;
-//            this.AuthnrCfg = authnrCfg;
-//            this.AlwaysUv = alwaysUv;
-//            this.LargeBlobs = largeBlobs;
-//            this.SetMinPINLength = setMinPINLength;
-//            this.Ep = ep;
-//            this.UvAcfg = uvAcfg;
-//        }
+        /// <summary>
+        /// The version of the Authenticator Certification Policy 
+        /// the implementation is certified to, e.g. "1.0.0".
+        /// </summary>
+        [JsonPropertyName("certificationPolicyVersion")]
+        public string? CertificationPolicyVersion { get; set; }
 
-//        [JsonProperty("rk")]
-//        public bool Rk { get; }
-
-//        [JsonProperty("clientPin")]
-//        public bool ClientPin { get; }
-
-//        [JsonProperty("up")]
-//        public bool Up { get; }
-
-//        [JsonProperty("uv")]
-//        public bool Uv { get; }
-
-//        [JsonProperty("plat")]
-//        public bool? Plat { get; }
-
-//        [JsonProperty("pinUvAuthToken")]
-//        public bool? PinUvAuthToken { get; }
-
-//        [JsonProperty("noMcGaPermissionsWithClientPin")]
-//        public bool? NoMcGaPermissionsWithClientPin { get; }
-
-//        [JsonProperty("bioEnroll")]
-//        public bool? BioEnroll { get; }
-
-//        [JsonProperty("userVerificationMgmtPreview")]
-//        public bool? UserVerificationMgmtPreview { get; }
-
-//        [JsonProperty("uvBioEnroll")]
-//        public bool? UvBioEnroll { get; }
-
-//        [JsonProperty("credMgmt")]
-//        public bool? CredMgmt { get; }
-
-//        [JsonProperty("credentialMgmtPreview")]
-//        public bool? CredentialMgmtPreview { get; }
-
-//        [JsonProperty("makeCredUvNotRqd")]
-//        public bool? MakeCredUvNotRqd { get; }
-
-//        [JsonProperty("authnrCfg")]
-//        public bool? AuthnrCfg { get; }
-
-//        [JsonProperty("alwaysUv")]
-//        public bool? AlwaysUv { get; }
-
-//        [JsonProperty("largeBlobs")]
-//        public bool? LargeBlobs { get; }
-
-//        [JsonProperty("setMinPINLength")]
-//        public bool? SetMinPINLength { get; }
-
-//        [JsonProperty("ep")]
-//        public bool? Ep { get; }
-
-//        [JsonProperty("uvAcfg")]
-//        public bool? UvAcfg { get; }
-//    }
+        /// <summary>
+        /// The document version of the Authenticator Security Requirements 
+        /// the implementation is certified to, e.g. "1.2.0".
+        /// </summary>
+        [JsonPropertyName("certificationRequirementsVersion")]
+        public string? CertificationRequirementsVersion { get; set; }
+    }
 
 
-//    public class StatusReport
-//    {
-//        [JsonConstructor]
-//        public StatusReport(
-//            [JsonProperty("status")] string status,
-//            [JsonProperty("effectiveDate")] string effectiveDate,
-//            [JsonProperty("certificationDescriptor")] string certificationDescriptor,
-//            [JsonProperty("certificateNumber")] string certificateNumber,
-//            [JsonProperty("certificationPolicyVersion")] string certificationPolicyVersion,
-//            [JsonProperty("certificationRequirementsVersion")] string certificationRequirementsVersion,
-//            [JsonProperty("url")] string url
-//        )
-//        {
-//            this.Status = status;
-//            this.EffectiveDate = effectiveDate;
-//            this.CertificationDescriptor = certificationDescriptor;
-//            this.CertificateNumber = certificateNumber;
-//            this.CertificationPolicyVersion = certificationPolicyVersion;
-//            this.CertificationRequirementsVersion = certificationRequirementsVersion;
-//            this.Url = url;
-//        }
+    /// <summary>
+    /// Represents the MetadataBLOBPayloadEntry.
+    /// </summary>
+    public class MetadataBlobPayloadEntry
+    {
+        /// <summary>
+        /// The AAID of the authenticator this metadata BLOB payload entry relates to. 
+        /// See [UAFProtocol] for the definition of the AAID structure. 
+        /// </summary>
+        /// 
+        [JsonPropertyName("aaid")]
+        public string? Aaid { get; set; }
 
-//        [JsonProperty("status")]
-//        public string Status { get; }
+        /// <summary>
+        /// The Authenticator Attestation GUID. See [FIDOKeyAttestation] for the
+        /// definition of the AAGUID structure.
+        /// </summary>
 
-//        [JsonProperty("effectiveDate")]
-//        public string EffectiveDate { get; }
+        [JsonPropertyName("aaguid")]
+        public string? AaguidString { get; set; }
 
-//        [JsonProperty("certificationDescriptor")]
-//        public string CertificationDescriptor { get; }
+        /// <summary>
+        /// The Authenticator Attestation GUID. See [FIDOKeyAttestation] for the 
+        /// definition of the AAGUID structure.
+        /// </summary>
+        public Guid? Aaguid
+        {
+            get => string.IsNullOrEmpty(this.AaguidString)
+                ? (Guid?)null
+                : Guid.Parse(this.AaguidString);
+        }
 
-//        [JsonProperty("certificateNumber")]
-//        public string CertificateNumber { get; }
+        /// <summary>
+        /// A list of the attestation certificate public key identifiers.
+        /// </summary>
+        [JsonPropertyName("attestationCertificateKeyIdentifiers")]
+        public IReadOnlyList<string>? AttestationCertificateKeyIdentifiers { get; set; }
 
-//        [JsonProperty("certificationPolicyVersion")]
-//        public string CertificationPolicyVersion { get; }
+        /// <summary>
+        /// The metadata statement as defined in [FIDOMetadataStatement].
+        /// </summary>
+        [JsonPropertyName("metadataStatement")]
+        public MetadataStatement? MetadataStatement { get; set; }
 
-//        [JsonProperty("certificationRequirementsVersion")]
-//        public string CertificationRequirementsVersion { get; }
+        /// <summary>
+        /// Status reports applicable to this authenticator.
+        /// </summary>
+        [JsonPropertyName("statusReports")]
+        public IReadOnlyList<StatusReport>? StatusReports { get; set; }
 
-//        [JsonProperty("url")]
-//        public string Url { get; }
-//    }
+        /// <summary>
+        /// Date since when the status report array was set to the current value.
+        /// </summary>
+        [JsonPropertyName("timeOfLastStatusChange")]
+        public DateTimeOffset? TimeOfLastStatusChange { get; set; }
+    }
 
+    /// <summary>
+    /// Represents the MetadataBLOBPayload.
+    /// </summary>
+    public class MetadataBlobPayload
+    {
+        /// <summary>
+        /// Indication of the acceptance of the relevant legal agreement 
+        /// for using the MDS.
+        /// </summary>
+        [JsonPropertyName("legalHeader")]
+        public string? LegalHeader { get; set; }
 
+        /// <summary>
+        /// The serial number of this UAF Metadata BLOB Payload.
+        /// </summary>
+        [JsonPropertyName("no")]
+        public int No { get; set; }
 
+        /// <summary>
+        /// Date when the next update will be provided at latest.
+        /// </summary>
+        [JsonPropertyName("nextUpdate")]
+        public DateTimeOffset? NextUpdate { get; set; }
 
-//}
+        /// <summary>
+        /// List of zero or more MetadataBLOBPayloadEntry objects.
+        /// </summary>
+        [JsonPropertyName("entries")]
+        public IReadOnlyList<MetadataBlobPayloadEntry>? Entries { get; set; }
+    }
+}
