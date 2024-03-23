@@ -33,7 +33,7 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
         [Test]
         public void GoogleTitanV2()
         {
-            var blob = Json.Deserialize<MetadataBlobPayload>(
+            var blob = Json.Deserialize<MetadataBlob>(
                 MdsSampleData.MetadataBlobs.GoogleTitanV2)!;
 
             AssertThat.NotNull(blob);

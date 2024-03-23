@@ -193,19 +193,22 @@ namespace Jpki.Security.WebAuthn
                     throw new InvalidAttestationException("The signature is invalid");
                 }
 
-                //
-                // Verify that attestnCert meets the requirements in § 8.2.1
-                // Packed Attestation Statement Certificate Requirements.
-                //
-                if (!this.Certificate.TryGetExtension(Oids.BasicConstraints, out var basicConstraintsExt))
+                if (!this.isFidoU2f)
                 {
-                    throw new InvalidAttestationException(
-                        "The cerfificate does not contain a basic constraints extension");
-                }
-                else if (((X509BasicConstraintsExtension)basicConstraintsExt!).CertificateAuthority)
-                {
-                    throw new InvalidAttestationException(
-                        "The cerfificate is a CA certificate");
+                    //
+                    // Verify that attestnCert meets the requirements in § 8.2.1
+                    // Packed Attestation Statement Certificate Requirements.
+                    //
+                    if (!this.Certificate.TryGetExtension(Oids.BasicConstraints, out var basicConstraintsExt))
+                    {
+                        throw new InvalidAttestationException(
+                            "The cerfificate does not contain a basic constraints extension");
+                    }
+                    else if (((X509BasicConstraintsExtension)basicConstraintsExt!).CertificateAuthority)
+                    {
+                        throw new InvalidAttestationException(
+                            "The cerfificate is a CA certificate");
+                    }
                 }
 
                 if (this.Certificate.TryGetExtension(Oids.FidoGenCeAaguid, out var aaguidExt) &&

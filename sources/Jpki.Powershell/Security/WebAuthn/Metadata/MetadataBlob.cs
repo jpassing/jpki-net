@@ -22,6 +22,12 @@
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
+using System.Linq;
+using Jpki.Powershell.Runtime.Text;
+using System.Text;
+
+
+
 
 
 #if NETFRAMEWORK
@@ -60,12 +66,30 @@ namespace Jpki.Security.WebAuthn.Metadata
         FIDO_CERTIFIED_L3plus,
     };
 
-
     /// <summary>
     /// Represents the MetadataBLOBPayload.
     /// </summary>
-    public class MetadataBlobPayload
+    public class MetadataBlob
     {
+        /// <summary>
+        /// Parse a JWT-encoded blob without verifying the JWT.
+        /// </summary>
+        public static MetadataBlob ParseUntrusted(string? jwt)
+        {
+            var encodedBody = jwt
+                .ExpectNotNull(nameof(jwt))
+                .Split('.')
+                .Skip(1)
+                .FirstOrDefault()
+                .ExpectNotNull("JWT body");
+
+            var body = Encoding.UTF8.GetString(Base64UrlEncoding.Decode(encodedBody));
+            var payload = Json.Deserialize<MetadataBlob>(body);
+
+            return payload ?? throw new InvalidMetadataException(
+                "The metadata blob does not contain a valid MetadataBLOBPayload");
+        }
+
         /// <summary>
         /// Indication of the acceptance of the relevant legal agreement 
         /// for using the MDS.
@@ -226,6 +250,13 @@ namespace Jpki.Security.WebAuthn.Metadata
             /// </summary>
             [JsonPropertyName("timeOfLastStatusChange")]
             public DateTimeOffset? TimeOfLastStatusChange { get; set; }
+        }
+    }
+
+    public class InvalidMetadataException : Exception
+    {
+        internal InvalidMetadataException(string message) : base(message)
+        {
         }
     }
 }
