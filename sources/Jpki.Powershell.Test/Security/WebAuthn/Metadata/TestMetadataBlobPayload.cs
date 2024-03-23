@@ -30,7 +30,6 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
     [TestFixture]
     public class TestMetadataBlobPayload
     {
-
         [Test]
         public void GoogleTitanV2()
         {
