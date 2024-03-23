@@ -14,7 +14,7 @@ namespace Jpki.Powershell.Security.WebAuthn
 {
     [Cmdlet(VerbsCommon.Get, "WebAuthnAttestationMetadata")]
     public class GetWebAuthnAttestationMetadata
-        : AsyncCmdletBase<IEnumerable<MetadataBlobPayloadEntry>> // TODO: test
+        : AsyncCmdletBase<IEnumerable<MetadataBlobPayload.Entry>> // TODO: test
     {
         private const string FidoParameterSet = null;
         private const string U2fParameterSet = null;
@@ -33,7 +33,7 @@ namespace Jpki.Powershell.Security.WebAuthn
         [Parameter(Mandatory = false, ParameterSetName = nameof(U2fParameterSet))]
         public string? Aaid { get; set; }
 
-        protected override async Task<IEnumerable<MetadataBlobPayloadEntry>> ProcessRecordAsync(
+        protected override async Task<IEnumerable<MetadataBlobPayload.Entry>> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
             var payload = await MdsMetadataResource

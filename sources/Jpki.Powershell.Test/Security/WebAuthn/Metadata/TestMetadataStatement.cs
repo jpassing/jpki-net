@@ -46,10 +46,10 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
                 new[] { "hardware", "secure_element", "remote_handle" },
                 statement.KeyProtection!);
             AssertThat.AreEqual("u2f", statement.ProtocolFamily);
-            AssertThat.AreEqual(1, statement!.Upv!.First().Major);
-            AssertThat.AreEqual(1, statement!.Upv!.First().Minor);
+            AssertThat.AreEqual(1, statement!.Upv![0].Major);
+            AssertThat.AreEqual(1, statement!.Upv![0].Minor);
             CollectionAssertThat.AreEquivalent(
-                new[] { new[] { new UserVerificationDetails("presence_internal") } },
+                new[] { new[] { new MetadataStatement.UserVerificationDescriptor("presence_internal") } },
                 statement.UserVerificationDetails!);
 
             AssertThat.IsNull(statement.AuthenticatorGetInfo);
@@ -72,23 +72,23 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
                 new[] { "hardware", "secure_element" },
                 statement.KeyProtection!);
             AssertThat.AreEqual("fido2", statement.ProtocolFamily);
-            AssertThat.AreEqual(1, statement!.Upv!.First().Major);
-            AssertThat.AreEqual(0, statement!.Upv!.First().Minor);
+            AssertThat.AreEqual(1, statement!.Upv![0].Major);
+            AssertThat.AreEqual(0, statement!.Upv![0].Minor);
 
             AssertThat.AreEqual(
-                new UserVerificationDetails("passcode_external"),
+                new MetadataStatement.UserVerificationDescriptor("passcode_external"),
                 statement.UserVerificationDetails![0][0]);
             AssertThat.AreEqual(
-                new UserVerificationDetails("none"),
+                new MetadataStatement.UserVerificationDescriptor("none"),
                 statement.UserVerificationDetails![1][0]);
             AssertThat.AreEqual(
-                new UserVerificationDetails("passcode_external"),
+                new MetadataStatement.UserVerificationDescriptor("passcode_external"),
                 statement.UserVerificationDetails![2][0]);
             AssertThat.AreEqual(
-                new UserVerificationDetails("presence_internal"),
+                new MetadataStatement.UserVerificationDescriptor("presence_internal"),
                 statement.UserVerificationDetails![2][1]);
             AssertThat.AreEqual(
-                new UserVerificationDetails("presence_internal"),
+                new MetadataStatement.UserVerificationDescriptor("presence_internal"),
                 statement.UserVerificationDetails![3][0]);
 
             AssertThat.IsNotNull(statement.UserVerificationDetails![0]![0]!.CodeAccuracy);

@@ -148,7 +148,7 @@ namespace Jpki.Security.WebAuthn.Metadata
         /// palm print, etc.
         /// </summary>
         [JsonPropertyName("userVerificationDetails")]
-        public IReadOnlyList<IReadOnlyList<UserVerificationDetails>>? UserVerificationDetails { get; set; }
+        public IReadOnlyList<IReadOnlyList<UserVerificationDescriptor>>? UserVerificationDetails { get; set; }
 
         /// <summary>
         /// The list of key protection types supported by the authenticator.
@@ -213,7 +213,7 @@ namespace Jpki.Security.WebAuthn.Metadata
         /// in the authenticator attestation. 
         /// </summary>
         [JsonPropertyName("attestationRootCertificates")]
-        public IReadOnlyList<string> ?AttestationRootCertificates { get; set; } // TODO: Deserialize to Certificate2
+        public IReadOnlyList<string>? AttestationRootCertificates { get; set; } // TODO: Deserialize to Certificate2
 
         /// <summary>
         /// A data: url [RFC2397] encoded [PNG] icon for the Authenticator.
@@ -232,262 +232,266 @@ namespace Jpki.Security.WebAuthn.Metadata
         /// </summary>
         [JsonPropertyName("authenticatorGetInfo")]
         public AuthenticatorInfo? AuthenticatorGetInfo { get; set; }
-    }
 
-    /// <summary>
-    /// A descriptor for a specific base user verification 
-    /// method as implemented by the authenticator.
-    /// </summary>
-    public class UserVerificationDetails
-    {
-        public UserVerificationDetails()
-        {
-        }
+        //---------------------------------------------------------------------
+        // Innner classes.
+        //---------------------------------------------------------------------
 
-        internal UserVerificationDetails(string userVerificationMethod)
-        {
-            this.UserVerificationMethod = userVerificationMethod;
-        }
-
-        [JsonPropertyName("userVerificationMethod")]
-        public string? UserVerificationMethod { get; set; }
-
-        [JsonPropertyName("caDesc")]
-        public CodeAccuracyDescriptor? CodeAccuracy { get; set; }
-
-        public override string ToString()
-        {
-            return this.UserVerificationMethod ?? "(null)";
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is UserVerificationDetails other &&
-                Equals(this.UserVerificationMethod, other.UserVerificationMethod);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.UserVerificationMethod?.GetHashCode() ?? 0;
-        }
-    }
-
-    /// <summary>
-    /// Describes the relevant accuracy/complexity aspects of passcode user verification methods.
-    /// </summary>
-    public class CodeAccuracyDescriptor
-    {
-        [JsonPropertyName("base")]
-        public int Base { get; set; }
-
-        [JsonPropertyName("minLength")]
-        public int MinLength { get; set; }
-
-        [JsonPropertyName("maxRetries")]
-        public int MaxRetries { get; set; }
-
-        [JsonPropertyName("blockSlowdown")]
-        public int BlockSlowdown { get; set; }
-    }
-
-    /// <summary>
-    /// The unified protocol version is determined as follows:
-    ///    
-    /// -  in the case of FIDO UAF, use the upv value as specified in the 
-    ///    respective "OperationHeader" field, see[UAFProtocol].
-    ///    
-    /// -  in the case of U2F, use
-    ///    
-    ///    major version 1, minor version 0 for U2F v1.0
-    ///    major version 1, minor version 1 for U2F v1.1
-    ///    major version 1, minor version 2 for U2F v1.2 also known as CTAP1
-    ///    
-    /// -  in the case of FIDO2/CTAP2, use
-    ///    
-    ///    major version 1, minor version 0 for CTAP 2.0
-    ///    major version 1, minor version 1 for CTAP 2.1
-    /// </summary>
-    public class UnifiedProtocolVersion
-    {
-        [JsonPropertyName("major")]
-        public int? Major { get; set; }
-
-        [JsonPropertyName("minor")]
-        public int? Minor { get; set; }
-
-        public override string ToString()
-        {
-            return $"{this.Major}.{this.Minor}";
-        }
-    }
-
-    /// <summary>
-    /// Describes supported versions, extensions, AAGUID of the 
-    /// device and its capabilities.
-    /// 
-    /// The information is the same reported by an authenticator 
-    /// when invoking the 'authenticatorGetInfo' method, see[FIDOCTAP].
-    /// </summary>
-    public class AuthenticatorInfo
-    {
         /// <summary>
-        /// List of supported versions. Supported versions are: 
+        /// A descriptor for a specific base user verification 
+        /// method as implemented by the authenticator.
+        /// </summary>
+        public class UserVerificationDescriptor
+        {
+            public UserVerificationDescriptor()
+            {
+            }
+
+            internal UserVerificationDescriptor(string userVerificationMethod)
+            {
+                this.UserVerificationMethod = userVerificationMethod;
+            }
+
+            [JsonPropertyName("userVerificationMethod")]
+            public string? UserVerificationMethod { get; set; }
+
+            [JsonPropertyName("caDesc")]
+            public CodeAccuracyDescriptor? CodeAccuracy { get; set; }
+
+            public override string ToString()
+            {
+                return this.UserVerificationMethod ?? "(null)";
+            }
+
+            public override bool Equals(object? obj)
+            {
+                return obj is UserVerificationDescriptor other &&
+                    Equals(this.UserVerificationMethod, other.UserVerificationMethod);
+            }
+
+            public override int GetHashCode()
+            {
+                return this.UserVerificationMethod?.GetHashCode() ?? 0;
+            }
+        }
+
+        /// <summary>
+        /// Describes the relevant accuracy/complexity aspects of passcode user verification methods.
+        /// </summary>
+        public class CodeAccuracyDescriptor
+        {
+            [JsonPropertyName("base")]
+            public int Base { get; set; }
+
+            [JsonPropertyName("minLength")]
+            public int MinLength { get; set; }
+
+            [JsonPropertyName("maxRetries")]
+            public int MaxRetries { get; set; }
+
+            [JsonPropertyName("blockSlowdown")]
+            public int BlockSlowdown { get; set; }
+        }
+
+        /// <summary>
+        /// The unified protocol version is determined as follows:
+        ///    
+        /// -  in the case of FIDO UAF, use the upv value as specified in the 
+        ///    respective "OperationHeader" field, see[UAFProtocol].
+        ///    
+        /// -  in the case of U2F, use
+        ///    
+        ///    major version 1, minor version 0 for U2F v1.0
+        ///    major version 1, minor version 1 for U2F v1.1
+        ///    major version 1, minor version 2 for U2F v1.2 also known as CTAP1
+        ///    
+        /// -  in the case of FIDO2/CTAP2, use
+        ///    
+        ///    major version 1, minor version 0 for CTAP 2.0
+        ///    major version 1, minor version 1 for CTAP 2.1
+        /// </summary>
+        public class UnifiedProtocolVersion
+        {
+            [JsonPropertyName("major")]
+            public int? Major { get; set; }
+
+            [JsonPropertyName("minor")]
+            public int? Minor { get; set; }
+
+            public override string ToString()
+            {
+                return $"{this.Major}.{this.Minor}";
+            }
+        }
+
+        /// <summary>
+        /// Describes supported versions, extensions, AAGUID of the 
+        /// device and its capabilities.
         /// 
-        /// - "FIDO_2_0" for CTAP2/FIDO2/Web Authentication authenticators 
-        /// - "U2F_V2" for CTAP1/U2F authenticators.
+        /// The information is the same reported by an authenticator 
+        /// when invoking the 'authenticatorGetInfo' method, see[FIDOCTAP].
         /// </summary>
-        [JsonPropertyName("versions")]
-        public IReadOnlyList<string>? Versions { get; set; }
-
-        /// <summary>
-        /// List of supported extensions.
-        /// </summary>
-        [JsonPropertyName("extensions")]
-        public IReadOnlyList<string>? Extensions { get; set; }
-
-        [JsonPropertyName("aaguid")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string? AaguidString { get; set; }
-
-        /// <summary>
-        /// The claimed AAGUID.
-        /// </summary>
-        public Guid? Aaguid
+        public class AuthenticatorInfo
         {
-            get => string.IsNullOrEmpty(this.AaguidString) 
-                ? (Guid?)null 
-                : Guid.Parse(this.AaguidString);
+            /// <summary>
+            /// List of supported versions. Supported versions are: 
+            /// 
+            /// - "FIDO_2_0" for CTAP2/FIDO2/Web Authentication authenticators 
+            /// - "U2F_V2" for CTAP1/U2F authenticators.
+            /// </summary>
+            [JsonPropertyName("versions")]
+            public IReadOnlyList<string>? Versions { get; set; }
+
+            /// <summary>
+            /// List of supported extensions.
+            /// </summary>
+            [JsonPropertyName("extensions")]
+            public IReadOnlyList<string>? Extensions { get; set; }
+
+            [JsonPropertyName("aaguid")]
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public string? AaguidString { get; set; }
+
+            /// <summary>
+            /// The claimed AAGUID.
+            /// </summary>
+            public Guid? Aaguid
+            {
+                get => string.IsNullOrEmpty(this.AaguidString)
+                    ? (Guid?)null
+                    : Guid.Parse(this.AaguidString);
+            }
+
+            /// <summary>
+            /// List of supported options.
+            /// </summary>
+
+            [JsonPropertyName("options")]
+            public IDictionary<string, bool>? Options { get; set; }
+
+            /// <summary>
+            /// Maximum message size supported by the authenticator.
+            /// </summary>
+
+            [JsonPropertyName("maxMsgSize")]
+            public int MaxMsgSize { get; set; }
+
+            /// <summary>
+            /// List of supported PIN Protocol versions.
+            /// </summary>
+
+            [JsonPropertyName("pinUvAuthProtocols")]
+            public IReadOnlyList<int>? PinUvAuthProtocols { get; set; }
         }
 
         /// <summary>
-        /// List of supported options.
+        /// This descriptor contains an extension supported by the authenticator.
         /// </summary>
-
-        [JsonPropertyName("options")]
-        public IDictionary<string, bool>? Options { get; set; }
-
-        /// <summary>
-        /// Maximum message size supported by the authenticator.
-        /// </summary>
-
-        [JsonPropertyName("maxMsgSize")]
-        public int MaxMsgSize { get; set; }
-
-        /// <summary>
-        /// List of supported PIN Protocol versions.
-        /// </summary>
-
-        [JsonPropertyName("pinUvAuthProtocols")]
-        public IReadOnlyList<int>? PinUvAuthProtocols { get; set; }
-    }
-
-    /// <summary>
-    /// This descriptor contains an extension supported by the authenticator.
-    /// </summary>
-    public class ExtensionDescriptor
-    {
-        /// <summary>
-        /// Identifies the extension.
-        /// </summary>
-        [JsonPropertyName("id")]
-        public string? Id { get; set; }
-
-        /// <summary>
-        /// Indicates whether unknown extensions must be ignored (false) 
-        /// or must lead to an error (true) when the extension is to be 
-        /// processed by the FIDO Server, FIDO Client, ASM, or FIDO Authenticator.
-        /// </summary>
-        [JsonPropertyName("fail_if_unknown")]
-        public bool FailIfUnknown { get; set; }
-
-        /// <summary>
-        /// Contains arbitrary data further describing the extension 
-        /// and/or data needed to correctly process the extension.
-        /// </summary>
-        [JsonPropertyName("data")]
-        public string? Data { get; set; }
-    }
-
-    /// <summary>
-    /// The DisplayPNGCharacteristicsDescriptor describes a PNG image 
-    /// characteristics as defined in the PNG [PNG] spec for IHDR 
-    /// (image header) and PLTE (palette table)
-    /// </summary>
-    public class DisplayPngCharacteristicsDescriptor
-    {
-        /// <summary>
-        /// Image width.
-        /// </summary>
-        [JsonPropertyName("width")]
-        public int Width { get; set; }
-
-        /// <summary>
-        /// Image height.
-        /// </summary>
-        [JsonPropertyName("height")]
-        public int Height { get; set; }
-
-        /// <summary>
-        /// Bit depth - bits per sample or per palette index.
-        /// </summary>
-        [JsonPropertyName("bitDepth")]
-        public int BitDepth { get; set; }
-
-        /// <summary>
-        /// Color type defines the PNG image type.
-        /// </summary>
-        [JsonPropertyName("colorType")]
-        public int ColorType { get; set; }
-
-        /// <summary>
-        /// Compression method used to compress the image data.
-        /// </summary>
-        [JsonPropertyName("compression")]
-        public int Compression { get; set; }
-
-        /// <summary>
-        /// Filter method is the preprocessing method applied to the
-        /// image data before compression.
-        /// </summary>
-        [JsonPropertyName("filter")]
-        public int Filter { get; set; }
-
-        /// <summary>
-        /// Interlace method is the transmission order of the image data.
-        /// </summary>
-        [JsonPropertyName("interlace")]
-        public int Interlace { get; set; }
-
-        /// <summary>
-        /// 1 to 256 palette entries
-        /// </summary>
-        [JsonPropertyName("plte")]
-        public IReadOnlyList<RgbPaletteEntry>? Plte { get; set; }
-    }
-
-    public class RgbPaletteEntry
-    {
-        /// <summary>
-        /// Red channel sample value.
-        /// </summary>
-        [JsonPropertyName("r")]
-        public int R { get; set; }
-
-        /// <summary>
-        /// Green channel sample value.
-        /// </summary>
-        [JsonPropertyName("g")]
-        public int G { get; set; }
-
-        /// <summary>
-        /// Blue channel sample value.
-        /// </summary>
-        [JsonPropertyName("b")]
-        public int B { get; set; }
-
-        public override string ToString()
+        public class ExtensionDescriptor
         {
-            return $"{this.R:02X}{this.G:02X}{this.B:02X}";
+            /// <summary>
+            /// Identifies the extension.
+            /// </summary>
+            [JsonPropertyName("id")]
+            public string? Id { get; set; }
+
+            /// <summary>
+            /// Indicates whether unknown extensions must be ignored (false) 
+            /// or must lead to an error (true) when the extension is to be 
+            /// processed by the FIDO Server, FIDO Client, ASM, or FIDO Authenticator.
+            /// </summary>
+            [JsonPropertyName("fail_if_unknown")]
+            public bool FailIfUnknown { get; set; }
+
+            /// <summary>
+            /// Contains arbitrary data further describing the extension 
+            /// and/or data needed to correctly process the extension.
+            /// </summary>
+            [JsonPropertyName("data")]
+            public string? Data { get; set; }
+        }
+
+        /// <summary>
+        /// The DisplayPNGCharacteristicsDescriptor describes a PNG image 
+        /// characteristics as defined in the PNG [PNG] spec for IHDR 
+        /// (image header) and PLTE (palette table)
+        /// </summary>
+        public class DisplayPngCharacteristicsDescriptor
+        {
+            /// <summary>
+            /// Image width.
+            /// </summary>
+            [JsonPropertyName("width")]
+            public int Width { get; set; }
+
+            /// <summary>
+            /// Image height.
+            /// </summary>
+            [JsonPropertyName("height")]
+            public int Height { get; set; }
+
+            /// <summary>
+            /// Bit depth - bits per sample or per palette index.
+            /// </summary>
+            [JsonPropertyName("bitDepth")]
+            public int BitDepth { get; set; }
+
+            /// <summary>
+            /// Color type defines the PNG image type.
+            /// </summary>
+            [JsonPropertyName("colorType")]
+            public int ColorType { get; set; }
+
+            /// <summary>
+            /// Compression method used to compress the image data.
+            /// </summary>
+            [JsonPropertyName("compression")]
+            public int Compression { get; set; }
+
+            /// <summary>
+            /// Filter method is the preprocessing method applied to the
+            /// image data before compression.
+            /// </summary>
+            [JsonPropertyName("filter")]
+            public int Filter { get; set; }
+
+            /// <summary>
+            /// Interlace method is the transmission order of the image data.
+            /// </summary>
+            [JsonPropertyName("interlace")]
+            public int Interlace { get; set; }
+
+            /// <summary>
+            /// 1 to 256 palette entries
+            /// </summary>
+            [JsonPropertyName("plte")]
+            public IReadOnlyList<RgbPaletteEntry>? Plte { get; set; }
+        }
+
+        public class RgbPaletteEntry
+        {
+            /// <summary>
+            /// Red channel sample value.
+            /// </summary>
+            [JsonPropertyName("r")]
+            public int R { get; set; }
+
+            /// <summary>
+            /// Green channel sample value.
+            /// </summary>
+            [JsonPropertyName("g")]
+            public int G { get; set; }
+
+            /// <summary>
+            /// Blue channel sample value.
+            /// </summary>
+            [JsonPropertyName("b")]
+            public int B { get; set; }
+
+            public override string ToString()
+            {
+                return $"{this.R:02X}{this.G:02X}{this.B:02X}";
+            }
         }
     }
 }
