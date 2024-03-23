@@ -16,8 +16,22 @@ namespace Jpki.Powershell.Security.WebAuthn
     public class GetWebAuthnAttestationMetadata
         : AsyncCmdletBase<IEnumerable<MetadataBlobPayloadEntry>> // TODO: test
     {
-        [Parameter(Mandatory = false)]
+        private const string FidoParameterSet = null;
+        private const string U2fParameterSet = null;
+
+        //---------------------------------------------------------------------
+        // Fido parameter set.
+        //---------------------------------------------------------------------
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(FidoParameterSet))]
         public string? Aaguid { get; set; }
+
+        //---------------------------------------------------------------------
+        // Detailed parameter set.
+        //---------------------------------------------------------------------
+
+        [Parameter(Mandatory = false, ParameterSetName = nameof(U2fParameterSet))]
+        public string? Aaid { get; set; }
 
         protected override async Task<IEnumerable<MetadataBlobPayloadEntry>> ProcessRecordAsync(
             CancellationToken cancellationToken)
@@ -28,7 +42,9 @@ namespace Jpki.Powershell.Security.WebAuthn
 
             return payload
                 .Entries
-                .Where(e => this.Aaguid == null || this.Aaguid == e.AaguidString);
+                .EnsureNotNull()
+                .Where(e => this.Aaguid == null || this.Aaguid == e.AaguidString)
+                .Where(e => this.Aaid == null || this.Aaguid == e.Aaid);
         }
 
         private class MdsMetadataResource : TextResource
