@@ -53,6 +53,16 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
                 statement.UserVerificationDetails!);
 
             AssertThat.IsNull(statement.AuthenticatorGetInfo);
+            CollectionAssertThat.AreEquivalent(
+                new[] { "hardware", "secure_element", "remote_handle" },
+                statement.KeyProtection!);
+            CollectionAssertThat.AreEquivalent(
+                new[] { "on_chip" },
+                statement.MatcherProtection!);
+            AssertThat.AreEqual(128, statement.CryptoStrength);
+            AssertThat.AreEqual(
+                "CN=Yubico U2F Root CA Serial 457200631", 
+                statement.AttestationRootCertificates.First().Issuer);
         }
 
         [Test]
@@ -108,7 +118,9 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
             CollectionAssertThat.AreEquivalent(
                 new[] { 1 },
                 authenticatorGetInfo.PinUvAuthProtocols!);
-
+            AssertThat.AreEqual(
+                "CN=Yubico U2F Root CA Serial 457200631",
+                statement.AttestationRootCertificates.First().Issuer);
         }
     }
 }

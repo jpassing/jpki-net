@@ -28,7 +28,7 @@ using System.Linq;
 namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
 {
     [TestFixture]
-    public class TestMetadataBlobPayload
+    public class TestMetadataBlob
     {
         [Test]
         public void GoogleTitanV2()

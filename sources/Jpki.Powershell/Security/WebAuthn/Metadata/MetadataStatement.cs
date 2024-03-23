@@ -22,6 +22,10 @@
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+
+
 
 
 #if NETFRAMEWORK
@@ -208,12 +212,22 @@ namespace Jpki.Security.WebAuthn.Metadata
         [JsonPropertyName("tcDisplayPNGCharacteristics")]
         public IReadOnlyList<DisplayPngCharacteristicsDescriptor>? TcDisplayPNGCharacteristics { get; set; }
 
+        [JsonPropertyName("attestationRootCertificates")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public IReadOnlyList<string>? AttestationRootCertificateStrings { get; set; }
+
         /// <summary>
         /// List of attestation trust anchors for the batch chain 
         /// in the authenticator attestation. 
         /// </summary>
-        [JsonPropertyName("attestationRootCertificates")]
-        public IReadOnlyList<string>? AttestationRootCertificates { get; set; } // TODO: Deserialize to Certificate2
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public IReadOnlyList<X509Certificate2> AttestationRootCertificates 
+        {
+            get => this.AttestationRootCertificateStrings
+                .EnsureNotNull()
+                .Select(c => new X509Certificate2(Convert.FromBase64String(c)))
+                .ToList();
+        }
 
         /// <summary>
         /// A data: url [RFC2397] encoded [PNG] icon for the Authenticator.

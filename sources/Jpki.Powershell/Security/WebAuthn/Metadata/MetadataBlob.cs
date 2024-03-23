@@ -25,6 +25,8 @@ using System.ComponentModel;
 using System.Linq;
 using Jpki.Powershell.Runtime.Text;
 using System.Text;
+using System.Security.Cryptography.X509Certificates;
+
 
 
 
@@ -153,11 +155,21 @@ namespace Jpki.Security.WebAuthn.Metadata
             [JsonPropertyName("authenticatorVersion")]
             public long? AuthenticatorVersion { get; set; }
 
+            [JsonPropertyName("certificate")]
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public string? CertificateString { get; set; }
+
             /// <summary>
             /// Base64-encoded PKIX certificate value related to the current status, if applicable.
             /// </summary>
             [JsonPropertyName("certificate")]
-            public string? Certificate { get; set; } // TODO: parse
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public X509Certificate2? Certificate
+            {
+                get => this.CertificateString != null
+                    ? new X509Certificate2(Convert.FromBase64String(this.CertificateString))
+                    : null;
+            }
 
             /// <summary>
             /// HTTPS URL where additional information may be found related 
@@ -214,6 +226,7 @@ namespace Jpki.Security.WebAuthn.Metadata
             /// </summary>
 
             [JsonPropertyName("aaguid")]
+            [EditorBrowsable(EditorBrowsableState.Never)]
             public string? AaguidString { get; set; }
 
             /// <summary>
