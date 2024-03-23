@@ -65,12 +65,25 @@ namespace Jpki.Format
             uint offset,
             out Guid guid)
         {
-            var guidBytes = new byte[16];
-            Array.Copy(data, offset, guidBytes, 0, guidBytes.Length);
+            //
+            // NB. Guid assumes little endian, so we can't use the
+            // existing constructor that takes a byte array.
+            //
+            ReadUInt32(data, offset + 0, out var a);
+            ReadUInt16(data, offset + 4, out var b);
+            ReadUInt16(data, offset + 6, out var c);
 
-            guid = new Guid(guidBytes);
-
-            return (uint)guidBytes.Length;
+            guid = new Guid(
+                a, b, c, 
+                data[offset + 8], 
+                data[offset + 9], 
+                data[offset + 10],
+                data[offset + 11],
+                data[offset + 12],
+                data[offset + 13], 
+                data[offset + 14], 
+                data[offset + 15]);
+            return 16;
         }
     }
 }

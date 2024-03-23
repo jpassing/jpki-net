@@ -68,13 +68,32 @@ namespace Jpki.Test.Security.WebAuthn
         [Test]
         public void ReadGuid()
         {
-            var guid = Guid.NewGuid().ToByteArray();
-            var bytesRead = BigEndian.ReadGuid(guid, 0, out var output);
+            var bigEndianGuid = new byte[] {
+                0xCC,
+                0x95,
+                0x44,
+                0x2b,
+                0x2e,
+                0xf1,
+                0x5e,
+                0x4d,
+                0xef,
+                0xb2,
+                0x70,
+                0xef,
+                0xb1,
+                0x06,
+                0xfa,
+                0xcb,
+                0x4e,
+            };
+
+            var bytesRead = BigEndian.ReadGuid(bigEndianGuid, 1, out var output);
 
             AssertThat.AreEqual(16, bytesRead);
             AssertThat.AreEqual(
-                guid,
-                output.ToByteArray());
+                new Guid("95442b2e-f15e-4def-b270-efb106facb4e"),
+                output);
         }
     }
 }
