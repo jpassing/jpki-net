@@ -37,7 +37,11 @@ namespace Jpki.Security.WebAuthn
     /// </summary>
     public class AttestationStatement
     {
-        private readonly bool isFidoU2f;
+        /// <summary>
+        /// Indicates whether the attestation is for a U2F (as opposed to a 
+        /// CTAP2) authenticator.
+        /// </summary>
+        public bool IsU2f { get; }
 
         /// <summary>
         /// Attestation signature that was created using the key of the attesting
@@ -46,6 +50,9 @@ namespace Jpki.Security.WebAuthn
         /// </summary>
         private readonly byte[] signature;
 
+        /// <summary>
+        /// Signature algorithm.
+        /// </summary>
         public CoseSignatureAlgorithm Algorithm { get; }
 
         public ICollection<X509Certificate2>? CertificateChain { get; }
@@ -61,7 +68,7 @@ namespace Jpki.Security.WebAuthn
             this.Algorithm = algorithm;
             this.signature = signature.ExpectNotNull(nameof(signature));
             this.CertificateChain = certificateChain;
-            this.isFidoU2f = isFidoU2f;
+            this.IsU2f = isFidoU2f;
         }
 
         /// <summary>
@@ -87,7 +94,7 @@ namespace Jpki.Security.WebAuthn
             //
             // The signature rules differ between U2F and CTAP2/WebAuthN.
             //
-            if (this.isFidoU2f)
+            if (this.IsU2f)
             {
                 //
                 // Follow U2F rules, see
@@ -193,19 +200,22 @@ namespace Jpki.Security.WebAuthn
                     throw new InvalidAttestationException("The signature is invalid");
                 }
 
-                //
-                // Verify that attestnCert meets the requirements in § 8.2.1
-                // Packed Attestation Statement Certificate Requirements.
-                //
-                if (!this.Certificate.TryGetExtension(Oids.BasicConstraints, out var basicConstraintsExt))
+                if (!this.IsU2f)
                 {
-                    throw new InvalidAttestationException(
-                        "The cerfificate does not contain a basic constraints extension");
-                }
-                else if (((X509BasicConstraintsExtension)basicConstraintsExt!).CertificateAuthority)
-                {
-                    throw new InvalidAttestationException(
-                        "The cerfificate is a CA certificate");
+                    //
+                    // Verify that attestnCert meets the requirements in § 8.2.1
+                    // Packed Attestation Statement Certificate Requirements.
+                    //
+                    if (!this.Certificate.TryGetExtension(Oids.BasicConstraints, out var basicConstraintsExt))
+                    {
+                        throw new InvalidAttestationException(
+                            "The cerfificate does not contain a basic constraints extension");
+                    }
+                    else if (((X509BasicConstraintsExtension)basicConstraintsExt!).CertificateAuthority)
+                    {
+                        throw new InvalidAttestationException(
+                            "The cerfificate is a CA certificate");
+                    }
                 }
 
                 if (this.Certificate.TryGetExtension(Oids.FidoGenCeAaguid, out var aaguidExt) &&

@@ -22,6 +22,7 @@
 using Jpki.Powershell.Runtime.Http;
 using NUnit.Framework;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,9 +37,9 @@ using JsonPropertyName = System.Text.Json.Serialization.JsonPropertyNameAttribut
 namespace Jpki.Powershell.Test.Runtime.Http
 {
     [TestFixture]
-    public class TestRestClient
+    public class TestJsonResource
     {
-        private static readonly Uri SampleRestUrl = 
+        private static readonly Uri SampleUrl = 
             new Uri("https://accounts.google.com/.well-known/openid-configuration");
         
         private static readonly Uri NotFoundUrl =
@@ -47,82 +48,54 @@ namespace Jpki.Powershell.Test.Runtime.Http
         private static readonly Uri NoContentUrl =
             new Uri("https://gstatic.com/generate_204");
 
-        private static readonly UserAgent userAgent = new UserAgent(
-            "test",
-            new Version(1, 0),
-            Environment.OSVersion.VersionString);
-
-        public class SampleResource
+        public class Body
         {
             [JsonPropertyName("issuer")]
             public string? Issuer { get; set; }
         }
 
         //---------------------------------------------------------------------
-        // GetString.
+        // Get.
         //---------------------------------------------------------------------
 
         [Test]
-        public async Task WhenUrlPointsToNoContent_ThenGetStringReturnsEmptyString()
+        public async Task GetContent()
         {
             var client = new RestClient();
-            var result = await client
-                .GetStringAsync(
-                    NoContentUrl,
-                    CancellationToken.None)
+            var response = await client
+                .Resource<JsonResource<Body>>(SampleUrl)
+                .Get()
+                .ExecuteAsync(CancellationToken.None)
                 .ConfigureAwait(false);
 
-            AssertThat.AreEqual(string.Empty, result);
+            AssertThat.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            AssertThat.IsNotNull(response.Body?.Issuer);
         }
 
         [Test]
-        public void WhenUrlNotFound_ThenGetStringThrowsException()
+        public async Task GetNoContent()
         {
             var client = new RestClient();
+            var response = await client
+                .Resource<JsonResource<Body>>(NoContentUrl)
+                .Get()
+                .ExecuteAsync(CancellationToken.None)
+                .ConfigureAwait(false);
+
+            AssertThat.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            AssertThat.IsNull(response.Body);
+        }
+
+        [Test]
+        public void GetNotFound()
+        {
+            var client = new RestClient();
+
             AssertThrows.AggregateException<HttpRequestException>(
-                () => client.GetStringAsync(
-                    NotFoundUrl,
-                    CancellationToken.None));
-        }
-
-        //---------------------------------------------------------------------
-        // GetJson.
-        //---------------------------------------------------------------------
-
-        [Test]
-        public async Task WhenUrlPointsToJson_ThenGetJsonReturnsObject()
-        {
-            var client = new RestClient();
-            var result = await client
-                .GetJsonAsync<SampleResource>(
-                    SampleRestUrl,
-                    CancellationToken.None)
-                .ConfigureAwait(false);
-
-            AssertThat.IsNotNull(result?.Issuer);
-        }
-
-        [Test]
-        public async Task WhenUrlPointsToNoContent_ThenGetJsonReturnsNull()
-        {
-            var client = new RestClient();
-            var result = await client
-                .GetJsonAsync<SampleResource>(
-                    NoContentUrl,
-                    CancellationToken.None)
-                .ConfigureAwait(false);
-
-            AssertThat.IsNull(result);
-        }
-
-        [Test]
-        public void WhenUrlNotFound_ThenGetJsonThrowsException()
-        {
-            var client = new RestClient();
-            AssertThrows.AggregateException<HttpRequestException>(
-                () => client.GetJsonAsync<SampleResource>(
-                    NotFoundUrl,
-                    CancellationToken.None));
+                () => client
+                .Resource<JsonResource<Body>>(NotFoundUrl)
+                .Get()
+                .ExecuteAsync(CancellationToken.None));
         }
     }
 }

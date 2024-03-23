@@ -19,12 +19,8 @@
 // under the License.
 //
 
-using Jpki.Powershell.Runtime.Text;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Runtime.Http
 {
@@ -35,29 +31,12 @@ namespace Jpki.Powershell.Runtime.Http
         /// </summary>
         UserAgent UserAgent { get; }
 
-        /// <summary>
-        /// Perform a GET request and response as string.
-        /// </summary>
-        Task<string?> GetStringAsync(
-            Uri url,
-            CancellationToken cancellationToken); 
-
-        /// <summary>
-        /// Perform a GET request and deserialize the JSON response.
-        /// </summary>
-        Task<TModel?> GetJsonAsync<TModel>(
-            Uri url,
-            CancellationToken cancellationToken)
-            where TModel : class;
+        TResource Resource<TResource>(Uri url)
+            where TResource : RestResourceBase, new();
     }
 
     internal class RestClient : IRestClient
     {
-        //
-        // Use a custom timeout (default is 100sec).
-        //
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(10);
-
         //
         // Underlying HTTP client. We keep using the same client so
         // that we can benefit from the underlying connection pool.
@@ -71,7 +50,7 @@ namespace Jpki.Powershell.Runtime.Http
             this.client = client.ExpectNotNull(nameof(client));
             this.UserAgent = userAgent.ExpectNotNull(nameof(userAgent));
 
-            this.client.Timeout = DefaultTimeout;
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgent.ToHeaderValue());
         }
 
         public RestClient()
@@ -81,85 +60,18 @@ namespace Jpki.Powershell.Runtime.Http
         {
         }
 
-        private async Task<TResponse> SendAsync<TResponse>(
-            HttpRequestMessage request,
-            Func<HttpResponseMessage, Stream, TResponse> unmarshalFunc,
-            CancellationToken cancellationToken)
-        {
-            using (var client = new HttpClient())
-            {
-                if (this.UserAgent != null)
-                {
-                    request.Headers.UserAgent.ParseAdd(this.UserAgent.ToHeaderValue());
-                }
-
-                using (var response = await client.SendAsync(
-                    request,
-                    HttpCompletionOption.ResponseHeadersRead,
-                    cancellationToken).ConfigureAwait(false))
-                {
-                    response.EnsureSuccessStatusCode();
-
-                    var stream = await response.Content
-                        .ReadAsStreamAsync()
-                        .ConfigureAwait(false);
-
-                    return unmarshalFunc(response, stream);
-                }
-            }
-        }
-
-        private async Task<TResponse> GetAsync<TResponse>(
-            Uri url,
-            Func<HttpResponseMessage, Stream, TResponse> unmarshalFunc,
-            CancellationToken cancellationToken)
-        {
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-            {
-                return await SendAsync(request, unmarshalFunc, cancellationToken);
-            }
-        }
-
         //---------------------------------------------------------------------
         // IRestClient.
         //---------------------------------------------------------------------
 
         public UserAgent UserAgent { get; }
 
-        public async Task<TModel?> GetJsonAsync<TModel>(
-            Uri url,
-            CancellationToken cancellationToken)
-            where TModel : class
+        public TResource Resource<TResource>(Uri url)
+            where TResource : RestResourceBase, new()
         {
-            return await GetAsync(
-                url,
-                (response, stream) =>
-                {
-                    if (response.Content.Headers.ContentLength == 0)
-                    {
-                        return null;
-                    }
-
-                    return Json.Deserialize<TModel>(stream);
-                },
-                cancellationToken);
-        }
-
-
-        public async Task<string?> GetStringAsync(
-            Uri url,
-            CancellationToken cancellationToken)
-        {
-            return await GetAsync(
-                url,
-                (_, stream) =>
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                },
-                cancellationToken);
+            var resource = new TResource();
+            resource.Initialize(this.client, url);
+            return resource;
         }
 
         //---------------------------------------------------------------------

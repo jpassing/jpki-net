@@ -93,6 +93,9 @@ namespace Jpki.Powershell.Security.WebAuthn
         [Parameter(Mandatory = false, ParameterSetName = nameof(DetailedParameterSet))]
         public ResidentKeyRequirement ResidentKey { get; set; }
 
+        //---------------------------------------------------------------------
+        // Overrides.
+        //---------------------------------------------------------------------
         protected override Task<Credential> ProcessRecordAsync(
             CancellationToken cancellationToken)
         {
