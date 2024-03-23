@@ -50,7 +50,9 @@ namespace NUnit.Framework
             {
                 try
                 {
+                    #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
                     code().Wait();
+                    #pragma warning restore VSTHRD002
                 }
                 catch (AggregateException e)
                 {
