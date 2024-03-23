@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 namespace Jpki.Powershell.Security.Cryptography
 {
     [Cmdlet(VerbsData.ConvertFrom, "Pem")]
+    [OutputType(typeof(X509Certificate2))]
     public class ConvertCertificateFromPem : AsyncCmdletBase<X509Certificate2>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true)]
