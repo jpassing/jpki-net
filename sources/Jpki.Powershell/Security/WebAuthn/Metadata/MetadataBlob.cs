@@ -162,7 +162,6 @@ namespace Jpki.Security.WebAuthn.Metadata
             /// <summary>
             /// Base64-encoded PKIX certificate value related to the current status, if applicable.
             /// </summary>
-            [JsonPropertyName("certificate")]
             [EditorBrowsable(EditorBrowsableState.Never)]
             public X509Certificate2? Certificate
             {

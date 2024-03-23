@@ -125,7 +125,7 @@ namespace Jpki.Test.Security.WebAuthn
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
             AssertThat.AreEqual(
-                "04030201-0605-0807-0102-030405060708",
+                "01020304-0506-0708-0102-030405060708",
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid.ToString());
 
             credential.Verify();
@@ -185,7 +185,7 @@ namespace Jpki.Test.Security.WebAuthn
                 credential.Id,
                 credential.AuthenticatorData.AttestedCredentialData!.CredentialId);
             AssertThat.AreEqual(
-                "04030201-0605-0807-0102-030405060708",
+                "01020304-0506-0708-0102-030405060708",
                 credential.AuthenticatorData.AttestedCredentialData.Aaguid.ToString());
 
             credential.Verify();
