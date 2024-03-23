@@ -31,6 +31,7 @@ namespace Jpki.Powershell.Security.WebAuthn
     /// Return basic capability information about WebAuthn.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "WebAuthnCapabilities")]
+    [OutputType(typeof(GetWebAuthnCapabilities.Capabilities))]
     public class GetWebAuthnCapabilities 
         : AsyncCmdletBase<GetWebAuthnCapabilities.Capabilities>
     {

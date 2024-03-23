@@ -30,6 +30,8 @@ namespace Jpki.Powershell.Security.Cryptography
 {
 
     [Cmdlet(VerbsData.ConvertTo, "Pem")]
+
+    [OutputType(typeof(string))]
     public class ConvertCertificateToPem : AsyncCmdletBase<string>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true)]

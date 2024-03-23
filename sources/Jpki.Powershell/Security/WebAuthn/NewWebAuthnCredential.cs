@@ -34,6 +34,7 @@ namespace Jpki.Powershell.Security.WebAuthn
     /// Create a new WebAuthn credential.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "WebAuthnCredential")]
+    [OutputType(typeof(Credential))]
     public class NewWebAuthnCredential : AsyncCmdletBase<Credential>
     {
         private const string SimpleParameterSet = null;
