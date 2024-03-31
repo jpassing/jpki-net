@@ -30,7 +30,7 @@ namespace Jpki.Powershell.Runtime.Http
         public string Platform { get; }
 
         public static UserAgent Default = new UserAgent(
-            "JPKI", 
+            "JPKI",
             typeof(UserAgent).Assembly.GetName().Version ?? new Version(1, 0));
 
         public UserAgent(string product, Version version, string platform)

@@ -156,7 +156,7 @@ namespace Jpki.Test.Security.Cryptography
         private static ECDsa CreateKey(int keySize)
         {
 #if WINDOWS || NETFRAMEWORK
-            return  new ECDsaCng(keySize);
+            return new ECDsaCng(keySize);
 #else
             return ECDsa.Create();
 #endif

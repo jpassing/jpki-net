@@ -39,9 +39,9 @@ namespace Jpki.Powershell.Test.Runtime.Http
     [TestFixture]
     public class TestJsonResource
     {
-        private static readonly Uri SampleUrl = 
+        private static readonly Uri SampleUrl =
             new Uri("https://accounts.google.com/.well-known/openid-configuration");
-        
+
         private static readonly Uri NotFoundUrl =
             new Uri("https://gstatic.com/generate_404");
 

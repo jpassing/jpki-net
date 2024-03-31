@@ -74,14 +74,14 @@ namespace Jpki.Format
             ReadUInt16(data, offset + 6, out var c);
 
             guid = new Guid(
-                a, b, c, 
-                data[offset + 8], 
-                data[offset + 9], 
+                a, b, c,
+                data[offset + 8],
+                data[offset + 9],
                 data[offset + 10],
                 data[offset + 11],
                 data[offset + 12],
-                data[offset + 13], 
-                data[offset + 14], 
+                data[offset + 13],
+                data[offset + 14],
                 data[offset + 15]);
             return 16;
         }

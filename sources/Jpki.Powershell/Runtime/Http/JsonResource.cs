@@ -20,14 +20,14 @@
 //
 
 using Jpki.Powershell.Runtime.Text;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Runtime.Http
 {
-    public class JsonResource<TBody> : RestResourceBase
+    internal class JsonResource<TBody> : RestResourceBase
         where TBody : class
     {
         public override string ExpectedContentType => "application/json";

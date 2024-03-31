@@ -70,9 +70,9 @@ namespace Jpki.Powershell.Test.Runtime.Text
         public void DeserializeString()
         {
             var json = "{\"a\": \"aa\",\"b\": \"bb\"}";
-            
+
             var c = Json.Deserialize<SomeClass>(json);
-            
+
             AssertThat.NotNull(c);
             AssertThat.AreEqual("aa", c!.A);
             AssertThat.AreEqual("bb", c!.B);
