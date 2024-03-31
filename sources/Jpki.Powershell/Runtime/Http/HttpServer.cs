@@ -39,7 +39,8 @@ namespace Jpki.Powershell.Runtime.Http
         /// port stays the same for this instance.
         /// </summary>
         private readonly Lazy<int> randomUnusedPort = new Lazy<int>(
-            () => {
+            () =>
+            {
                 var listener = new TcpListener(IPAddress.Loopback, 0);
                 try
                 {

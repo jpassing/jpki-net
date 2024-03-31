@@ -40,7 +40,7 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
             AssertThat.AreEqual("...", statement.LegalHeader);
             AssertThat.AreEqual("YubiKey 5 Series with Lightning", statement.Description);
             CollectionAssertThat.AreEquivalent(
-                new[] { "secp256r1_ecdsa_sha256_raw" }, 
+                new[] { "secp256r1_ecdsa_sha256_raw" },
                 statement.AuthenticationAlgorithms!);
             CollectionAssertThat.AreEquivalent(
                 new[] { "hardware", "secure_element", "remote_handle" },
@@ -61,7 +61,7 @@ namespace Jpki.Powershell.Test.Security.WebAuthn.Metadata
                 statement.MatcherProtection!);
             AssertThat.AreEqual(128, statement.CryptoStrength);
             AssertThat.AreEqual(
-                "CN=Yubico U2F Root CA Serial 457200631", 
+                "CN=Yubico U2F Root CA Serial 457200631",
                 statement.AttestationRootCertificates.First().Issuer);
         }
 

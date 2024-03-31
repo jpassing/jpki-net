@@ -221,7 +221,7 @@ namespace Jpki.Security.WebAuthn.Metadata
         /// in the authenticator attestation. 
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public IReadOnlyList<X509Certificate2> AttestationRootCertificates 
+        public IReadOnlyList<X509Certificate2> AttestationRootCertificates
         {
             get => this.AttestationRootCertificateStrings
                 .EnsureNotNull()

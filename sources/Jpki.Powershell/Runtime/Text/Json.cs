@@ -34,7 +34,7 @@ namespace Jpki.Powershell.Runtime.Text
     /// Deserialize JSON using either Newtonsoft.Json (NetFx) or
     /// System.Text.Json (.NET).
     /// </summary>
-    internal static class Json 
+    internal static class Json
     {
         public static T? Deserialize<T>(Stream stream) where T : class
         {

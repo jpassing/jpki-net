@@ -75,7 +75,7 @@ namespace Jpki.Powershell.Runtime.Http
             /// <summary>
             /// Request URI.
             /// </summary>
-            public Uri Uri { get; set; } 
+            public Uri Uri { get; set; }
 
             /// <summary>
             /// Initialze a HTTP request message.
