@@ -24,6 +24,9 @@ using System.Net.Http;
 
 namespace Jpki.Powershell.Runtime.Http
 {
+    /// <summary>
+    /// Client for making REST API requests.
+    /// </summary>
     internal interface IRestClient : IDisposable
     {
         /// <summary>
@@ -31,6 +34,9 @@ namespace Jpki.Powershell.Runtime.Http
         /// </summary>
         UserAgent UserAgent { get; }
 
+        /// <summary>
+        /// Use client for a specific resource.
+        /// </summary>
         TResource Resource<TResource>(Uri url)
             where TResource : RestResourceBase, new();
     }

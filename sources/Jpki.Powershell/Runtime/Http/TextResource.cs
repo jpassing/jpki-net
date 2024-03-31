@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Runtime.Http
 {
-    public class TextResource : RestResourceBase
+    internal class TextResource : RestResourceBase
     {
         public override string ExpectedContentType => "text/plain";
 
@@ -56,7 +56,7 @@ namespace Jpki.Powershell.Runtime.Http
                 return new HttpRequestMessage(HttpMethod.Get, this.Uri);
             }
 
-            public new async Task<Response> ExecuteAsync(
+            public async new Task<Response> ExecuteAsync(
                 CancellationToken cancellationToken)
             {
                 using (var response = await base

@@ -26,7 +26,7 @@ namespace Jpki.Powershell.Runtime.Text
     /// <summary>
     /// Base64 URL encoding.
     /// </summary>
-    public class Base64UrlEncoding
+    internal class Base64UrlEncoding
     {
         public static string Encode(byte[] data)
         {

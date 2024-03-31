@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace Jpki.Powershell.Runtime.Http
 {
-    public abstract class RestResourceBase
+    internal abstract class RestResourceBase
     {
         private Uri? baseUri;
         private HttpClient? client;
